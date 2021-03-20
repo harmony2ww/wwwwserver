@@ -11,16 +11,16 @@
  * 
  */
 
-error_reporting(0);
+error_reporting(1);
 
 class WWWWW_server{
 	#Full path to web dir
-	protected $web_dir="/home/user/WWWW/";
+	protected $web_dir="/home/__your___web__dir__";
 	protected $php_version="8.0"; //7.0//7.4 //5
 	protected $address='127.0.0.1'; //Feel free!
 	protected $protocol='tcp'; //Could only be!
 	protected $responce_headers=array("HTTP/1.1"=>"200 OK\r\n",
-								   "Host:"=> $this->$address."\r\n",
+								   "Host:"=> "127.0.0.1\r\n",
 								   "Accept:"=>"text/html\r\n",
 								   "Keep-Alive:"=> "1\r\n",
 								   "Date:"=>"", 
@@ -45,6 +45,7 @@ class WWWWW_server{
 	public function  http_server($Port){
 		$num_requests=0;
 		$this->setDate();
+		$this->setSERVERIP();
 		$this->socket = stream_socket_server($this->protocol."://".$this->address.":".$Port, $errno, $errstr);
 		if (!isset($this->socket) || empty($this->socket) || !is_resource($this->socket) || !$this->socket){
 		  	echo "$errstr ($errno)<br />\n";
@@ -85,6 +86,10 @@ class WWWWW_server{
 	private function setDate(){
 		$this->request_headers["Date:"]=date("Y-m-d H:i:s")."\r\n";
 	}
+	#Set The date
+	private function setSERVERIP(){
+		$this->request_headers["Host:"]=$this->address."\r\n";
+	}
 	#Basic file read
 	private function FileRead($file){
 		if(isset($file) && !empty($file) && is_file($file) && filesize($file) >0 ){
@@ -105,10 +110,10 @@ class WWWWW_server{
 				$data=explode("?", $data_request[1]);
 			}
 			else{
-				$data[0]=$data_request[1];
+				$data=$data_request[1];
 			}
-			$Xxxx=substr($data[0],1);
-			if(is_file($Xxxx) && strpos($Xxxx,"./")===FALSE && strpos($Xxxx,"../")===FALSE){
+			$Xxxx=substr($data,1);
+			if(is_file($this->web_dir.$Xxxx) && strpos($Xxxx,"./")===FALSE && strpos($Xxxx,"../")===FALSE){
 				if(isset($data[1]) && !empty($data[1])){
 					$temp_URI=array("x_file"=>$this->web_dir.$Xxxx, "x_GET"=>$data[1]);
 				}
@@ -121,7 +126,7 @@ class WWWWW_server{
 			}
 	}
 	#FIle type of rendered files over the web.
-	private function fileType($temp_URI){
+	private function fileType($temp_URI){ 
 		if(isset($temp_URI["x_file"]) && !empty($temp_URI["x_file"]) && strlen($temp_URI["x_file"])>1 && strpos($temp_URI["x_file"],"html")!==FALSE){
 			return htmlspecialchars(htmlentities($this->FileRead($temp_URI["x_file"])));
 		}
@@ -150,7 +155,7 @@ class WWWWW_server{
 }
 
 	#Starting web server like these:
-	#php web_server.php
+	#sudo php8.0 web_server.php
 	
 
 	$htpx_serverR = new WWWWW_server(1);
