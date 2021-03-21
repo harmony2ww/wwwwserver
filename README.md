@@ -1,18 +1,13 @@
 # WWWW SERVER - Web Server 
-
-[![GitHub status](https://img.shields.io/github/status/X0xx-1110/WWWW-Server?style=for-the-badge)](https://travis-ci.org/X0xx-1110/WWWW-Server)
-[![GitHub climate](https://img.shields.io/github/climate/X0xx-1110/WWWW-Server?style=for-the-badge)](https://codeclimate.com/github/X0xx-1110/WWWW-Server)
-[![GitHub coverage](https://img.shields.io/github/coverage/X0xx-1110/WWWW-Server?style=for-the-badge)](https://coveralls.io/r/X0xx-1110/WWWW-Server)
-
-[![GitHub issues](https://img.shields.io/github/issues/X0xx-1110/WWWW-Server?style=for-the-badge)](https://github.com/X0xx-1110/WWWW-Server/issues)
-[![GitHub forks](https://img.shields.io/github/forks/X0xx-1110/WWWW-Server?style=for-the-badge)](https://github.com/X0xx-1110/WWWW-Server/network)
-
-[![GitHub license](https://img.shields.io/github/license/X0xx-1110/WWWW-Server?style=for-the-badge)](https://github.com/X0xx-1110/WWWW-Server/blob/main/LICENSE)
-[![GitHub stars](https://img.shields.io/github/stars/X0xx-1110/WWWW-Server?style=for-the-badge)](https://github.com/X0xx-1110/WWWW-Server/stargazers)
+[![GitHub status](https://github.com/X0xx-1110/WWWW-Server/actions/workflows/web_server.php/badge.svg)](https://travis-ci.org/X0xx-1110/WWWW-Server)
+[![GitHub issues](https://github.com/X0xx-1110/WWWW-Server/actions/issues/web_server.php/badge.svg)](https://github.com/X0xx-1110/WWWW-Server/issues)
+[![GitHub forks](https://github.com/X0xx-1110/WWWW-Server/actions/forks/web_server.php/badge.svg)](https://github.com/X0xx-1110/WWWW-Server/network)
+[![GitHub license](https://github.com/X0xx-1110/WWWW-Server/actions/license/web_server.php/badge.svg)](https://github.com/X0xx-1110/WWWW-Server/blob/main/LICENSE)
+[![GitHub stars](https://github.com/X0xx-1110/WWWW-Server/actions/stars/web_server.php/badge.svg)](https://github.com/X0xx-1110/WWWW-Server/stargazers)
 
 WWWW Server is high speed, secure and stable web server. Includes inside html, xml, php5, php7.0, php7.4, php8.0 rending of all. There are posible communication with x_GET variable about more capabilities. Includes capabilities about fast optimization and testing of all aspects on web developing.
 
-## Getting Started
+## Getting Started [![GitHub how to start?](https://github.com/X0xx-1110/WWWW-Server/actions/workflows/web_server.php/badge.svg?style=for-the-badge)](https://travis-ci.org/X0xx-1110/WWWW-Server)
 
 1. When you are ready about starting new web server you must to specify number of the port, that will.
 2. Then must  to specify and directory about your web files. Where are they?
