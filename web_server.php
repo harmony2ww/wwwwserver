@@ -11,11 +11,10 @@
  * 
  */
 
-error_reporting(1);
+error_reporting(0);
 
 class WWWWW_server{
-	#Full path to web dir
-	protected $web_dir="/home/__your___web__dir__";
+	protected $web_dir="";
 	protected $php_version="8.0"; //7.0//7.4 //5
 	protected $address='127.0.0.1'; //Feel free!
 	protected $protocol='tcp'; //Could only be!
@@ -32,24 +31,20 @@ class WWWWW_server{
 	private $timestamp_end=0;
 	
 
-	# New point of view about Singleton
-	public function __construct($obj){
-		if(!isset($obj) || empty($obj)){
-			return new WWWWW_server(new WWWWW_server(1));
-		}
+	public function __construct(){
 	}
 	public function __destruct(){
-		
 	}
 	#Ccmmon function about web server it all.
-	public function  http_server($Port){
+	public function  http_server($Port,$WebDir){
 		$num_requests=0;
 		$this->setDate();
 		$this->setSERVERIP();
+		$this->setDir($WebDir);
 		$this->socket = stream_socket_server($this->protocol."://".$this->address.":".$Port, $errno, $errstr);
 		if (!isset($this->socket) || empty($this->socket) || !is_resource($this->socket) || !$this->socket){
 		  	echo "$errstr ($errno)<br />\n";
-		} 
+		}  
 		else {
 		  	while (true===true) {
 		  		$this->conn = stream_socket_accept($this->socket, -1);
@@ -58,6 +53,10 @@ class WWWWW_server{
 		  			$this->timestamp_start=microtime();
 			  		$temp_URI=$this->parseRequest($gathered_request);
 			  		$this->response=$this->fileType($temp_URI);
+			  		$str_SECURE='';
+			  		if($this->response === FALSE){
+			  			$str_SECURE="[ FAULT SECURITY check! ]";
+			  		}
 			  		if(isset($this->responce_headers) && !empty($this->responce_headers) && is_array($this->responce_headers)){
 			  			foreach($this->responce_headers as $first_part=>$second_part){
 			  				fwrite($this->conn, $first_part." ".$second_part);
@@ -66,13 +65,13 @@ class WWWWW_server{
 			  		$line_request=explode("\n",$gathered_request);
 					$data_request=explode(" ", $line_request[0]);
 					if(isset($line_request[0]) && !empty($line_request[0]) && strpos($line_request[0],".ico")===FALSE && strpos($line_request[0],".css")===FALSE && $this->response=="400 Bad Request!"){
-						print $this->response . "\n" ;
+						print "  " . $this->response . "\n" ;
 					}
 					elseif(isset($line_request[0]) && !empty($line_request[0]) && strpos($line_request[0],".ico")===FALSE && strpos($line_request[0],".css")===FALSE && strpos($line_request[0],$data_request[1])!==FALSE){
 						++$num_requests;
 						$num=(string) $num_requests;
 						$time=(string) abs(floatval(substr($this->timestamp_end,0,9))-floatval(substr($this->timestamp_start,0,9))); // Becouse scientific notation!
-						print "|" . $num_requests . "|" . $time . "s|====================>" . $line_request[0]."\n";
+						print "  |" . $num_requests . "|" . $time . "s|====================>" . $line_request[0]."  ".$str_SECURE."\n";
 					}
 			    	fwrite($this->conn, html_entity_decode(htmlspecialchars_decode($this->response)). "\r\n");
 			    	$this->timestamp_end=microtime();
@@ -89,6 +88,9 @@ class WWWWW_server{
 	#Set The date
 	private function setSERVERIP(){
 		$this->request_headers["Host:"]=$this->address."\r\n";
+	}
+	private function setDir($WebDir){
+		$this->web_dir=$WebDir;
 	}
 	#Basic file read
 	private function FileRead($file){
@@ -125,8 +127,33 @@ class WWWWW_server{
 				return $temp_URI;
 			}
 	}
+	private function securityCheck($urlAboutCheck){
+
+		$arr=array("'",'"',";","\\","\\\\","\\\\\\","\\\\\\\\","^",")","(","+","*","$","#","@","!");
+		$len=strlen($urlAboutCheck);
+		$array_check=array();
+		for($i=0;$i<$len;$i++){
+			$array_check[$i]=substr($urlAboutCheck,$i,1);
+		}
+		if(isset($array_check) && !empty($array_check) && is_array($array_check) && count($array_check)){
+			foreach($array_check as $val1){
+				foreach($arr as $val2){
+					if( $val1 == $val2){
+						return FALSE;
+					}
+				}
+			}
+		}
+		return $var;
+	}
 	#FIle type of rendered files over the web.
-	private function fileType($temp_URI){ 
+	private function fileType($temp_URI){
+		if($this->securityCheck($temp_URI["x_file"])===FALSE){
+			return FALSE;
+		}
+
+
+
 		if(isset($temp_URI["x_file"]) && !empty($temp_URI["x_file"]) && strlen($temp_URI["x_file"])>1 && strpos($temp_URI["x_file"],"html")!==FALSE){
 			return htmlspecialchars(htmlentities($this->FileRead($temp_URI["x_file"])));
 		}
@@ -137,16 +164,16 @@ class WWWWW_server{
 			return htmlspecialchars(htmlentities($this->FileRead($temp_URI["x_file"])));
 		}
 		elseif(isset($temp_URI["x_file"]) && !empty($temp_URI["x_file"]) && strlen($temp_URI["x_file"])>1 && strpos($temp_URI["x_file"],"php")!==FALSE && $this->php_version==="8.0"){
-			return htmlspecialchars(htmlentities(shell_exec("/usr/bin/php8.0 -f " . $temp_URI["x_file"] . " '{x_GET: " . $temp_URI["x_GET"]. "}'")));
+			return htmlspecialchars(htmlentities(shell_exec("/usr/bin/php8.0 -f " . addslashes($temp_URI["x_file"]) . " '{x_GET: " . $temp_URI["x_GET"]. "}'")));
 		}
 		elseif(isset($temp_URI["x_file"]) && !empty($temp_URI["x_file"]) && strlen($temp_URI["x_file"])>1 && strpos($temp_URI["x_file"],"php")!==FALSE && $this->php_version==="7.4"){
-			return htmlspecialchars(htmlentities(shell_exec("/usr/bin/php7.4 -f " . $temp_URI["x_file"] . " '{x_GET: " . $temp_URI["x_GET"]. "}'")));
+			return htmlspecialchars(htmlentities(shell_exec("/usr/bin/php7.4 -f " . addslashes($temp_URI["x_file"]) . " '{x_GET: " . $temp_URI["x_GET"]. "}'")));
 		}
 		elseif(isset($temp_URI["x_file"]) && !empty($temp_URI["x_file"]) && strlen($temp_URI["x_file"])>1 && strpos($temp_URI["x_file"],"php")!==FALSE && $this->php_version==="7.0"){
-			return htmlspecialchars(htmlentities(shell_exec("/usr/bin/php7.0 -f " . $temp_URI["x_file"] . " '{x_GET: " . $temp_URI["x_GET"]. "}'")));
+			return htmlspecialchars(htmlentities(shell_exec("/usr/bin/php7.0 -f " . addslashes($temp_URI["x_file"]) . " '{x_GET: " . $temp_URI["x_GET"]. "}'")));
 		}
 		elseif(isset($temp_URI["x_file"]) && !empty($temp_URI["x_file"]) && strlen($temp_URI["x_file"])>1 && strpos($temp_URI["x_file"],"php")!==FALSE && $this->php_version==="5"){
-			return htmlspecialchars(htmlentities(shell_exec("/usr/bin/php -f " . $temp_URI["x_file"] . " '{x_GET: " . $temp_URI["x_GET"]. "}'")));
+			return htmlspecialchars(htmlentities(shell_exec("/usr/bin/php -f " . addslashes($temp_URI["x_file"]) . " '{x_GET: " . $temp_URI["x_GET"]. "}'")));
 		}
 		else{
 			return "400 Bad Request!";
@@ -154,40 +181,30 @@ class WWWWW_server{
 	}
 }
 
-	#Starting web server like these:
-	#sudo php8.0 web_server.php
-	
 
-	$htpx_serverR = new WWWWW_server(1);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	$htpx_serverR = new WWWWW_server();
 	
 	#Could set the port if it is free about.
-	$htpx_serverR->http_server(82);
-
-	#http://127.0.0.1:82/index.php
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	$htpx_serverR->http_server(8282, "/home/XXXX/Desktop/www1/" );
 ?>
