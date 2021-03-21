@@ -1,5 +1,5 @@
 # WWWW SERVER - Web Server 
-[![stats](https://travis-ci.org/X0xx-1110/WWWW-Server.png?branch=main)](https://travis-ci.org/X0xx-1110/WWWW-Server)
+[![Build Status](https://travis-ci.org/X0xx-1110/WWWW-Server.svg?branch=main)](https://travis-ci.org/X0xx-1110/WWWW-Server)
 [![climate](https://codeclimate.com/github/X0xx-1110/WWWW-Server.png)](https://codeclimate.com/github/X0xx-1110/WWWW-Server)
 [![coverage](https://coveralls.io/repos/X0xx-1110/WWWW-Server/badge.png)](https://coveralls.io/r/X0xx-1110/WWWW-Server)
 
