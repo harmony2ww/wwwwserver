@@ -21,17 +21,17 @@ Then we get the web server on (http://127.0.0.1:8282/)
 
 
 
-## Example:
+## Example: [![Version](https://badge.fury.io/gh/tterb%2FHyde.svg)](https://badge.fury.io/gh/tterb%2FHyde)
 Inside your browser (http://127.0.0.1:8282/index.php)
 
 
 ## Authors
 
-* **Kaloyan Hristov** - [PurpleBooth](https://github.com/X0xx-1110)
+* **Kaloyan Hristov** - (https://github.com/X0xx-1110)
 
 See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
-## License
+## License [![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/X0xx-1110/WWWW-Server/blob/main/LICENSE)
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
