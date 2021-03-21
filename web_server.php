@@ -5,13 +5,13 @@
  *
  * (c) Kaloyan Hristov <creativepoetryabout@gmail.com>
  * 
- * @title: WWWW Server
+ * @title: WWWW Server - Web Server
  * @author: Kaloyan Hristov
  * Please view the LICENSE file that was with this source code.
  * 
  */
 
-error_reporting(0);
+error_reporting( 0 );
 
 class WWWWW_server{
 	protected $web_dir="";
@@ -180,25 +180,6 @@ class WWWWW_server{
 		}
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
