@@ -11,7 +11,7 @@
  * 
  */
 
-error_reporting( 0 );
+error_reporting( 1 );
 
 class WWWWW_server{
 	protected $web_dir="";
@@ -29,7 +29,7 @@ class WWWWW_server{
 	private $conn;
 	private $timestamp_start=0;
 	private $timestamp_end=0;
-	
+	private $IS_ERROR=FALSE;
 
 	public function __construct(){
 	}
@@ -64,7 +64,7 @@ class WWWWW_server{
 			  		}
 			  		$line_request=explode("\n",$gathered_request);
 					$data_request=explode(" ", $line_request[0]);
-					if(isset($line_request[0]) && !empty($line_request[0]) && strpos($line_request[0],".ico")===FALSE && strpos($line_request[0],".css")===FALSE && $this->response=="400 Bad Request!"){
+					if(strpos($line_request[0],".ico")===FALSE && strpos($line_request[0],".css")===FALSE && $this->IS_ERROR===TRUE){ #@TODO: BETTER!
 						print "  " . $this->response . "\n" ;
 					}
 					elseif(isset($line_request[0]) && !empty($line_request[0]) && strpos($line_request[0],".ico")===FALSE && strpos($line_request[0],".css")===FALSE && strpos($line_request[0],$data_request[1])!==FALSE){
@@ -102,7 +102,7 @@ class WWWWW_server{
 				return $read;
 			}
 		}
-		return 0;
+		return FALSE;
 	}
 	#Function, that parsing the request.
 	private function parseRequest($req){
@@ -117,14 +117,11 @@ class WWWWW_server{
 			$Xxxx=substr($data,1);
 			if(is_file($this->web_dir.$Xxxx) && strpos($Xxxx,"./")===FALSE && strpos($Xxxx,"../")===FALSE){
 				if(isset($data[1]) && !empty($data[1])){
-					$temp_URI=array("x_file"=>$this->web_dir.$Xxxx, "x_GET"=>$data[1]);
+					return $temp_URI=array("x_file"=>$this->web_dir.$Xxxx, "x_GET"=>$data[1]);
 				}
 				else{
-					$temp_URI=array("x_file"=>$this->web_dir.$Xxxx, "x_GET"=>"");
+					return $temp_URI=array("x_file"=>$this->web_dir.$Xxxx, "x_GET"=>"");
 				}
-			}
-			if(isset($temp_URI) && !empty($temp_URI) && is_array($temp_URI) && count($temp_URI)){
-				return $temp_URI;
 			}
 	}
 	private function securityCheck($urlAboutCheck){
@@ -151,33 +148,56 @@ class WWWWW_server{
 		if($this->securityCheck($temp_URI["x_file"])===FALSE){
 			return FALSE;
 		}
-
-
-
+		if(is_null($temp_URI["x_file"])){
+			$this->IS_ERROR=TRUE;
+			return "400 Bad Request!===========>Could not find file!";
+		}
+		if( isset($temp_URI["x_file"]) && !empty($temp_URI["x_file"]) && !is_file($temp_URI["x_file"])){
+			$this->IS_ERROR=TRUE;
+			return "400 Bad Request!===========>Could not find file!";
+		}
+		if( isset($temp_URI["x_file"]) && !empty($temp_URI["x_file"]) && !is_readable($temp_URI["x_file"])){
+			$this->IS_ERROR=TRUE;
+			return "400 Bad Request!===========>Could not read from file!";
+		}
 		if(isset($temp_URI["x_file"]) && !empty($temp_URI["x_file"]) && strlen($temp_URI["x_file"])>1 && strpos($temp_URI["x_file"],"html")!==FALSE){
+			$this->IS_ERROR=FALSE;
 			return htmlspecialchars(htmlentities($this->FileRead($temp_URI["x_file"])));
 		}
-		elseif(isset($temp_URI["x_file"]) && !empty($temp_URI["x_file"]) && strlen($temp_URI["x_file"])>1 && strpos($temp_URI["x_file"],"xhtml")!==FALSE){
+		if(isset($temp_URI["x_file"]) && !empty($temp_URI["x_file"]) && strlen($temp_URI["x_file"])>1 && strpos($temp_URI["x_file"],"htm")!==FALSE){
+			$this->IS_ERROR=FALSE;
 			return htmlspecialchars(htmlentities($this->FileRead($temp_URI["x_file"])));
 		}
-		elseif(isset($temp_URI["x_file"]) && !empty($temp_URI["x_file"]) && strlen($temp_URI["x_file"])>1 && strpos($temp_URI["x_file"],"xml")!==FALSE){
+		if(isset($temp_URI["x_file"]) && !empty($temp_URI["x_file"]) && strlen($temp_URI["x_file"])>1 && strpos($temp_URI["x_file"],"txt")!==FALSE){
+			$this->IS_ERROR=FALSE;
 			return htmlspecialchars(htmlentities($this->FileRead($temp_URI["x_file"])));
 		}
-		elseif(isset($temp_URI["x_file"]) && !empty($temp_URI["x_file"]) && strlen($temp_URI["x_file"])>1 && strpos($temp_URI["x_file"],"php")!==FALSE && $this->php_version==="8.0"){
+		if(isset($temp_URI["x_file"]) && !empty($temp_URI["x_file"]) && strlen($temp_URI["x_file"])>1 && strpos($temp_URI["x_file"],"xhtml")!==FALSE){
+			$this->IS_ERROR=FALSE;
+			return htmlspecialchars(htmlentities($this->FileRead($temp_URI["x_file"])));
+		}
+		if(isset($temp_URI["x_file"]) && !empty($temp_URI["x_file"]) && strlen($temp_URI["x_file"])>1 && strpos($temp_URI["x_file"],"xml")!==FALSE){
+			$this->IS_ERROR=FALSE;
+			return htmlspecialchars(htmlentities($this->FileRead($temp_URI["x_file"])));
+		}
+		if(isset($temp_URI["x_file"]) && !empty($temp_URI["x_file"]) && strlen($temp_URI["x_file"])>1 && strpos($temp_URI["x_file"],"php")!==FALSE && $this->php_version==="8.0"){
+			$this->IS_ERROR=FALSE;
 			return htmlspecialchars(htmlentities(shell_exec("/usr/bin/php8.0 -f " . addslashes($temp_URI["x_file"]) . " '{x_GET: " . $temp_URI["x_GET"]. "}'")));
 		}
-		elseif(isset($temp_URI["x_file"]) && !empty($temp_URI["x_file"]) && strlen($temp_URI["x_file"])>1 && strpos($temp_URI["x_file"],"php")!==FALSE && $this->php_version==="7.4"){
+		if(isset($temp_URI["x_file"]) && !empty($temp_URI["x_file"]) && strlen($temp_URI["x_file"])>1 && strpos($temp_URI["x_file"],"php")!==FALSE && $this->php_version==="7.4"){
+			$this->IS_ERROR=FALSE;
 			return htmlspecialchars(htmlentities(shell_exec("/usr/bin/php7.4 -f " . addslashes($temp_URI["x_file"]) . " '{x_GET: " . $temp_URI["x_GET"]. "}'")));
 		}
-		elseif(isset($temp_URI["x_file"]) && !empty($temp_URI["x_file"]) && strlen($temp_URI["x_file"])>1 && strpos($temp_URI["x_file"],"php")!==FALSE && $this->php_version==="7.0"){
+		if(isset($temp_URI["x_file"]) && !empty($temp_URI["x_file"]) && strlen($temp_URI["x_file"])>1 && strpos($temp_URI["x_file"],"php")!==FALSE && $this->php_version==="7.0"){
+			$this->IS_ERROR=FALSE;
 			return htmlspecialchars(htmlentities(shell_exec("/usr/bin/php7.0 -f " . addslashes($temp_URI["x_file"]) . " '{x_GET: " . $temp_URI["x_GET"]. "}'")));
 		}
-		elseif(isset($temp_URI["x_file"]) && !empty($temp_URI["x_file"]) && strlen($temp_URI["x_file"])>1 && strpos($temp_URI["x_file"],"php")!==FALSE && $this->php_version==="5"){
+		if(isset($temp_URI["x_file"]) && !empty($temp_URI["x_file"]) && strlen($temp_URI["x_file"])>1 && strpos($temp_URI["x_file"],"php")!==FALSE && $this->php_version==="5"){
+			$this->IS_ERROR=FALSE;
 			return htmlspecialchars(htmlentities(shell_exec("/usr/bin/php -f " . addslashes($temp_URI["x_file"]) . " '{x_GET: " . $temp_URI["x_GET"]. "}'")));
 		}
-		else{
-			return "400 Bad Request!";
-		}
+		$this->IS_ERROR=TRUE;
+		return "400 Bad Request!===========>Could not execute anithing!";
 	}
 }
 
@@ -187,5 +207,5 @@ class WWWWW_server{
 	$htpx_serverR = new WWWWW_server();
 	
 	#Could set the port if it is free about.
-	$htpx_serverR->http_server(8282, "/home/XXXX/Desktop/www1/" );
+	$htpx_serverR->http_server(8282, "/home/kalata/Desktop/Documents/" );
 ?>
