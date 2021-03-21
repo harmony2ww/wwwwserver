@@ -1,9 +1,9 @@
 # WWWW SERVER - Web Server 
-[![GitHub status](https://github.com/X0xx-1110/WWWW-Server/actions/workflows/web_server.php/badge.svg)](https://travis-ci.org/X0xx-1110/WWWW-Server)
-[![GitHub issues](https://github.com/X0xx-1110/WWWW-Server/actions/issues/web_server.php/badge.svg)](https://github.com/X0xx-1110/WWWW-Server/issues)
-[![GitHub forks](https://github.com/X0xx-1110/WWWW-Server/actions/forks/web_server.php/badge.svg)](https://github.com/X0xx-1110/WWWW-Server/network)
-[![GitHub license](https://github.com/X0xx-1110/WWWW-Server/actions/license/web_server.php/badge.svg)](https://github.com/X0xx-1110/WWWW-Server/blob/main/LICENSE)
-[![GitHub stars](https://github.com/X0xx-1110/WWWW-Server/actions/stars/web_server.php/badge.svg)](https://github.com/X0xx-1110/WWWW-Server/stargazers)
+[![GitHub status](https://github.com/X0xx-1110/WWWW-Server/actions/workflows/codacy-analysis.yml/badge.svg)](https://travis-ci.org/X0xx-1110/WWWW-Server)
+[![GitHub issues](https://github.com/X0xx-1110/WWWW-Server/actions/issues/codacy-analysis.yml/badge.svg)](https://github.com/X0xx-1110/WWWW-Server/issues)
+[![GitHub forks](https://github.com/X0xx-1110/WWWW-Server/actions/forks/codacy-analysis.yml/badge.svg)](https://github.com/X0xx-1110/WWWW-Server/network)
+[![GitHub license](https://github.com/X0xx-1110/WWWW-Server/actions/license/codacy-analysis.yml/badge.svg)](https://github.com/X0xx-1110/WWWW-Server/blob/main/LICENSE)
+[![GitHub stars](https://github.com/X0xx-1110/WWWW-Server/actions/stars/codacy-analysis.yml/badge.svg)](https://github.com/X0xx-1110/WWWW-Server/stargazers)
 
 WWWW Server is high speed, secure and stable web server. Includes inside html, xml, php5, php7.0, php7.4, php8.0 rending of all. There are posible communication with x_GET variable about more capabilities. Includes capabilities about fast optimization and testing of all aspects on web developing.
 
