@@ -1,8 +1,14 @@
 # WWWW SERVER - Web Server 
 
-[![Build Status](https://travis-ci.org/X0xx-1110/WWWW-Server.svg?branch=main)](https://travis-ci.org/X0xx-1110/WWWW-Server)
-[![climate](https://codeclimate.com/github/X0xx-1110/WWWW-Server.png)](https://codeclimate.com/github/X0xx-1110/WWWW-Server)
-[![coverage](https://coveralls.io/repos/X0xx-1110/WWWW-Server/badge.png)](https://coveralls.io/r/X0xx-1110/WWWW-Server)
+[![GitHub status](https://img.shields.io/github/status/X0xx-1110/WWWW-Server?style=for-the-badge)](https://travis-ci.org/X0xx-1110/WWWW-Server)
+[![GitHub climate](https://img.shields.io/github/climate/X0xx-1110/WWWW-Server?style=for-the-badge)](https://codeclimate.com/github/X0xx-1110/WWWW-Server)
+[![GitHub coverage](https://img.shields.io/github/coverage/X0xx-1110/WWWW-Server?style=for-the-badge)](https://coveralls.io/r/X0xx-1110/WWWW-Server)
+
+[![GitHub issues](https://img.shields.io/github/issues/X0xx-1110/WWWW-Server?style=for-the-badge)](https://github.com/X0xx-1110/WWWW-Server/issues)
+[![GitHub forks](https://img.shields.io/github/forks/X0xx-1110/WWWW-Server?style=for-the-badge)](https://github.com/X0xx-1110/WWWW-Server/network)
+
+[![GitHub license](https://img.shields.io/github/license/X0xx-1110/WWWW-Server?style=for-the-badge)](https://github.com/X0xx-1110/WWWW-Server/blob/main/LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/X0xx-1110/WWWW-Server?style=for-the-badge)](https://github.com/X0xx-1110/WWWW-Server/stargazers)
 
 WWWW Server is high speed, secure and stable web server. Includes inside html, xml, php5, php7.0, php7.4, php8.0 rending of all. There are posible communication with x_GET variable about more capabilities. Includes capabilities about fast optimization and testing of all aspects on web developing.
 
