@@ -9,7 +9,7 @@
 [![GitHub forks](https://img.shields.io/github/forks/X0xx-1110/WWWW-Server.svg?style=social&label=Fork&maxAge=2592000)](https://GitHub.com/X0xx-1110/WWWW-Server/network/)
 [![GitHub stars](https://img.shields.io/github/stars/X0xx-1110/WWWW-Server.svg?style=social&label=Star&maxAge=2592000)](https://GitHub.com/X0xx-1110/WWWW-Server/stargazers/)
 [![GitHub watchers](https://img.shields.io/github/watchers/X0xx-1110/WWWW-Server.svg?style=social&label=Watch&maxAge=2592000)](https://GitHub.com/X0xx-1110/WWWW-Server/watchers/)
-[![GitHub followers](https://img.shields.io/github/followers/Naereen.svg?style=social&label=Follow&maxAge=2592000)](https://github.com/Naereen?tab=followers)
+[![GitHub followers](https://img.shields.io/github/followers/X0xx-1110.svg?style=social&label=Follow&maxAge=2592000)](https://github.com/X0xx-1110?tab=followers)
 
 WWWW Server is high speed, secure and stable web server. Includes inside html, xml, php5, php7.0, php7.4, php8.0 rending of all. There are posible communication with x_GET variable about more capabilities. Includes capabilities about fast optimization and testing of all aspects on web developing.
 
