@@ -25,11 +25,6 @@ Then we get the web server on (http://127.0.0.1:8282/)
 Inside your browser (http://127.0.0.1:8282/index.php)
 
 
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
 ## Authors
 
 * **Kaloyan Hristov** - [PurpleBooth](https://github.com/X0xx-1110)
