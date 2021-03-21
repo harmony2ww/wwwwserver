@@ -1,9 +1,15 @@
 # WWWW SERVER - Web Server 
-[![GitHub status](https://github.com/X0xx-1110/WWWW-Server/actions/workflows/codacy-analysis.yml/badge.svg)](https://travis-ci.org/X0xx-1110/WWWW-Server)
-[![GitHub issues](https://github.com/X0xx-1110/WWWW-Server/actions/issues/codacy-analysis.yml/badge.svg)](https://github.com/X0xx-1110/WWWW-Server/issues)
-[![GitHub forks](https://github.com/X0xx-1110/WWWW-Server/actions/forks/codacy-analysis.yml/badge.svg)](https://github.com/X0xx-1110/WWWW-Server/network)
-[![GitHub license](https://github.com/X0xx-1110/WWWW-Server/actions/license/codacy-analysis.yml/badge.svg)](https://github.com/X0xx-1110/WWWW-Server/blob/main/LICENSE)
-[![GitHub stars](https://github.com/X0xx-1110/WWWW-Server/actions/stars/codacy-analysis.yml/badge.svg)](https://github.com/X0xx-1110/WWWW-Server/stargazers)
+[![Github All Releases](https://img.shields.io/github/downloads/X0xx-1110/WWWW-Server/total.svg)]()
+[![GitHub status](https://github.com/X0xx-1110/WWWW-Server/actions/workflows/codacy-analysis.yml/badge.svg)](https://github.com/X0xx-1110/WWWW-Server)
+[![Documentation Status](https://readthedocs.org/projects/ansicolortags/badge/?version=latest)](http://ansicolortags.readthedocs.io/?badge=latest)
+[![GitHub license](https://img.shields.io/github/license/X0xx-1110/WWWW-Server.svg)](https://github.com/X0xx-1110/WWWW-Server/blob/master/LICENSE)
+[![GitHub release](https://img.shields.io/github/release/X0xx-1110/WWWW-Server.svg)](https://GitHub.com/X0xx-1110/WWWW-Server/releases/)
+[![GitHub commits](https://img.shields.io/github/commits-since/X0xx-1110/WWWW-Server/v1.0.0.svg)](https://GitHub.com/X0xx-1110/WWWW-Server/commit/)
+[![Github all releases](https://img.shields.io/github/downloads/X0xx-1110/WWWW-Server/total.svg)](https://GitHub.com/X0xx-1110/WWWW-Server/releases/)
+[![GitHub forks](https://img.shields.io/github/forks/X0xx-1110/WWWW-Server.svg?style=social&label=Fork&maxAge=2592000)](https://GitHub.com/X0xx-1110/WWWW-Server/network/)
+[![GitHub stars](https://img.shields.io/github/stars/X0xx-1110/WWWW-Server.svg?style=social&label=Star&maxAge=2592000)](https://GitHub.com/X0xx-1110/WWWW-Server/stargazers/)
+[![GitHub watchers](https://img.shields.io/github/watchers/X0xx-1110/WWWW-Server.svg?style=social&label=Watch&maxAge=2592000)](https://GitHub.com/X0xx-1110/WWWW-Server/watchers/)
+[![GitHub followers](https://img.shields.io/github/followers/Naereen.svg?style=social&label=Follow&maxAge=2592000)](https://github.com/Naereen?tab=followers)
 
 WWWW Server is high speed, secure and stable web server. Includes inside html, xml, php5, php7.0, php7.4, php8.0 rending of all. There are posible communication with x_GET variable about more capabilities. Includes capabilities about fast optimization and testing of all aspects on web developing.
 
