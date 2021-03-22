@@ -12,7 +12,7 @@
 
 WWWW Server is high speed, secure and stable web server. Includes inside html, xml, php5, php7.0, php7.4, php8.0 rending of all. There are posible communication with x_GET variable about more capabilities. Includes capabilities about fast optimization and testing of all aspects on web developing.
 
-## Getting Started [![GitHub how to start?](https://github.com/X0xx-1110/WWWW-Server/badge.svg?style=for-the-badge)](https://travis-ci.org/X0xx-1110/WWWW-Server)
+## Getting Started [![Documentation Status](https://readthedocs.org/projects/ansicolortags/badge/?version=latest)](http://ansicolortags.readthedocs.io/?badge=latest)
 
 1. When you are ready about starting new web server you must to specify number of the port, that will.
 2. Then must  to specify and directory about your web files. Where are they?
@@ -51,3 +51,5 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 ## Acknowledgments
 
 * Inspiration about it all.
+* Inspiration at all.
+* About INspiration
