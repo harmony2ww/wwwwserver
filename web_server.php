@@ -259,5 +259,5 @@ class WWWWW_server{
 
 	$htpx_serverR = new WWWWW_server();
 	#Could set the port if it is free about.
-	$htpx_serverR->http_server(8282, "/home/kalata/Desktop/Documents/" );
+	$htpx_serverR->http_server(8282, "/home/xxxxx/Desktop/Documents/" );
 ?>
