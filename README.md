@@ -24,7 +24,6 @@ These characters are excluded about the url and there get console error.
 ### About second secure property -  (array) $securityFilesWeb
 These strings of file names are possible variants about started file into url,
 else there are console error.
-Feel free about changes.
 
 ```php
 $server = new WwwwServer();
