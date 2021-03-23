@@ -8,7 +8,7 @@
 [![GitHub watchers](https://img.shields.io/github/watchers/X0xx-1110/WWWW-Server.svg?style=social&label=Watch&maxAge=2592000)](https://GitHub.com/X0xx-1110/WWWW-Server/watchers/)
 [![GitHub followers](https://img.shields.io/github/followers/X0xx-1110.svg?style=social&label=Follow&maxAge=2592000)](https://github.com/X0xx-1110?tab=followers)
 
-WWWW Server is high speed, secure and stable web server. Includes inside html,htm,txt,xml,php5,php7.0,php7.4,php8.0 rending of all. There are posible communication with x_GET variable about more capabilities. Includes capabilities about fast optimization and testing of all aspects on web developing.
+WwwwServer is high speed, secure and stable web server. Includes inside html, htm, txt, xml, php5, php7.0, php7.4, php8.0 rending of all. There are possible communication with x_GET variable about more capabilities. Includes capabilities about fast optimization and testing of all aspects on web developing.
 More stable than ever.
 
 ## Getting Started [![Documentation Status](https://readthedocs.org/projects/ansicolortags/badge/?version=latest)](http://ansicolortags.readthedocs.io/?badge=latest)
@@ -18,6 +18,13 @@ More stable than ever.
 3. These things you could done inside file web_server.php at the end.
 4. Be careful within directory, you could browse in files only if there are in.
 
+## SECURITY
+### About first secure property -  (array) $securityArray .
+These characters are excluded about the url and there get console error.
+### About second secure property -  (array) $securityFilesWeb
+These strings of file names are possible variants about started file into url,
+else there are console error.
+Feel free about changes.
 
 ```php
 $server = new WwwwServer();
