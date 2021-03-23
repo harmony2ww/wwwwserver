@@ -20,8 +20,8 @@ More stable than ever.
 
 
 ```php
-$htpx_serverR = new WWWWW_server();
-$htpx_serverR->http_server(8282, "/home/XXXX/Desktop/www1/" );
+$server = new WwwwServer();
+$server->httpServer(8282, "/home/XXXX/Desktop/www1/" );
 ```
 
 ## Running the tests
