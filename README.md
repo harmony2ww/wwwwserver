@@ -25,6 +25,8 @@ These characters are excluded about the url and there get console error.
 These strings of file names are possible variants about started file into url,
 else there are console error.
 
+
+## Starting
 ```php
 $server = new WwwwServer();
 $server->httpServer(8282, "/home/XXXX/Desktop/www1/" );
