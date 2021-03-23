@@ -1,4 +1,4 @@
-# WWWW SERVER - Web Server 
+# WWWW SERVER - Web Server
 [![GitHub status](https://github.com/X0xx-1110/WWWW-Server/actions/workflows/codacy-analysis.yml/badge.svg)](https://github.com/X0xx-1110/WWWW-Server)
 [![Documentation Status](https://readthedocs.org/projects/ansicolortags/badge/?version=latest)](http://ansicolortags.readthedocs.io/?badge=latest)
 [![GitHub license](https://img.shields.io/github/license/X0xx-1110/WWWW-Server.svg)](https://github.com/X0xx-1110/WWWW-Server/blob/master/LICENSE)
@@ -16,7 +16,7 @@ More stable than ever.
 1. When you are ready about starting new web server you must to specify number of the port, that will.
 2. Then must  to specify and directory about your web files. Where are they?
 3. These things you could done inside file web_server.php at the end.
-4. Be careful within directory, you could browse in files only if there are in. 
+4. Be careful within directory, you could browse in files only if there are in.
 
 
 ```php
@@ -37,16 +37,36 @@ Then we get the web server on (http://127.0.0.1:8282/)
 Inside your browser (http://127.0.0.1:8282/index.php)
 
 
+## Example of dynamically variables about GET protocol:
+### Step1: Configuration.
+```php
+private $dynamicallyVars = TRUE;
+```
+
+###Step 2: Inside browser.
+```uri
+http://127.0.0.1:8282/index.php?var1=78787823&var2=3874837&var3=news
+```
+
+###Step 3: Inside your code.
+```php
+echo $GETvar1;
+echo "<br />";
+echo $GETvar2;
+echo "<br />";
+echo $GETvar3;
+```
+
 ## Feature
-Further there are variants about GET,POST and HEAD, else obviosly and other variants are needs at today.
+Further there are variants about GET,POST and HEAD, else obviously and other variants are needs at today.
 Further over all maybe there are variant and for parallel port usage.
 Obviously the quality of code is more strong than else.
-There could be the effectively common generated dinamically variables about POST,GET,HEAD.
+There could be the effectively common generated dynamically variables about POST,GET,HEAD.
 The variables could be $POSTtextOfAll, $POSTtextCrapped, $GETpageNotFound, $HEADcheck, $HEADcheckAtNow.
-There needs about dinamically port change and further work on it.
+There needs about dynamically port change and further work on it.
 We get needs and variants about rendering, else with no case.
-Least dinamically create and use encodings of a page may be are big, of course.
-
+Least dynamically create and use encodings of a page may be are big, of course.
+Possible about of course and SSL.
 
 ## Authors [![Code of Conduct](https://img.shields.io/badge/code%20of-conduct-ff69b4.svg?style=flat)](https://github.com/X0xx-1110/WWWW-Server/blob/main/CODE_OF_CONDUCT.md)
 
