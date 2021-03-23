@@ -43,12 +43,12 @@ Inside your browser (http://127.0.0.1:8282/index.php)
 private $dynamicallyVars = TRUE;
 ```
 
-###Step 2: Inside browser.
+### Step 2: Inside browser.
 ```uri
 http://127.0.0.1:8282/index.php?var1=78787823&var2=3874837&var3=news
 ```
 
-###Step 3: Inside your code.
+### Step 3: Inside your code.
 ```php
 echo $GETvar1;
 echo "<br />";
