@@ -338,5 +338,5 @@ class WwwwServer
 
 	$server = new WwwwServer();
 	#Could set the port if it is free about.
-	$server->httpServer(8283, "/home/kalata/Desktop/Documents/");
+	$server->httpServer(8283, "/home/xxxxx/Desktop/Documents/");
 ?>
