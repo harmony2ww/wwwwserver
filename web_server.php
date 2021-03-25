@@ -281,10 +281,14 @@ class WwwwServer
 				$this->isError = false;
 				return htmlspecialchars(htmlentities($this->fileRead($temporaryUri["x_file"])));
 			}
-			if (strpos($temporaryUri["x_file"], "php") !== false && $this->phpVersion === "8.0") {
+			if (strpos($temporaryUri["x_file"], "php") !== false && $this->phpVersion === "8.0" && $temporaryUri["x_data_REQUEST"] != "") {
 				$this->isError = false;
 				$code=$this->dynamicallyWebVariablesOnFly($temporaryUri["x_file"], $temporaryUri["x_protocol"], $temporaryUri["x_data_REQUEST"]);
 				return htmlspecialchars(htmlentities(shell_exec("/usr/bin/php8.0 -r ' ".$code." '")));
+			}
+			if (strpos($temporaryUri["x_file"], "php") !== false && $this->phpVersion === "8.0" && $temporaryUri["x_data_REQUEST"] == "") {
+				$this->isError = false;
+				return htmlspecialchars(htmlentities(shell_exec("/usr/bin/php8.0 -f " . addslashes($temporaryUri["x_file"])." '{x_GET: ".addslashes($temporaryUri["x_GET"])."}'")));
 			}
 			if (strpos($temporaryUri["x_file"], "php") !== false && $this->phpVersion === "7.4") {
 				$this->isError = false;
@@ -377,7 +381,7 @@ class WwwwServer
 
 	$server1 = new WwwwServer();
 	#Could set the port if it is free about.
-	$server1->httpServer(8283, "/home/xxxxxx/Desktop/Documents/");
+	$server1->httpServer(8283, "/home/xxxxx/Desktop/Documents/");
 
 
 
