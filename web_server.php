@@ -43,19 +43,6 @@ class WwwwServer
 	private $securityFilesWeb = array("", "index.php", "index.html", "index.htm");
 	private $strSecureMsg = '';
 
-
-	/**
-	*	Empty these, because there are something security.
-	*	@TODO: later functionality!
-	**/
-	public function __construct()
-	{
-
-	}
-	public function __destruct()
-	{
-
-	}
 	/**
 	*	Ccmmon function about web server it all.
 	*	Basic and common calculation of a source are here. Connections and sockets. Many functions about parsing and functionality.
@@ -70,7 +57,7 @@ class WwwwServer
 		}
 		else{
 			$this->isError = true;
-			print "[ Web Directory Does Exists! ]\n";
+			print "[ Web Directory Does not Exists! ]\n";
 			return false;
 		}
 
@@ -80,28 +67,25 @@ class WwwwServer
 		  	echo "$errstr ($errno)<br />\n";
 		} else {
 				$this->timestampStart = microtime();
-		  	while (true === true) {
+		  	for(;;) {
 		  		$this->connection = stream_socket_accept($this->socket, -1);
 		  		if (isset($this->connection) && !empty($this->connection)) {
 		  			$gatheredRequest = stream_get_line($this->connection, 1000000, "\n");
-
-						$lineRequest = explode("\n", $gatheredRequest);
-						$dataRequest = explode(" ", $lineRequest[0]);
-						$temporaryExtension = substr($dataRequest[1], strpos($dataRequest[1], "."));
+					$lineRequest = explode("\n", $gatheredRequest);
+					$dataRequest = explode(" ", $lineRequest[0]);
+					$temporaryExtension = substr($dataRequest[1], strpos($dataRequest[1], "."));
+			  		
 			  		if (in_array($temporaryExtension, $this->excludedFilesTerminal)) {
 								#@TODO:later functionality
 						} else {
-			  			$temporaryUri = $this->parseRequest($gatheredRequest);
-			  			$this->responce = $this->fileType($temporaryUri);
-			  		}
+			  				$temporaryUri = $this->parseRequest($gatheredRequest);
+			  				$this->responce = $this->fileType($temporaryUri);
+			  			}
 
 			  		if ($this->responce === false) {
 			  			$this->strSecureMsg = "[ FAULT SECURITY check! ]";
 			  		}
 
-			  	$lineRequest = explode("\n", $gatheredRequest);
-					$dataRequest = explode(" ", $lineRequest[0]);
-					$temporaryExtension = substr($dataRequest[1], strpos($dataRequest[1], "."));
 					if (in_array($temporaryExtension, $this->excludedFilesTerminal)){
 							#@TODO:later functionality
 					} else {
@@ -125,9 +109,9 @@ class WwwwServer
 						}
 					}
 					#Write Responce Content
-			    fwrite($this->connection, $temporaryHeaders . $this->responce);
-			    $this->timestampEnd = microtime();
-			    fclose($this->connection);
+			    	fwrite($this->connection, $temporaryHeaders . $this->responce);
+			    	$this->timestampEnd = microtime();
+			    	fclose($this->connection);
 		    	}
 		  	}
 		  	fclose($this->socket);
@@ -217,10 +201,10 @@ class WwwwServer
 				$temporaryGet = json_decode($stringRequest);
 			}
 			if (is_file($this->webDirectory.$requestedUrl) && strpos($requestedUrl, "./") === false && strpos($requestedUrl, "../") === false) {
-				if (isset($temporaryGet) && !empty($temporaryGet) && $this->dynamicallyVars === true) {
+				if (isset($temporaryGet) && !empty($temporaryGet)) {
 					return $temporaryUri = array("x_file" => $this->webDirectory.$requestedUrl, "x_data_REQUEST" => $temporaryGet, "x_protocol" => $dataRequest[0]);
 				} else {
-					return $temporaryUri = array("x_file" => $this->webDirectory.$requestedUrl, "data_REQUEST" => "", "x_protocol" => $dataRequest[0]);
+					return $temporaryUri = array("x_file" => $this->webDirectory.$requestedUrl, "x_data_REQUEST" => "", "x_protocol" => $dataRequest[0]);
 				}
 			}
 	}
@@ -297,14 +281,14 @@ class WwwwServer
 				$this->isError = false;
 				return htmlspecialchars(htmlentities($this->fileRead($temporaryUri["x_file"])));
 			}
-			if (strpos($temporaryUri["x_file"], "php") !== false && $this->phpVersion === "8.0" & $this->dynamicallyVars === false) {
-				$this->isError = false;
-				return htmlspecialchars(htmlentities(shell_exec("/usr/bin/php8.0 -f " . addslashes($temporaryUri["x_file"])." '{x_GET: ".addslashes($temporaryUri["x_GET"])."}'")));
-			}
-			if (strpos($temporaryUri["x_file"], "php") !== false && $this->phpVersion === "8.0" && $this->dynamicallyVars === true) {
+			if (strpos($temporaryUri["x_file"], "php") !== false && $this->phpVersion === "8.0" && $temporaryUri["x_data_REQUEST"] != "") {
 				$this->isError = false;
 				$code=$this->dynamicallyWebVariablesOnFly($temporaryUri["x_file"], $temporaryUri["x_protocol"], $temporaryUri["x_data_REQUEST"]);
 				return htmlspecialchars(htmlentities(shell_exec("/usr/bin/php8.0 -r ' ".$code." '")));
+			}
+			if (strpos($temporaryUri["x_file"], "php") !== false && $this->phpVersion === "8.0" && $temporaryUri["x_data_REQUEST"] == "") {
+				$this->isError = false;
+				return htmlspecialchars(htmlentities(shell_exec("/usr/bin/php8.0 -f " . addslashes($temporaryUri["x_file"])." '{x_GET: ".addslashes($temporaryUri["x_GET"])."}'")));
 			}
 			if (strpos($temporaryUri["x_file"], "php") !== false && $this->phpVersion === "7.4") {
 				$this->isError = false;
@@ -340,10 +324,28 @@ class WwwwServer
 				}
 			}
 		}
-		elseif (isset($protocol) && !empty($protocol) && $protocol == "POST") {
+		if (isset($protocol) && !empty($protocol) && $protocol == "POST") {
 			#@TODO
 		}
-		elseif (isset($protocol) && !empty($protocol) && $protocol  == "HEAD") {
+		if (isset($protocol) && !empty($protocol) && $protocol  == "HEAD") {
+			#@TODO
+		}
+		if (isset($protocol) && !empty($protocol) && $protocol  == "PUT") {
+			#@TODO
+		}
+		if (isset($protocol) && !empty($protocol) && $protocol  == "DELETE") {
+			#@TODO
+		}
+		if (isset($protocol) && !empty($protocol) && $protocol  == "CONNECT") {
+			#@TODO
+		}
+		if (isset($protocol) && !empty($protocol) && $protocol  == "OPTIONS") {
+			#@TODO
+		}
+		if (isset($protocol) && !empty($protocol) && $protocol  == "TRACE") {
+			#@TODO
+		}
+		if (isset($protocol) && !empty($protocol) && $protocol  == "PATCH") {
 			#@TODO
 		}
 		return $new_arr;
@@ -356,11 +358,16 @@ class WwwwServer
 	{
 		$arrayWebVars = array();
 		$arrayWebVars = $this->parseWebVars($protocol, $webVars);
-		$strPhpCodeOne = "\n\n\n";
+		$strPhpCodeOne = "\n\n\n   ";
 		$strPhpCodeTwo = $this->fileRead($file);
 		if (isset($arrayWebVars) && !empty($arrayWebVars) && is_array($arrayWebVars) && count($arrayWebVars)) {
 			foreach($arrayWebVars as $keyVar => $webVar) {
-				$strPhpCodeOne = $strPhpCodeOne."$".strtoupper($protocol).strtolower($keyVar)."=\"".$webVar."\"; \n";
+				if($this -> dynamicallyVars == true ){
+					$strPhpCodeOne = $strPhpCodeOne."$".strtoupper($protocol).strtolower($keyVar)."=\"".$webVar."\"; \n";
+				}
+				if($this -> dynamicallyVars == false ){
+					$strPhpCodeOne = $strPhpCodeOne."\$_GET[\"".strtolower($keyVar)."\"]=\"".$webVar."\"; \n";
+				}
 			}
 		}
 		$strPhpCodeTwo = substr($strPhpCodeTwo, 6, -3);
@@ -372,7 +379,11 @@ class WwwwServer
 
 
 
-	$server = new WwwwServer();
+	$server1 = new WwwwServer();
 	#Could set the port if it is free about.
-	$server->httpServer(8283, "/home/xxxxxx/Desktop/Documents/");
+	$server1->httpServer(8283, "/home/xxxxx/Desktop/Documents/");
+
+
+
+
 ?>
