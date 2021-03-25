@@ -64,26 +64,6 @@ echo "<br />";
 echo $GETvar3;
 ```
 
-## Example of standart variables about GET protocol:
-### Step1: Configuration.
-```php
-private $dynamicallyVars = false;
-```
-
-### Step 2: Inside browser.
-```uri
-http://127.0.0.1:8282/index.php?var1=78787823&var2=3874837&var3=news
-```
-
-### Step 3: Inside your code.
-```php
-echo $_GET["var1"];
-echo "<br />";
-echo $_GET["var2"];
-echo "<br />";
-echo $_GET["var3"];
-```
-
 
 ## Feature
   * Further there are variants about GET, POST and HEAD, else obviously and other variants are needs at today.
