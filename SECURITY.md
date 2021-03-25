@@ -1,11 +1,14 @@
 # Security Policy
-With using of web server opposite of variants to make demage must to know the dev version is a dev version of a source code.
-With developing source code one of a target is to be secure not only when we using anybody source code, but be secure when using our product of developing.
-With develop security must expect only updated variant of a source code or last year release be created us secure.
-Creating security must make strong principles of all aspects when be variant of incorrect source code release.
-Inside developing of a source code not only a programmer oppinion about the product is a strong
-there are much of these directions that we could speak about hard secure.
-There are directions:
+With using of web server opposite of variants to make demage must to know the dev 
+version is a dev version of a source code. With developing source code one of a target
+is to be secure not only when we using anybody source code, but be secure when using
+our product of developing. With develop security must expect only updated variant 
+of a source code or last year release be created us secure.Creating security must make
+strong principles of all aspects when be variant of incorrect source code release.Inside
+developing of a source code not only a programmer oppinion about the product is a strong
+there are much of these directions that we could speak about hard secure. There are 
+directions:
+
  * ISP
  * diferent levelvs of internet service providers.
  * Web hosting
@@ -16,7 +19,8 @@ There are directions:
 
 ## What depend of developer of source code?
 
-### Full life cyrcle of a security over source code is a right, common and base point of view about success.
+### Full life cyrcle of a security over source code is a right, 
+### common and base point of view about success.
 
 
 
