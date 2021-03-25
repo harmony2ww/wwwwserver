@@ -24,49 +24,41 @@ error_reporting( 0 );
 **/
 class WwwwServer
 {
-	protected $webDirectory = "";
-	protected $phpVersion = "8.0"; //7.0//7.4 //5
-	protected $address = '127.0.0.1'; //Feel free!
-	protected $protocol = 'tcp'; //Could only be!
-	protected $responceHeaders = array();
-	protected $contentLength = 1024;
-	private $dynamicallyVars = false;
-	private $response = "";
-	private $socket;
-	private $connection;
-	private $timestampStart = 0;
-	private $timestampEnd = 0;
-	private $isError = false;
-	private $excludedFilesTerminal = array(".css", ".ico", ".js");
-	private $excludedFilesWeb = array(".ico");
-	private $securityArray = array("'", '"', ";", "\\", "\\\\", "\\\\\\", "\\\\\\\\", "^", ")", "(", "+", "*", "$", "#", "!");
-	private $securityFilesWeb = array("", "index.php", "index.html", "index.htm");
-	private $strSecureMsg = '';
+	protected string $webDirectory = "";
+	protected string $phpVersion = "8.0"; //7.0//7.4 //5
+	protected string $address = '127.0.0.1'; //Feel free!
+	protected string $protocol = 'tcp'; //Could only be!
+	protected array $responceHeaders = [ ];
+	protected int $contentLength = 1024;
+	private bool $dynamicallyVars = false;
+	private string $response = "";
+	private mixed $socket;
+	private mixed $connection;
+	private mixed $timestampStart = 0;
+	private mixed $timestampEnd = 0;
+	private bool $isError = false;
+	private array $excludedFilesTerminal = [ ".css", ".ico", ".js" ];
+	private array $excludedFilesWeb = [ ".ico" ];
+	private array $securityArray = [ "'", '"', ";", "\\", "\\\\", "\\\\\\", "\\\\\\\\", "^", ")", "(", "+", "*", "$", "#", "!" ];
+	private array $securityFilesWeb = [ "", "index.php", "index.html", "index.htm" ];
+	private string $strSecureMsg = '';
 
-	protected static $historySingletonStatus=null;
-	protected static $historySingleton=null;
-	protected static $result=array();
-	protected static $timestamp;
+	protected static WwwwServer $history;
+	protected static array $result = [ ];
+	protected static mixed $timestamp;
 
 	public function __destruct(){
-		
+
 	}
-	public static function getInstance(WwwwServer|null $o)
+	public static function getInstance(WwwwServer $o) : void
 	{
-		if(WwwwServer::$historySingleton == null) {
-			 WwwwServer::$timestamp = date(DATE_RFC2822);
-			 WwwwServer::$historySingleton = new WwwwServer();
-			 WwwwServer::$historySingletonStatus=false;
+		if(isset($o) && !empty($o) && is_object($o)) {
+			 WwwwServer::$timestamp = date( DATE_RFC2822 );
+			 WwwwServer::$result[ ] = [ clone $o ];
 		}
-		elseif(isset(WwwwServer::$historySingletonStatus) && !empty(WwwwServer::$historySingletonStatus) && WwwwServer::$historySingletonStatus == true && is_object($o)) {
-			 WwwwServer::$timestamp = date(DATE_RFC2822);
-			 WwwwServer::$result[] = clone $o;
-			 WwwwServer::$historySingletonStatus=false;
-		}
-		return WwwwServer::$historySingleton;
 	}
-	public static function push(WwwwServer $o ) {
-		WwwwServer::$historySingletonStatus = true;
+	public static function push(WwwwServer $o) : void
+	{
 		WwwwServer::getInstance($o);
 	}
 	/**
@@ -122,6 +114,11 @@ class WwwwServer
 							$time = (string) abs(number_format(floatval(substr($this->timestampEnd, 0, 9))-floatval(substr($this->timestampStart, 0, 9)), 4, ".", ""));
 							print "  |".$numRequests."|".$time."delta|====================>".$lineRequest[0]."  ".$this->strSecureMsg."\n";
 						}
+
+						#History of a challenge!!!!!!!
+						WwwwServer::push($this);
+			    		#History of a challenge!!!!!!!
+						//var_dump(WwwwServer::$result);
 					}
 
 					#set Gzip encoding a make a length of a responce
@@ -139,10 +136,7 @@ class WwwwServer
 					#Write Responce Content
 			    	fwrite($this->connection, $temporaryHeaders . $this->responce);
 			    	
-			    	#History of a challenge!!!!!!!
-					WwwwServer::push($this);
-			    	#History of a challenge!!!!!!!
-
+			    	
 			    	$this->timestampEnd = microtime();
 			    	fclose($this->connection);
 		    	}
@@ -407,7 +401,7 @@ class WwwwServer
 	$server1 = new WwwwServer();
 	#Could set the port if it is free about.
 
-	$server1->httpServer(8283, "/home/xxxxx/Desktop/Documents/");
+	$server1->httpServer(8283, "/home/xxxxxxxxxx/Desktop/Documents/");
 
 
 
