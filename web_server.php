@@ -43,6 +43,32 @@ class WwwwServer
 	private $securityFilesWeb = array("", "index.php", "index.html", "index.htm");
 	private $strSecureMsg = '';
 
+	protected static $historySingletonStatus=null;
+	protected static $historySingleton=null;
+	protected static $result=array();
+	protected static $timestamp;
+
+	public function __destruct(){
+		
+	}
+	public static function getInstance(WwwwServer|null $o)
+	{
+		if(WwwwServer::$historySingleton == null) {
+			 WwwwServer::$timestamp = date(DATE_RFC2822);
+			 WwwwServer::$historySingleton = new WwwwServer();
+			 WwwwServer::$historySingletonStatus=false;
+		}
+		elseif(isset(WwwwServer::$historySingletonStatus) && !empty(WwwwServer::$historySingletonStatus) && WwwwServer::$historySingletonStatus == true && is_object($o)) {
+			 WwwwServer::$timestamp = date(DATE_RFC2822);
+			 WwwwServer::$result[] = clone $o;
+			 WwwwServer::$historySingletonStatus=false;
+		}
+		return WwwwServer::$historySingleton;
+	}
+	public static function push(WwwwServer $o ) {
+		WwwwServer::$historySingletonStatus = true;
+		WwwwServer::getInstance($o);
+	}
 	/**
 	*	Ccmmon function about web server it all.
 	*	Basic and common calculation of a source are here. Connections and sockets. Many functions about parsing and functionality.
@@ -99,8 +125,10 @@ class WwwwServer
 					}
 
 					#set Gzip encoding a make a length of a responce
-					$this->setResponceToGz($this->responce);
-					$this->setLengthOfResponce($this->responce); //Into Bits
+					//$this->setResponceToGz($this->responce);
+					$this->setLengthOfResponce($this->responce);
+					
+					 //Into Bits
 					#Write Responce Headers
 					$temporaryHeaders="";
 					if (isset($this->responceHeaders) && !empty($this->responceHeaders) && is_array($this->responceHeaders)) {
@@ -110,6 +138,11 @@ class WwwwServer
 					}
 					#Write Responce Content
 			    	fwrite($this->connection, $temporaryHeaders . $this->responce);
+			    	
+			    	#History of a challenge!!!!!!!
+					WwwwServer::push($this);
+			    	#History of a challenge!!!!!!!
+
 			    	$this->timestampEnd = microtime();
 			    	fclose($this->connection);
 		    	}
@@ -118,28 +151,23 @@ class WwwwServer
 		}
 	}
 	private function setResponceToGz($responce){
-		$this->responce = gzencode(html_entity_decode(htmlspecialchars_decode($responce)), 9);
+		$this->responce = gzencode($responce, 9);
 	}
 	private function setLengthOfResponce($responce){
-		$this->contentLength = ord($responce);
+		$this->contentLength = strlen($responce);
 	}
 	private function setFullResponceHeaders(){
 		$this->setResponceHeaders("HTTP/1.1", "200 OK\r\n");
 		$this->setResponceHeaders("Host:", $this->address."\r\n");
 		$this->setResponceHeaders("Accept:", "text/html\r\n");
-		//$this->setResponceHeaders("Content-Length:", $this->contentLength."\r\n");
 		$this->setResponceHeaders("Keep-Alive:", "30\r\n");
 		$this->setResponceHeaders("Date:", date("Y-m-d H:i:s")."\r\n");
 		$this->setResponceHeaders("Server:", "WwwwServer 1\r\n");
-		$this->setResponceHeaders("Access-Control-Allow-Origin:", "*\r\n");
-		$this->setResponceHeaders("Accept-Ranges:", "bytes\r\n");
-		$this->setResponceHeaders("Accept-RaAge:", "12\r\n");
-		$this->setResponceHeaders("Cache-Control:", "max-age=3600\r\n");
 		$this->setResponceHeaders("Content-Type:", "text/html; charset=utf-8\r\n");
-		$this->setResponceHeaders("Content-Encoding:", "gzip\r\n");
+		//$this->setResponceHeaders("Content-Encoding:", "gzip\r\n");
 		$this->setResponceHeaders("Content-Language:", "en\r\n");
-
 		$this->setResponceHeaders("Allow:", "GET\r\n");
+		//$this->setResponceHeaders("Content-Length:", "1024\r\n");
 		$this->setResponceHeaders("Connection:", "close\r\n\r\n");
 	}
 	/**
@@ -263,7 +291,7 @@ class WwwwServer
 		if (isset($temporaryUri["x_file"]) && !empty($temporaryUri["x_file"]) && strlen($temporaryUri["x_file"]) > 1) {
 			if (strpos($temporaryUri["x_file"], "html") !== false) {
 				$this->isError = false;
-				return htmlspecialchars(htmlentities($this->fileRead($temporaryUri["x_file"])));
+				return $this->fileRead($temporaryUri["x_file"]);
 			}
 			if (strpos($temporaryUri["x_file"], "htm") !== false) {
 				$this->isError = false;
@@ -284,11 +312,11 @@ class WwwwServer
 			if (strpos($temporaryUri["x_file"], "php") !== false && $this->phpVersion === "8.0" && $temporaryUri["x_data_REQUEST"] != "") {
 				$this->isError = false;
 				$code=$this->dynamicallyWebVariablesOnFly($temporaryUri["x_file"], $temporaryUri["x_protocol"], $temporaryUri["x_data_REQUEST"]);
-				return htmlspecialchars(htmlentities(shell_exec("/usr/bin/php8.0 -r ' ".$code." '")));
+				return shell_exec("/usr/bin/php8.0 -r ' ".$code." '");
 			}
-			if (strpos($temporaryUri["x_file"], "php") !== false && $this->phpVersion === "8.0" && $temporaryUri["x_data_REQUEST"] == "") {
-				$this->isError = false;
-				return htmlspecialchars(htmlentities(shell_exec("/usr/bin/php8.0 -f " . addslashes($temporaryUri["x_file"])." '{x_GET: ".addslashes($temporaryUri["x_GET"])."}'")));
+			if (strpos($temporaryUri["x_file"], "php") !== false && $this->phpVersion === "8.0" ) {
+				$this->isError = false; 
+				return shell_exec("/usr/bin/php8.0 -f " . $temporaryUri["x_file"]);
 			}
 			if (strpos($temporaryUri["x_file"], "php") !== false && $this->phpVersion === "7.4") {
 				$this->isError = false;
@@ -365,9 +393,6 @@ class WwwwServer
 				if($this -> dynamicallyVars == true ){
 					$strPhpCodeOne = $strPhpCodeOne."$".strtoupper($protocol).strtolower($keyVar)."=\"".$webVar."\"; \n";
 				}
-				if($this -> dynamicallyVars == false ){
-					$strPhpCodeOne = $strPhpCodeOne."\$_GET[\"".strtolower($keyVar)."\"]=\"".$webVar."\"; \n";
-				}
 			}
 		}
 		$strPhpCodeTwo = substr($strPhpCodeTwo, 6, -3);
@@ -381,8 +406,8 @@ class WwwwServer
 
 	$server1 = new WwwwServer();
 	#Could set the port if it is free about.
-	$server1->httpServer(8283, "/home/xxxxx/Desktop/Documents/");
 
+	$server1->httpServer(8283, "/home/xxxxx/Desktop/Documents/");
 
 
 
