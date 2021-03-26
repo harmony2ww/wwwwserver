@@ -58,8 +58,8 @@ class WwwwServer
 	public static function getInstance(WwwwServer $o) : void
 	{
 		if (isset($o) && !empty($o) && is_object($o)) {
-			 WwwwServer::$result['date'] = [ date( DATE_RFC2822 ) ];
-			 WwwwServer::$result['history'] = [ clone $o ];
+			 WwwwServer::$timestamp = [ date( DATE_RFC2822 ) ];
+			 WwwwServer::$result[] = [ clone $o ];
 		}
 	}
 	/**
