@@ -19,8 +19,7 @@ directions:
 
 ## What depend of developer of source code?
 
-### Full life cyrcle of a security over source code is a right, 
-### common and base point of view about success.
+### Full life cyrcle of a security over source code is a right, common and base point of view about success.
 
 
 
