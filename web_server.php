@@ -52,10 +52,10 @@ class WwwwServer
 	}
 	/**
 	*	Possible variant for return a Instance of a criteria. Different matter of Design pattern.
-	*	Any kind of Prototype, but not. It's a History Design Pattern. 
+	*	Any kind of Prototype, but not.
 	* 	@return void
 	**/
-	public static function getInstance(WwwwServer $o) : void
+	public static function setObjectToArray(WwwwServer $o) : void
 	{
 		if (isset($o) && !empty($o) && is_object($o)) {
 			 WwwwServer::$timestamp = [ date( DATE_RFC2822 ) ];
@@ -68,7 +68,7 @@ class WwwwServer
 	**/
 	public static function push(WwwwServer $o) : void
 	{
-		WwwwServer::getInstance($o);
+		WwwwServer::setObjectToArray($o);
 	}
 	/**
 	*	Ccmmon function about web server it all.
@@ -78,7 +78,7 @@ class WwwwServer
 	public function httpServer($port, $webDirectoryOfUse)
 	{
 		$numRequests = 0;
-		$this->setFull_responceHeaders();
+		$this->setFullResponceHeaders();
 
 		if (isset($webDirectoryOfUse) && !empty($webDirectoryOfUse) && strlen($webDirectoryOfUse) > 1 && is_dir($webDirectoryOfUse)){
 			$this->setDir( $webDirectoryOfUse );
@@ -130,7 +130,7 @@ class WwwwServer
 					}
 
 					//set Gzip encoding a make a length of a _responce
-					//$this->set_responceToGz($this->_responce);
+					//$this->setResponceToGz($this->_responce);
 					$this->setLengthOfResponce($this->_responce);
 					
 					 //Into Bits
@@ -179,7 +179,7 @@ class WwwwServer
 	*	2 Gz about all content of _responce.
 	*	@return void
 	**/
-	private function set_responceToGz($_responce)
+	private function setResponceToGz($_responce)
 	{
 		$this->_responce = gzencode($_responce, 9);
 	}
@@ -195,7 +195,7 @@ class WwwwServer
 	* 	Set the headers what they are equal to request about connectin.
 	*	@return void
 	**/
-	private function setFull_responceHeaders()
+	private function setFullResponceHeaders()
 	{
 		$this->set_responceHeaders("HTTP/1.1", "200 OK\r\n");
 		$this->set_responceHeaders("Host:", $this->address."\r\n");
