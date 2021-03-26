@@ -1,5 +1,5 @@
 <?php
-error_reporting( 0 );
+error_reporting( 1 );
 /**
  * web_server.php
  *
@@ -24,12 +24,13 @@ error_reporting( 0 );
 **/
 class WwwwServer
 {
-	protected string $webDirectory = "";
+	
 	protected string $phpVersion = "8.0"; //7.0//7.4 //5
-	protected string $address = '127.0.0.1'; //Feel free!
 	protected string $protocol = 'tcp'; //Could only be!
-	protected array $_responceHeaders = [ ];
-	protected int $contentLength = 1024;
+	private string $_webDirectory = "";
+	private string $_address = '127.0.0.1'; //Feel free!
+	private array $_responceHeaders = [ ];
+	private int $_contentLength = 2058;
 	private bool $_dynamicallyVars = false;
 	private string $_responce = "";
 	private mixed $_socket;
@@ -78,7 +79,7 @@ class WwwwServer
 	public function httpServer($port, $webDirectoryOfUse)
 	{
 		$numRequests = 0;
-		$this->setFullResponceHeaders();
+		
 
 		if (isset($webDirectoryOfUse) && !empty($webDirectoryOfUse) && strlen($webDirectoryOfUse) > 1 && is_dir($webDirectoryOfUse)){
 			$this->setDir( $webDirectoryOfUse );
@@ -89,7 +90,7 @@ class WwwwServer
 			return false;
 		}
 
-		$this->_socket = stream_socket_server($this->protocol."://".$this->address.":".$port, $errno, $errstr);
+		$this->_socket = stream_socket_server($this->protocol."://".$this -> _address.":".$port, $errno, $errstr);
 
 		if (!isset($this->_socket) || empty($this->_socket) || !is_resource($this->_socket) || !$this->_socket) {
 			echo "$errstr ($errno)<br />\n";
@@ -100,13 +101,13 @@ class WwwwServer
 				if (isset($this->_connection) && !empty($this->_connection)) {
 					$gatheredRequest = stream_get_line($this->_connection, 1000000, "\n");
 					$regExCheck = $this->createRegExCheck($gatheredRequest);
-					$lineRequest = explode("\n", $gatheredRequest);
 
 					if ( $regExCheck === false ) {
 								//@TODO:later functionality
 						} else {
 							$temporaryUri = $this->parseRequest($gatheredRequest);
-							$this->_responce = $this->fileType($temporaryUri);
+							$this -> _responce = $this->fileType($temporaryUri);
+							
 						}
 
 					if ( $regExCheck === false ) {
@@ -119,21 +120,19 @@ class WwwwServer
 									$this->_strSecureMsg = "[ FAULT SECURITY check! ]";
 								}
 								++$numRequests;
+								$lineRequest = explode("\n", $gatheredRequest);
 								$time = (string) abs(number_format(floatval(substr($this->_timestampEnd, 0, 9))-floatval(substr($this->_timestampStart, 0, 9)), 4, ".", ""));
 								print "  |".$numRequests."|".$time."delta|====================>".$lineRequest[0]."  ".$this->_strSecureMsg."\n";
 							}
-
-						//History of a challenge!!!!!!!
-						WwwwServer::push($this);
-						//History of a challenge!!!!!!!
-						//var_dump(WwwwServer::$result);
-					}
-
-					//set Gzip encoding a make a length of a _responce
-					//$this->setResponceToGz($this->_responce);
-					$this->setLengthOfResponce($this->_responce);
+							//History of a challenge!!!!!!!
+							WwwwServer::push($this);
+						}
 					
-					 //Into Bits
+					//Set Headers
+					$this -> setResponceToGz();
+					$this -> setLengthOfResponce();
+					$this -> setFullResponceHeaders();
+					
 					//Write _responce Headers
 					$temporaryHeaders="";
 					if (isset($this->_responceHeaders) && !empty($this->_responceHeaders) && is_array($this->_responceHeaders)) {
@@ -141,9 +140,9 @@ class WwwwServer
 							$temporaryHeaders = $temporaryHeaders . $firstPart." ".$secondPart;
 						}
 					}
+
 					//Write _responce Content
-					fwrite($this->_connection, $temporaryHeaders . $this->_responce);
-				
+					fwrite($this->_connection, $temporaryHeaders . $this -> _responce);
 				
 					$this->_timestampEnd = microtime();
 					fclose($this->_connection);
@@ -179,17 +178,17 @@ class WwwwServer
 	*	2 Gz about all content of _responce.
 	*	@return void
 	**/
-	private function setResponceToGz($_responce)
+	private function setResponceToGz()
 	{
-		$this->_responce = gzencode($_responce, 9);
+		$this->_responce = gzencode( $this -> _responce, 9);
 	}
 	/**
 	*	Length of a _responce inside a property.
 	*	@return void
 	**/
-	private function setLengthOfResponce($_responce)
+	private function setLengthOfResponce()
 	{
-		$this->contentLength = strlen($_responce);
+		$this -> _contentLength = strlen( $this -> _responce );
 	}
 	/**
 	* 	Set the headers what they are equal to request about connectin.
@@ -197,18 +196,17 @@ class WwwwServer
 	**/
 	private function setFullResponceHeaders()
 	{
-		$this->set_responceHeaders("HTTP/1.1", "200 OK\r\n");
-		$this->set_responceHeaders("Host:", $this->address."\r\n");
-		$this->set_responceHeaders("Accept:", "text/html\r\n");
-		$this->set_responceHeaders("Keep-Alive:", "30\r\n");
-		$this->set_responceHeaders("Date:", date("Y-m-d H:i:s")."\r\n");
-		$this->set_responceHeaders("Server:", "WwwwServer 1\r\n");
-		$this->set_responceHeaders("Content-Type:", "text/html; charset=utf-8\r\n");
-		//$this->set_responceHeaders("Content-Encoding:", "gzip\r\n");
-		$this->set_responceHeaders("Content-Language:", "en\r\n");
-		$this->set_responceHeaders("Allow:", "GET\r\n");
-		//$this->set_responceHeaders("Content-Length:", "1024\r\n");
-		$this->set_responceHeaders("Connection:", "close\r\n\r\n");
+		$this->setResponceHeaders("HTTP/1.1", "200 OK\r\n");
+		$this->setResponceHeaders("Host:", $this -> _address."\r\n");
+		$this->setResponceHeaders("Accept:", "text/html\r\n");
+		$this->setResponceHeaders("Keep-Alive:", "1\r\n");
+		$this->setResponceHeaders("Date:", date("Y-m-d H:i:s")."\r\n");
+		$this->setResponceHeaders("Server:", "WwwwServer 1\r\n");
+		$this->setResponceHeaders("Content-Type:", "text/html; charset=utf-8\r\n");
+		$this->setResponceHeaders("Content-Encoding:", "gzip\r\n");
+		$this->setResponceHeaders("Content-Language:", "en\r\n");
+		$this->setResponceHeaders("Content-Length:", $this -> _contentLength . "\r\n");
+		$this->setResponceHeaders("Connection:", "close\r\n\r\n");
 	}
 	/**
 	*	Algorithm about setting a web dir.
@@ -216,13 +214,13 @@ class WwwwServer
 	**/
 	private function setDir($webDirectory)
 	{
-		$this->webDirectory = $webDirectory;
+		$this -> _webDirectory = $webDirectory;
 	}
 	/**
 	*	Algorithm about setting a value and a name of a property array.
 	*	@return void
 	**/
-	private function set_responceHeaders($nameRespondHeader, $valueRespondHeader)
+	private function setResponceHeaders($nameRespondHeader, $valueRespondHeader)
 	{
 		$this->_responceHeaders[$nameRespondHeader] = $valueRespondHeader;
 	}
@@ -271,11 +269,11 @@ class WwwwServer
 				}
 				$temporaryGet = json_decode($stringRequest);
 			}
-			if (is_file($this->webDirectory.$requestedUrl) && strpos($requestedUrl, "./") === false && strpos($requestedUrl, "../") === false) {
+			if (is_file($this -> _webDirectory.$requestedUrl) && strpos($requestedUrl, "./") === false && strpos($requestedUrl, "../") === false) {
 				if (isset($temporaryGet) && !empty($temporaryGet)) {
-					return $temporaryUri = array("x_file" => $this->webDirectory.$requestedUrl, "x_data_REQUEST" => $temporaryGet, "x_protocol" => $dataRequest[0]);
+					return $temporaryUri = array("x_file" => $this -> _webDirectory.$requestedUrl, "x_data_REQUEST" => $temporaryGet, "x_protocol" => $dataRequest[0]);
 				} else {
-					return $temporaryUri = array("x_file" => $this->webDirectory.$requestedUrl, "x_data_REQUEST" => "", "x_protocol" => $dataRequest[0]);
+					return $temporaryUri = array("x_file" => $this -> _webDirectory.$requestedUrl, "x_data_REQUEST" => "", "x_protocol" => $dataRequest[0]);
 				}
 			}
 	}
@@ -451,7 +449,7 @@ class WwwwServer
 	$server1 = new WwwwServer();
 	//Could set the port if it is free about.
 
-	$server1->httpServer(8283, "/home/xxxxxxxxxxxxxx/Desktop/Documents/");
+	$server1->httpServer(8283, "/home/xxxxxxxx/Desktop/Documents/");
 
 
 
