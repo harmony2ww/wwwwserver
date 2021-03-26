@@ -409,7 +409,7 @@ class WwwwServer
 		$strPhpCodeTwo = $this->fileRead($file);
 		if (isset($arrayWebVars) && !empty($arrayWebVars) && is_array($arrayWebVars) && count($arrayWebVars)) {
 			foreach($arrayWebVars as $keyVar => $webVar) {
-				if ($this -> _dynamicallyVars . == true ){
+				if ($this -> _dynamicallyVars == true ){
 					$strPhpCodeOne = $strPhpCodeOne."$".strtoupper($protocol).strtolower($keyVar)."=\"".$webVar."\"; \n";
 				}
 			}
