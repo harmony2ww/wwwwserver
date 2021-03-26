@@ -99,31 +99,29 @@ class WwwwServer
 				$this->_connection = stream_socket_accept($this->_socket, -1);
 				if (isset($this->_connection) && !empty($this->_connection)) {
 					$gatheredRequest = stream_get_line($this->_connection, 1000000, "\n");
+					$regExCheck = $this->createRegExCheck($gatheredRequest);
 					$lineRequest = explode("\n", $gatheredRequest);
-					$dataRequest = explode(" ", $lineRequest[0]);
-					$temporaryExtension = substr($dataRequest[1], strpos($dataRequest[1], "."));
-					
-					if (in_array($temporaryExtension, $this->_excludedFilesTerminal)) {
+
+					if ( $regExCheck === false ) {
 								//@TODO:later functionality
 						} else {
 							$temporaryUri = $this->parseRequest($gatheredRequest);
 							$this->_responce = $this->fileType($temporaryUri);
 						}
 
-					if ($this->_responce === false) {
-						$this->_strSecureMsg = "[ FAULT SECURITY check! ]";
-					}
-
-					if (in_array($temporaryExtension, $this->_excludedFilesTerminal)){
+					if ( $regExCheck === false ) {
 							//@TODO:later functionality
-					} else {
-						if ($this->_isError === true) {
-							print "  " . $this->_responce . "\n";
 						} else {
-							++$numRequests;
-							$time = (string) abs(number_format(floatval(substr($this->_timestampEnd, 0, 9))-floatval(substr($this->_timestampStart, 0, 9)), 4, ".", ""));
-							print "  |".$numRequests."|".$time."delta|====================>".$lineRequest[0]."  ".$this->_strSecureMsg."\n";
-						}
+							if ($this->_isError === true) {
+								print "  " . $this->_responce . "\n";
+							} else {
+								if ($this->_responce === false) {
+									$this->_strSecureMsg = "[ FAULT SECURITY check! ]";
+								}
+								++$numRequests;
+								$time = (string) abs(number_format(floatval(substr($this->_timestampEnd, 0, 9))-floatval(substr($this->_timestampStart, 0, 9)), 4, ".", ""));
+								print "  |".$numRequests."|".$time."delta|====================>".$lineRequest[0]."  ".$this->_strSecureMsg."\n";
+							}
 
 						//History of a challenge!!!!!!!
 						WwwwServer::push($this);
@@ -133,7 +131,7 @@ class WwwwServer
 
 					//set Gzip encoding a make a length of a _responce
 					//$this->set_responceToGz($this->_responce);
-					$this->setLengthOf_responce($this->_responce);
+					$this->setLengthOfResponce($this->_responce);
 					
 					 //Into Bits
 					//Write _responce Headers
@@ -155,24 +153,50 @@ class WwwwServer
 		}
 	}
 	/**
+	*	create regular espression about request and security 
+	*	@return string
+	**/
+	private function createRegExCheck($gathered)
+	{
+		$regEx = "";
+		$lines = explode("\n",$gathered);
+		if(isset($this->_securityFilesWeb) && !empty($this->_securityFilesWeb) && is_array($this->_securityFilesWeb) && count($this->_securityFilesWeb)) {
+			foreach($this->_securityFilesWeb as $acceptable) {
+				if(isset($acceptable) && !empty($acceptable)) {
+					$regEx .= str_replace(".", "\.", $acceptable) . "|"; 
+				} 
+			}
+		}
+		if(isset($lines[0]) && !empty($lines[0])) {
+			preg_match("/".substr($regEx,0,-1)."/", $lines[0], $matches);
+		}
+		if(isset($matches) && !empty($matches) && count($matches) > 0 ) {
+			return true;
+		}
+		return false;
+	}
+	/**
 	*	2 Gz about all content of _responce.
 	*	@return void
 	**/
-	private function set_responceToGz($_responce){
+	private function set_responceToGz($_responce)
+	{
 		$this->_responce = gzencode($_responce, 9);
 	}
 	/**
 	*	Length of a _responce inside a property.
 	*	@return void
 	**/
-	private function setLengthOf_responce($_responce){
+	private function setLengthOfResponce($_responce)
+	{
 		$this->contentLength = strlen($_responce);
 	}
 	/**
 	* 	Set the headers what they are equal to request about connectin.
 	*	@return void
 	**/
-	private function setFull_responceHeaders(){
+	private function setFull_responceHeaders()
+	{
 		$this->set_responceHeaders("HTTP/1.1", "200 OK\r\n");
 		$this->set_responceHeaders("Host:", $this->address."\r\n");
 		$this->set_responceHeaders("Accept:", "text/html\r\n");
@@ -427,7 +451,7 @@ class WwwwServer
 	$server1 = new WwwwServer();
 	//Could set the port if it is free about.
 
-	$server1->httpServer(8283, "/home/xxxxxxxxxxxxxxxxxxxxxx/Desktop/Documents/");
+	$server1->httpServer(8283, "/home/xxxxxxxxxxxxxx/Desktop/Documents/");
 
 
 
