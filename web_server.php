@@ -5,7 +5,7 @@ error_reporting( 0 );
  *
  * WwwwServer
  *
- * @category   Web
+ * @category  Web
  * @package    WwwwServer
  * @author     Kaloyan Hristov
  * @copyright  2021 Kaloyan Hristov
@@ -30,18 +30,18 @@ class WwwwServer
 	protected string $protocol = 'tcp'; //Could only be!
 	protected array $responceHeaders = [ ];
 	protected int $contentLength = 1024;
-	private bool $dynamicallyVars = false;
-	private string $response = "";
-	private mixed $socket;
-	private mixed $connection;
-	private mixed $timestampStart = 0;
-	private mixed $timestampEnd = 0;
-	private bool $isError = false;
-	private array $excludedFilesTerminal = [ ".css", ".ico", ".js" ];
-	private array $excludedFilesWeb = [ ".ico" ];
-	private array $securityArray = [ "'", '"', ";", "\\", "\\\\", "\\\\\\", "\\\\\\\\", "^", ")", "(", "+", "*", "$", "#", "!" ];
-	private array $securityFilesWeb = [ "", "index.php", "index.html", "index.htm" ];
-	private string $strSecureMsg = '';
+	private bool $_dynamicallyVars .  = false;
+	private string $_response = "";
+	private mixed $_socket;
+	private mixed $_connection;
+	private mixed $_timestampStart = 0;
+	private mixed $_timestampEnd = 0;
+	private bool $_isError = false;
+	private array $_excludedFilesTerminal = [ ".css", ".ico", ".js" ];
+	private array $_excludedFilesWeb = [ ".ico" ];
+	private array $_securityArray = [ "'", '"', ";", "\\", "\\\\", "\\\\\\", "\\\\\\\\", "^", ")", "(", "+", "*", "$", "//", "!" ];
+	private array $_securityFilesWeb = [ "", "index.php", "index.html", "index.htm" ];
+	private string $_strSecureMsg = '';
 
 	protected static WwwwServer $history;
 	protected static array $result = [ ];
@@ -50,13 +50,21 @@ class WwwwServer
 	public function __destruct(){
 
 	}
+	/**
+	*	Possible variant for return a Instance of a criteria.
+	* 	@return void
+	**/
 	public static function getInstance(WwwwServer $o) : void
 	{
-		if(isset($o) && !empty($o) && is_object($o)) {
+		if (isset($o) && !empty($o) && is_object($o)) {
 			 WwwwServer::$timestamp = date( DATE_RFC2822 );
 			 WwwwServer::$result[ ] = [ clone $o ];
 		}
 	}
+	/**
+	*	Push the array insde the property of objects.
+	*	@return void
+	**/
 	public static function push(WwwwServer $o) : void
 	{
 		WwwwServer::getInstance($o);
@@ -64,13 +72,14 @@ class WwwwServer
 	/**
 	*	Ccmmon function about web server it all.
 	*	Basic and common calculation of a source are here. Connections and sockets. Many functions about parsing and functionality.
+	*	@return int $port, string $webDirectoryOfUse
 	**/
-	public function  httpServer($port, $webDirectoryOfUse)
+	public function httpServer($port, $webDirectoryOfUse)
 	{
 		$numRequests = 0;
 		$this->setFullResponceHeaders();
 
-		if(isset($webDirectoryOfUse) && !empty($webDirectoryOfUse) && strlen($webDirectoryOfUse) > 1 && is_dir($webDirectoryOfUse)){
+		if (isset($webDirectoryOfUse) && !empty($webDirectoryOfUse) && strlen($webDirectoryOfUse) > 1 && is_dir($webDirectoryOfUse)){
 			$this->setDir( $webDirectoryOfUse );
 		}
 		else{
@@ -82,74 +91,86 @@ class WwwwServer
 		$this->socket = stream_socket_server($this->protocol."://".$this->address.":".$port, $errno, $errstr);
 
 		if (!isset($this->socket) || empty($this->socket) || !is_resource($this->socket) || !$this->socket) {
-		  	echo "$errstr ($errno)<br />\n";
+			echo "$errstr ($errno)<br />\n";
 		} else {
 				$this->timestampStart = microtime();
-		  	for(;;) {
-		  		$this->connection = stream_socket_accept($this->socket, -1);
-		  		if (isset($this->connection) && !empty($this->connection)) {
-		  			$gatheredRequest = stream_get_line($this->connection, 1000000, "\n");
+			for(;;) {
+				$this->connection = stream_socket_accept($this->socket, -1);
+				if (isset($this->connection) && !empty($this->connection)) {
+					$gatheredRequest = stream_get_line($this->connection, 1000000, "\n");
 					$lineRequest = explode("\n", $gatheredRequest);
 					$dataRequest = explode(" ", $lineRequest[0]);
 					$temporaryExtension = substr($dataRequest[1], strpos($dataRequest[1], "."));
-			  		
-			  		if (in_array($temporaryExtension, $this->excludedFilesTerminal)) {
-								#@TODO:later functionality
+					
+					if (in_array($temporaryExtension, $this->excludedFilesTerminal)) {
+								//@TODO:later functionality
 						} else {
-			  				$temporaryUri = $this->parseRequest($gatheredRequest);
-			  				$this->responce = $this->fileType($temporaryUri);
-			  			}
+							$temporaryUri = $this->parseRequest($gatheredRequest);
+							$this->responce = $this->fileType($temporaryUri);
+						}
 
-			  		if ($this->responce === false) {
-			  			$this->strSecureMsg = "[ FAULT SECURITY check! ]";
-			  		}
+					if ($this->responce === false) {
+						$this->strSecureMsg = "[ FAULT SECURITY check! ]";
+					}
 
 					if (in_array($temporaryExtension, $this->excludedFilesTerminal)){
-							#@TODO:later functionality
+							//@TODO:later functionality
 					} else {
 						if ($this->isError === true) {
-							print "  " . $this->responce . "\n" ;
+							print "  " . $this->responce . "\n";
 						} else {
 							++$numRequests;
 							$time = (string) abs(number_format(floatval(substr($this->timestampEnd, 0, 9))-floatval(substr($this->timestampStart, 0, 9)), 4, ".", ""));
 							print "  |".$numRequests."|".$time."delta|====================>".$lineRequest[0]."  ".$this->strSecureMsg."\n";
 						}
 
-						#History of a challenge!!!!!!!
+						//History of a challenge!!!!!!!
 						WwwwServer::push($this);
-			    		#History of a challenge!!!!!!!
+					//History of a challenge!!!!!!!
 						//var_dump(WwwwServer::$result);
 					}
 
-					#set Gzip encoding a make a length of a responce
+					//set Gzip encoding a make a length of a responce
 					//$this->setResponceToGz($this->responce);
 					$this->setLengthOfResponce($this->responce);
 					
 					 //Into Bits
-					#Write Responce Headers
+					//Write Responce Headers
 					$temporaryHeaders="";
 					if (isset($this->responceHeaders) && !empty($this->responceHeaders) && is_array($this->responceHeaders)) {
 						foreach($this->responceHeaders as $firstPart => $secondPart) {
 							$temporaryHeaders = $temporaryHeaders . $firstPart." ".$secondPart;
 						}
 					}
-					#Write Responce Content
-			    	fwrite($this->connection, $temporaryHeaders . $this->responce);
-			    	
-			    	
-			    	$this->timestampEnd = microtime();
-			    	fclose($this->connection);
-		    	}
-		  	}
-		  	fclose($this->socket);
+					//Write Responce Content
+					fwrite($this->connection, $temporaryHeaders . $this->responce);
+				
+				
+					$this->timestampEnd = microtime();
+					fclose($this->connection);
+				}
+			}
+			fclose($this->socket);
 		}
 	}
+	/**
+	*	2 Gz about all content of responce.
+	*	@return void
+	**/
 	private function setResponceToGz($responce){
 		$this->responce = gzencode($responce, 9);
 	}
+	/**
+	*	Length of a responce inside a property.
+	*	@return void
+	**/
 	private function setLengthOfResponce($responce){
 		$this->contentLength = strlen($responce);
 	}
+	/**
+	* 	Set the headers what they are equal to request about connectin.
+	*	@return void
+	**/
 	private function setFullResponceHeaders(){
 		$this->setResponceHeaders("HTTP/1.1", "200 OK\r\n");
 		$this->setResponceHeaders("Host:", $this->address."\r\n");
@@ -166,6 +187,7 @@ class WwwwServer
 	}
 	/**
 	*	Algorithm about setting a web dir.
+	*	@return void
 	**/
 	private function setDir($webDirectory)
 	{
@@ -173,14 +195,16 @@ class WwwwServer
 	}
 	/**
 	*	Algorithm about setting a value and a name of a property array.
+	*	@return void
 	**/
 	private function setResponceHeaders($nameRespondHeader, $valueRespondHeader)
 	{
 		$this->responceHeaders[$nameRespondHeader] = $valueRespondHeader;
 	}
-	#Basic file read
+	//Basic file read
 	/**
 	*	My opinion about Read a file and much of possibles upgrades.
+	*	@return string|bool
 	**/
 	private function fileRead($file)
 	{
@@ -194,10 +218,10 @@ class WwwwServer
 		}
 		return false;
 	}
-	#
+	//
 	/**
 	*	Function, that parsing the request.
-	*
+	*	@return array
 	**/
 	private function parseRequest($req)
 	{
@@ -232,7 +256,7 @@ class WwwwServer
 	}
 	/**
 	*	Algorithm about security check of a URL.
-	*
+	*	@return bool
 	**/
 	private function securityCheck($urlAboutCheck)
 	{
@@ -254,7 +278,7 @@ class WwwwServer
 	}
 	/**
 	*	Algorithm about security check of a URL.
-	*
+	*	@return bool
 	**/
 	private function securityCheckWebFiles($request)
 	{
@@ -264,10 +288,11 @@ class WwwwServer
 		}
 		return false;
 	}
-	#FIle type of rendered files over the web.
+	//FIle type of rendered files over the web.
 	/**
 	*	The render is here about xml, html, txt, PHPs and more
 	*	@TODO:Include more renders.
+	*	@return string|bool
 	**/
 	private function fileType($temporaryUri)
 	{
@@ -330,7 +355,7 @@ class WwwwServer
 	}
 	/**
 	*	Parsing web vars like Get and POST to script about.
-	*
+	*	@return array
 	**/
 	private function parseWebVars($protocol, $webVars)
 	{
@@ -347,34 +372,34 @@ class WwwwServer
 			}
 		}
 		if (isset($protocol) && !empty($protocol) && $protocol == "POST") {
-			#@TODO
+			//@TODO
 		}
-		if (isset($protocol) && !empty($protocol) && $protocol  == "HEAD") {
-			#@TODO
+		if (isset($protocol) && !empty($protocol) && $protocol == "HEAD") {
+			//@TODO
 		}
-		if (isset($protocol) && !empty($protocol) && $protocol  == "PUT") {
-			#@TODO
+		if (isset($protocol) && !empty($protocol) && $protocol == "PUT") {
+			//@TODO
 		}
-		if (isset($protocol) && !empty($protocol) && $protocol  == "DELETE") {
-			#@TODO
+		if (isset($protocol) && !empty($protocol) && $protocol == "DELETE") {
+			//@TODO
 		}
-		if (isset($protocol) && !empty($protocol) && $protocol  == "CONNECT") {
-			#@TODO
+		if (isset($protocol) && !empty($protocol) && $protocol == "CONNECT") {
+			//@TODO
 		}
-		if (isset($protocol) && !empty($protocol) && $protocol  == "OPTIONS") {
-			#@TODO
+		if (isset($protocol) && !empty($protocol) && $protocol == "OPTIONS") {
+			//@TODO
 		}
-		if (isset($protocol) && !empty($protocol) && $protocol  == "TRACE") {
-			#@TODO
+		if (isset($protocol) && !empty($protocol) && $protocol == "TRACE") {
+			//@TODO
 		}
-		if (isset($protocol) && !empty($protocol) && $protocol  == "PATCH") {
-			#@TODO
+		if (isset($protocol) && !empty($protocol) && $protocol == "PATCH") {
+			//@TODO
 		}
 		return $new_arr;
 	}
 	/**
 	*	Dynamically web vars to script and return it for rending!
-	*
+	*	@return string
 	**/
 	private function dynamicallyWebVariablesOnFly($file, $protocol, $webVars)
 	{
@@ -384,7 +409,7 @@ class WwwwServer
 		$strPhpCodeTwo = $this->fileRead($file);
 		if (isset($arrayWebVars) && !empty($arrayWebVars) && is_array($arrayWebVars) && count($arrayWebVars)) {
 			foreach($arrayWebVars as $keyVar => $webVar) {
-				if($this -> dynamicallyVars == true ){
+				if ($this -> _dynamicallyVars . == true ){
 					$strPhpCodeOne = $strPhpCodeOne."$".strtoupper($protocol).strtolower($keyVar)."=\"".$webVar."\"; \n";
 				}
 			}
@@ -399,7 +424,7 @@ class WwwwServer
 
 
 	$server1 = new WwwwServer();
-	#Could set the port if it is free about.
+	//Could set the port if it is free about.
 
 	$server1->httpServer(8283, "/home/xxxxxxxxxxxxxxxxx/Desktop/Documents/");
 
