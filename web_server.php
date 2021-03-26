@@ -30,7 +30,7 @@ class WwwwServer
 	protected string $protocol = 'tcp'; //Could only be!
 	protected array $responceHeaders = [ ];
 	protected int $contentLength = 1024;
-	private bool $_dynamicallyVars .  = false;
+	private bool $_dynamicallyVars = false;
 	private string $_response = "";
 	private mixed $_socket;
 	private mixed $_connection;
