@@ -366,13 +366,6 @@ class WwwwServer
 				$this->_isError = false;
 				return htmlspecialchars(htmlentities($this->fileRead($temporaryUri["x_file"])));
 			}
-			if (strpos($temporaryUri["x_file"], "php") !== false && $this->phpVersion === "8.0" && $temporaryUri["x_data_REQUEST"] != "") {
-				$this->_isError = false;
-				$temporaryVars = $this->dynamicallyWebVariablesOnFly($temporaryUri["x_file"], $temporaryUri["x_protocol"], $temporaryUri["x_data_REQUEST"]);
-				var_dump("/usr/bin/php8.0 -f ".$temporaryUri["x_file"]." ".$temporaryVars);
-				
-				return shell_exec("/usr/bin/php8.0 -f ".$temporaryUri["x_file"]." ".$temporaryVars); 
-			}
 			if (strpos($temporaryUri["x_file"], "php") !== false && $this->phpVersion === "8.0" ) {
 				$this->_isError = false; 
 				return shell_exec("/usr/bin/php8.0 -f " . $temporaryUri["x_file"]);
@@ -437,15 +430,11 @@ class WwwwServer
 		}
 		return $new_arr;
 	}
-	private function writeToCOnsole(){
-		$stdout = fopen('php://stdout', 'w');
-		fwrite($stdout,"");
-	}
 	/**
 	*	Dynamically web vars to script and return it for rending!
 	*	@return string
 	**/
-	private function dynamicallyWebVariablesOnFly($file, $protocol, $webVars)
+	private function dynamicallyWebVariables($file, $protocol, $webVars)
 	{
 		$arrayWebVars = array();
 		$arrayWebVars = $this->parseWebVars($protocol, $webVars);
@@ -466,7 +455,7 @@ class WwwwServer
 	$server1 = new WwwwServer();
 	//Could set the port if it is free about.
 
-	$server1->httpServer(8283, "/home/xxxxxxxx/Desktop/Documents/");
+	$server1->httpServer(8283, "/home/xxxxxxxxxxxxxxxxxxxxxxxxxx/Desktop/Documents/");
 
 
 
