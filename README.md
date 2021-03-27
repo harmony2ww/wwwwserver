@@ -44,27 +44,6 @@ Then we get the web server on (http://127.0.0.1:8282/)
 Inside your browser (http://127.0.0.1:8282/index.php)
 
 
-## Example of dynamically variables about GET protocol:
-### Step1: Configuration.
-```php
-private $dynamicallyVars = true;
-```
-
-### Step 2: Inside browser.
-```uri
-http://127.0.0.1:8282/index.php?var1=78787823&var2=3874837&var3=news
-```
-
-### Step 3: Inside your code.
-```php
-echo $GETvar1;
-echo "<br />";
-echo $GETvar2;
-echo "<br />";
-echo $GETvar3;
-```
-
-
 ## Feature
   * Further there are variants about GET, POST and HEAD, else obviously and other variants are needs at today.
   * Further over all maybe there are variant and for parallel port usage.

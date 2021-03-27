@@ -30,8 +30,7 @@ class WwwwServer
 	private string $_webDirectory = "";
 	private string $_address = '127.0.0.1'; //Feel free!
 	private array $_responceHeaders = [ ];
-	private int $_contentLength = 2058;
-	private bool $_dynamicallyVars = false;
+	private int $_contentLength = 2048;
 	private string $_responce = "";
 	private mixed $_socket;
 	private mixed $_connection;
@@ -79,8 +78,6 @@ class WwwwServer
 	public function httpServer($port, $webDirectoryOfUse)
 	{
 		$numRequests = 0;
-		
-
 		if (isset($webDirectoryOfUse) && !empty($webDirectoryOfUse) && strlen($webDirectoryOfUse) > 1 && is_dir($webDirectoryOfUse)){
 			$this->setDir( $webDirectoryOfUse );
 		}
@@ -420,27 +417,6 @@ class WwwwServer
 		}
 		return $new_arr;
 	}
-	/**
-	*	Dynamically web vars to script and return it for rending!
-	*	@return string
-	**/
-	private function dynamicallyWebVariablesOnFly($file, $protocol, $webVars)
-	{
-		$arrayWebVars = array();
-		$arrayWebVars = $this->parseWebVars($protocol, $webVars);
-		$strPhpCodeOne = "\n\n\n   ";
-		$strPhpCodeTwo = $this->fileRead($file);
-		if (isset($arrayWebVars) && !empty($arrayWebVars) && is_array($arrayWebVars) && count($arrayWebVars)) {
-			foreach($arrayWebVars as $keyVar => $webVar) {
-				if ($this -> _dynamicallyVars == true ){
-					$strPhpCodeOne = $strPhpCodeOne."$".strtoupper($protocol).strtolower($keyVar)."=\"".$webVar."\"; \n";
-				}
-			}
-		}
-		$strPhpCodeTwo = substr($strPhpCodeTwo, 6, -3);
-		$strOriginalPhp = $strPhpCodeOne.$strPhpCodeTwo ." ?>";
-		return $strOriginalPhp;
-	}
 }
 
 
@@ -449,7 +425,7 @@ class WwwwServer
 	$server1 = new WwwwServer();
 	//Could set the port if it is free about.
 
-	$server1->httpServer(8283, "/home/xxxxxxxx/Desktop/Documents/");
+	$server1->httpServer(8283, "/home/xxxxxxxxxxxxxxxxx/Desktop/Documents/");
 
 
 
