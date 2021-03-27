@@ -43,7 +43,6 @@ class WwwwServer
 	private array $_securityFilesWeb = [ "", "index.php", "index.html", "index.htm" ];
 	private string $_strSecureMsg = '';
 
-	protected static WwwwServer $history;
 	protected static array $result = [ ];
 	protected static mixed $timestamp;
 
@@ -59,7 +58,8 @@ class WwwwServer
 	{
 		if (isset($o) && !empty($o) && is_object($o)) {
 			 WwwwServer::$timestamp = [ date( DATE_RFC2822 ) ];
-			 WwwwServer::$result[] = [ clone $o ];
+			 $o -> result = [ ];
+			 WwwwServer::$result[ ] = clone $o;
 		}
 	}
 	/**
@@ -71,6 +71,22 @@ class WwwwServer
 		WwwwServer::setObjectToArray($o);
 	}
 	/**
+	*	Push the array insde the property of objects.
+	*	@return WwwwServer
+	**/
+	public static function getFirst() : WwwwServer
+	{
+		return WwwwServer::$result[array_key_first(WwwwServer::$result)];
+	}
+	/**
+	*	Push the array insde the property of objects.
+	*	@return WwwwServer
+	**/
+	public static function getLast() : WwwwServer
+	{
+		return WwwwServer::$result[array_key_last(WwwwServer::$result)];
+	}
+	/**
 	*	Ccmmon function about web server it all.
 	*	Basic and common calculation of a source are here. Connections and sockets. Many functions about parsing and functionality.
 	*	@return int $port, string $webDirectoryOfUse
@@ -78,7 +94,7 @@ class WwwwServer
 	public function httpServer($port, $webDirectoryOfUse)
 	{
 		$numRequests = 0;
-		if (isset($webDirectoryOfUse) && !empty($webDirectoryOfUse) && strlen($webDirectoryOfUse) > 1 && is_dir($webDirectoryOfUse)){
+		if (isset($webDirectoryOfUse) && !empty($webDirectoryOfUse) && strlen($webDirectoryOfUse) > 1 && is_dir($webDirectoryOfUse)) {
 			$this->setDir( $webDirectoryOfUse );
 		}
 		else{
@@ -106,7 +122,25 @@ class WwwwServer
 							$this -> _responce = $this->fileType($temporaryUri);
 							
 						}
+					
+					//Set Headers
+					$this -> setResponceToGz();
+					$this -> setLengthOfResponce();
+					$this -> setFullResponceHeaders();
+					
+					//Write _responce Headers
+					$temporaryHeaders="";
+					if (isset($this->_responceHeaders) && !empty($this->_responceHeaders) && is_array($this->_responceHeaders)) {
+						foreach($this->_responceHeaders as $firstPart => $secondPart) {
+							$temporaryHeaders = $temporaryHeaders . $firstPart." ".$secondPart;
+						}
+					}
 
+					//Write _responce Content
+					fwrite($this->_connection, $temporaryHeaders . $this -> _responce);
+					$this->_timestampEnd = microtime();
+
+					//Write to console
 					if ( $regExCheck === false ) {
 							//@TODO:later functionality
 						} else {
@@ -124,24 +158,7 @@ class WwwwServer
 							//History of a challenge!!!!!!!
 							WwwwServer::push($this);
 						}
-					
-					//Set Headers
-					$this -> setResponceToGz();
-					$this -> setLengthOfResponce();
-					$this -> setFullResponceHeaders();
-					
-					//Write _responce Headers
-					$temporaryHeaders="";
-					if (isset($this->_responceHeaders) && !empty($this->_responceHeaders) && is_array($this->_responceHeaders)) {
-						foreach($this->_responceHeaders as $firstPart => $secondPart) {
-							$temporaryHeaders = $temporaryHeaders . $firstPart." ".$secondPart;
-						}
-					}
 
-					//Write _responce Content
-					fwrite($this->_connection, $temporaryHeaders . $this -> _responce);
-				
-					$this->_timestampEnd = microtime();
 					fclose($this->_connection);
 				}
 			}
@@ -156,6 +173,7 @@ class WwwwServer
 	{
 		$regEx = "";
 		$lines = explode("\n",$gathered);
+		$line = $lines[0];
 		if(isset($this->_securityFilesWeb) && !empty($this->_securityFilesWeb) && is_array($this->_securityFilesWeb) && count($this->_securityFilesWeb)) {
 			foreach($this->_securityFilesWeb as $acceptable) {
 				if(isset($acceptable) && !empty($acceptable)) {
@@ -163,8 +181,8 @@ class WwwwServer
 				} 
 			}
 		}
-		if(isset($lines[0]) && !empty($lines[0])) {
-			preg_match("/".substr($regEx,0,-1)."/", $lines[0], $matches);
+		if(isset($line) && !empty($line)) {
+			preg_match("/".substr($regEx,0,-1)."/", $line, $matches);
 		}
 		if(isset($matches) && !empty($matches) && count($matches) > 0 ) {
 			return true;
@@ -264,7 +282,7 @@ class WwwwServer
 						$stringRequest = $stringRequest.$lineOfRequest;
 					}
 				}
-				$temporaryGet = json_decode($stringRequest);
+				$temporaryGet = $stringRequest;
 			}
 			if (is_file($this -> _webDirectory.$requestedUrl) && strpos($requestedUrl, "./") === false && strpos($requestedUrl, "../") === false) {
 				if (isset($temporaryGet) && !empty($temporaryGet)) {
@@ -350,8 +368,10 @@ class WwwwServer
 			}
 			if (strpos($temporaryUri["x_file"], "php") !== false && $this->phpVersion === "8.0" && $temporaryUri["x_data_REQUEST"] != "") {
 				$this->_isError = false;
-				$code=$this->dynamicallyWebVariablesOnFly($temporaryUri["x_file"], $temporaryUri["x_protocol"], $temporaryUri["x_data_REQUEST"]);
-				return shell_exec("/usr/bin/php8.0 -r ' ".$code." '");
+				$temporaryVars = $this->dynamicallyWebVariablesOnFly($temporaryUri["x_file"], $temporaryUri["x_protocol"], $temporaryUri["x_data_REQUEST"]);
+				var_dump("/usr/bin/php8.0 -f ".$temporaryUri["x_file"]." ".$temporaryVars);
+				
+				return shell_exec("/usr/bin/php8.0 -f ".$temporaryUri["x_file"]." ".$temporaryVars); 
 			}
 			if (strpos($temporaryUri["x_file"], "php") !== false && $this->phpVersion === "8.0" ) {
 				$this->_isError = false; 
@@ -417,6 +437,27 @@ class WwwwServer
 		}
 		return $new_arr;
 	}
+	private function writeToCOnsole(){
+		$stdout = fopen('php://stdout', 'w');
+		fwrite($stdout,"");
+	}
+	/**
+	*	Dynamically web vars to script and return it for rending!
+	*	@return string
+	**/
+	private function dynamicallyWebVariablesOnFly($file, $protocol, $webVars)
+	{
+		$arrayWebVars = array();
+		$arrayWebVars = $this->parseWebVars($protocol, $webVars);
+		$strPhpCodeOne = " ";
+		$strPhpCodeTwo = $this->fileRead($file);
+		if (isset($arrayWebVars) && !empty($arrayWebVars) && is_array($arrayWebVars) && count($arrayWebVars)) {
+			foreach($arrayWebVars as $keyVar => $webVar) {
+				$strPhpCodeOne .= $keyVar . "=" . $webVar . " ";
+			}
+		}
+		return $strPhpCodeOne;
+	}
 }
 
 
@@ -425,7 +466,7 @@ class WwwwServer
 	$server1 = new WwwwServer();
 	//Could set the port if it is free about.
 
-	$server1->httpServer(8283, "/home/xxxxxxxxxxxxxxxxx/Desktop/Documents/");
+	$server1->httpServer(8283, "/home/xxxxxxxx/Desktop/Documents/");
 
 
 
