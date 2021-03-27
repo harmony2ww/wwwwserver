@@ -12,7 +12,7 @@ directions:
  * ISP
  * diferent levelvs of internet service providers.
  * Web hosting
- * Providers of a services.
+ * Providers of services.
 
 ## Full life cyrcle about security is most common thing to success.
  Its a direction point to point with much of these obviously aspects of depends.
