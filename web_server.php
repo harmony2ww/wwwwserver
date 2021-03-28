@@ -54,7 +54,7 @@ class WwwwServer
 	*	Any kind of Prototype, but not.
 	* 	@return void
 	**/
-	public static function setObjectToArray(WwwwServer $o) : void
+	private static function setObjectToArray(WwwwServer $o) : void
 	{
 		if (isset($o) && !empty($o) && is_object($o)) {
 			 WwwwServer::$timestamp = [ date( DATE_RFC2822 ) ];
@@ -66,7 +66,7 @@ class WwwwServer
 	*	Push the array insde the property of objects.
 	*	@return void
 	**/
-	public static function push(WwwwServer $o) : void
+	private static function push(WwwwServer $o) : void
 	{
 		WwwwServer::setObjectToArray($o);
 	}
@@ -74,7 +74,7 @@ class WwwwServer
 	*	Push the array insde the property of objects.
 	*	@return WwwwServer
 	**/
-	public static function getFirst() : WwwwServer
+	private static function getFirst() : WwwwServer
 	{
 		return WwwwServer::$result[array_key_first(WwwwServer::$result)];
 	}
@@ -82,7 +82,7 @@ class WwwwServer
 	*	Push the array insde the property of objects.
 	*	@return WwwwServer
 	**/
-	public static function getLast() : WwwwServer
+	private static function getLast() : WwwwServer
 	{
 		return WwwwServer::$result[array_key_last(WwwwServer::$result)];
 	}
@@ -112,21 +112,27 @@ class WwwwServer
 			for(;;) {
 				$this->_connection = stream_socket_accept($this->_socket, -1);
 				if (isset($this->_connection) && !empty($this->_connection)) {
-					$gatheredRequest = stream_get_line($this->_connection, 1000000, "\n");
+					$gatheredRequest = stream_socket_recvfrom($this->_connection, 1000000, STREAM_PEEK);
+
+					//parse Request
+					$gatheredRequestArray = explode("\n", $gatheredRequest);
+					$firstLineByRequestFirst = $gatheredRequestArray[array_key_first($gatheredRequestArray)];
 					$regExCheck = $this->createRegExCheck($gatheredRequest);
 
 					if ( $regExCheck === false ) {
+							continue;
 								//@TODO:later functionality
 						} else {
-							$temporaryUri = $this->parseRequest($gatheredRequest);
+							$temporaryUri = $this->parseRequest($gatheredRequestArray);
 							$this -> _responce = $this->fileType($temporaryUri);
 							
 						}
 					
 					//Set Headers
-					$this -> setResponceToGz();
+					$this -> setResponceToGzip();
 					$this -> setLengthOfResponce();
 					$this -> setFullResponceHeaders();
+					
 					
 					//Write _responce Headers
 					$temporaryHeaders="";
@@ -151,9 +157,11 @@ class WwwwServer
 									$this->_strSecureMsg = "[ FAULT SECURITY check! ]";
 								}
 								++$numRequests;
-								$lineRequest = explode("\n", $gatheredRequest);
+								
 								$time = (string) abs(number_format(floatval(substr($this->_timestampEnd, 0, 9))-floatval(substr($this->_timestampStart, 0, 9)), 4, ".", ""));
-								print "  |".$numRequests."|".$time."delta|====================>".$lineRequest[0]."  ".$this->_strSecureMsg."\n";
+
+								$lineRequest = $gatheredRequestArray[0];
+								print "  |".$numRequests."|".$time."delta|====================>".$lineRequest."  ".$this->_strSecureMsg."\n";
 							}
 							//History of a challenge!!!!!!!
 							WwwwServer::push($this);
@@ -193,7 +201,7 @@ class WwwwServer
 	*	2 Gz about all content of _responce.
 	*	@return void
 	**/
-	private function setResponceToGz()
+	private function setResponceToGzip()
 	{
 		$this->_responce = gzencode( $this -> _responce, 9);
 	}
@@ -263,8 +271,7 @@ class WwwwServer
 	**/
 	private function parseRequest($req)
 	{
-			$lineRequest = explode("\n", $req);
-			$dataRequest = explode(" ", $lineRequest[0]);
+			$dataRequest = explode(" ", $req[0]);
 
 			if (isset($dataRequest[0]) && !empty($dataRequest[0]) && $dataRequest[0] == "GET") {
 				if (strpos($dataRequest[1], "?") !== false) {
@@ -277,12 +284,7 @@ class WwwwServer
 			}
 			if (isset($dataRequest[0]) && !empty($dataRequest[0]) && $dataRequest[0] == "POST") {
 				$requestedUrl = substr($dataRequest[1], 1);
-				foreach($lineRequest as $keyRequest => $lineOfRequest) {
-					if ($keyRequest>3) {
-						$stringRequest = $stringRequest.$lineOfRequest;
-					}
-				}
-				$temporaryGet = $stringRequest;
+				$temporaryGet = $req[array_key_last($req)];
 			}
 			if (is_file($this -> _webDirectory.$requestedUrl) && strpos($requestedUrl, "./") === false && strpos($requestedUrl, "../") === false) {
 				if (isset($temporaryGet) && !empty($temporaryGet)) {
@@ -367,20 +369,20 @@ class WwwwServer
 				return htmlspecialchars(htmlentities($this->fileRead($temporaryUri["x_file"])));
 			}
 			if (strpos($temporaryUri["x_file"], "php") !== false && $this->phpVersion === "8.0" ) {
-				$this->_isError = false; 
-				return shell_exec("/usr/bin/php8.0 -f " . $temporaryUri["x_file"]);
+				$this->_isError = false;
+				return shell_exec("/usr/bin/php8.0  -r ' ".$this -> webVariables( $temporaryUri["x_file"], $temporaryUri["x_protocol"], $temporaryUri["x_data_REQUEST"] )." include_once(\"". $this -> webDir.$temporaryUri["x_file"]."\"); ' ");
 			}
 			if (strpos($temporaryUri["x_file"], "php") !== false && $this->phpVersion === "7.4") {
 				$this->_isError = false;
-				return htmlspecialchars(htmlentities(shell_exec("/usr/bin/php7.4 -f " . addslashes($temporaryUri["x_file"])." '{x_GET: ".addslashes($temporaryUri["x_GET"])."}'")));
+				return shell_exec("/usr/bin/php7.4 -r ' ".$this -> webVariables( $temporaryUri["x_file"], $temporaryUri["x_protocol"], $temporaryUri["x_data_REQUEST"] )." include_once(\"". $this -> webDir.$temporaryUri["x_file"]."\"); ' ");
 			}
 			if (strpos($temporaryUri["x_file"], "php") !== false && $this->phpVersion==="7.0") {
 				$this->_isError = false;
-				return htmlspecialchars(htmlentities(shell_exec("/usr/bin/php7.0 -f " . addslashes($temporaryUri["x_file"])." '{x_GET: ".addslashes($temporaryUri["x_GET"])."}'")));
+				return shell_exec("/usr/bin/php7.0 -r ' ".$this -> webVariables( $temporaryUri["x_file"], $temporaryUri["x_protocol"], $temporaryUri["x_data_REQUEST"] )." include_once(\"". $this -> webDir.$temporaryUri["x_file"]."\"); ' ");
 			}
 			if (strpos($temporaryUri["x_file"], "php") !== false && $this->phpVersion === "5") {
 				$this->_isError = false;
-				return htmlspecialchars(htmlentities(shell_exec("/usr/bin/php -f " . addslashes($temporaryUri["x_file"])." '{x_GET: ".addslashes($temporaryUri["x_GET"]). "}'")));
+				return shell_exec("/usr/bin/php -r ' ".$this -> webVariables( $temporaryUri["x_file"], $temporaryUri["x_protocol"], $temporaryUri["x_data_REQUEST"] )." include_once(\"". $this -> webDir.$temporaryUri["x_file"]."\"); ' ");
 			}
 		}
 		$this->_isError = true;
@@ -390,10 +392,10 @@ class WwwwServer
 	*	Parsing web vars like Get and POST to script about.
 	*	@return array
 	**/
-	private function parseWebVars($protocol, $webVars)
+	private function parseWebGetVars($protocol, $webVars)
 	{
 		$new_arr = array();
-		if (isset($protocol) && !empty($protocol) && $protocol=="GET") {
+		if (isset($protocol) && !empty($protocol) && ( $protocol=="GET" || $protocol=="POST" )) {
 			if (isset($webVars) && !empty($webVars) && is_string($webVars) && strlen($webVars) > 1) {
 				$parsedVars = explode("&", $webVars);
 				if (isset($parsedVars) && !empty($parsedVars) && is_array($parsedVars) && count($parsedVars)) {
@@ -403,9 +405,6 @@ class WwwwServer
 					}
 				}
 			}
-		}
-		if (isset($protocol) && !empty($protocol) && $protocol == "POST") {
-			//@TODO
 		}
 		if (isset($protocol) && !empty($protocol) && $protocol == "HEAD") {
 			//@TODO
@@ -434,15 +433,15 @@ class WwwwServer
 	*	Dynamically web vars to script and return it for rending!
 	*	@return string
 	**/
-	private function dynamicallyWebVariables($file, $protocol, $webVars)
+	private function webVariables($file, $protocol, $webVars)
 	{
 		$arrayWebVars = array();
-		$arrayWebVars = $this->parseWebVars($protocol, $webVars);
+		$arrayWebVars = $this->parseWebGetVars($protocol, $webVars);
 		$strPhpCodeOne = " ";
-		$strPhpCodeTwo = $this->fileRead($file);
 		if (isset($arrayWebVars) && !empty($arrayWebVars) && is_array($arrayWebVars) && count($arrayWebVars)) {
 			foreach($arrayWebVars as $keyVar => $webVar) {
-				$strPhpCodeOne .= $keyVar . "=" . $webVar . " ";
+				$strPhpCodeOne .= "\$_" . strtoupper($protocol) . "[\"" . $keyVar . "\"]=\"" . $webVar . "\"; \n";
+				$strPhpCodeOne .= "\$_REQUEST[\"" . $keyVar . "\"]=\"" . $webVar . "\"; \n";
 			}
 		}
 		return $strPhpCodeOne;
@@ -455,7 +454,7 @@ class WwwwServer
 	$server1 = new WwwwServer();
 	//Could set the port if it is free about.
 
-	$server1->httpServer(8283, "/home/xxxxxxxxxxxxxxxxxxxxxxxxxx/Desktop/Documents/");
+	$server1->httpServer(8283, "/home/XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX/Desktop/Documents/");
 
 
 

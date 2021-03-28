@@ -44,14 +44,18 @@ Then we get the web server on (http://127.0.0.1:8282/)
 Inside your browser (http://127.0.0.1:8282/index.php)
 
 
+## Latest
+### [ GET ] !
+### [ POST ] !
+
+
 ## Feature
-  * Further there are variants about GET, POST and HEAD, else obviously and other variants are needs at today.
   * Further over all maybe there are variant and for parallel port usage.
   * Obviously the quality of code is more strong than else.
-  * There could be the effectively common generated dynamically variables about POST,GET,HEAD.
+  * There could be the effectively common generated dynamically variables about HEAD.
   * The variables could be $POSTtextOfAll, $POSTtextCrapped, $GETpageNotFound, $HEADcheck, $HEADcheckAtNow.
   * There needs about dynamically port change and further work on it.
-  * We get needs and variants about rendering, else with no case.
+  * Get needs and variants about rendering, else with no case.
   * Least dynamically create and use encodings of a page may be are big, of course.
   * Possible about of course and SSL.
 
