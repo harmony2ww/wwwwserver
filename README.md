@@ -7,7 +7,7 @@
 [![GitHub stars](https://img.shields.io/github/stars/X0xx-1110/WWWW-Server.svg?style=social&label=Star&maxAge=2592000)](https://GitHub.com/X0xx-1110/WWWW-Server/stargazers/)
 [![GitHub watchers](https://img.shields.io/github/watchers/X0xx-1110/WWWW-Server.svg?style=social&label=Watch&maxAge=2592000)](https://GitHub.com/X0xx-1110/WWWW-Server/watchers/)
 [![GitHub followers](https://img.shields.io/github/followers/X0xx-1110.svg?style=social&label=Follow&maxAge=2592000)](https://github.com/X0xx-1110?tab=followers)
-[![Open Source? Yes!](https://badgen.net/badge/Open%20Source%20%3F/Yes%21/blue?icon=github)](https://GitHub.com/X0xx-1110/WWWW-Server/)
+[![Open Source Forever](https://badgen.net/badge/Open%20Source%20%3F/Yes%21/blue?icon=github)](https://GitHub.com/X0xx-1110/WWWW-Server/)
 [![ForTheBadge built-with-love](http://ForTheBadge.com/images/badges/built-with-love.svg)](https://GitHub.com/X0xx-1110/WWWW-Server/)
 
 WwwwServer is high speed, secure and stable web server. Includes inside html, htm, txt, xml, php5, php7.0, php7.4, php8.0 rending of all. 
@@ -20,11 +20,11 @@ Main goal is to create something workfull about our developing needs.
 In second case I will try to give more about what could be.
 Open source ideas - there get chance to give more, create more and develop more.
 
-## Open Source :open_source:
+## Open Source 
 
 It's only open source. 
 
-### More than a web server :more:
+### More than a web server 
 
 ## Getting Started [![Documentation Status](https://readthedocs.org/projects/ansicolortags/badge/?version=latest)](http://ansicolortags.readthedocs.io/?badge=latest)
 
@@ -33,7 +33,7 @@ It's only open source.
 3. These things you could done inside file web_server.php at the end.
 4. Be careful within directory, you could browse in files only if there are in.
 
-## SECURITY :security: :bads:
+## SECURITY 
 
 ### About first secure property -  (array) $securityArray .
 
@@ -45,7 +45,7 @@ These strings of file names are possible variants about started file into url,
 else there are console error.
 
 
-## Starting :how_to:
+## Starting
 
 ```php
 $server = new WwwwServer();
@@ -65,19 +65,18 @@ Then we get the web server on (http://127.0.0.1:8282/)
 Inside your browser (http://127.0.0.1:8282/index.php)
 
 
-## Latest :latest:
+## Latest 
 
 ### [ GET ] ! :heavy_check_mark:
 ### [ POST ] ! :heavy_check_mark:
 ### [ GZIP ] ! :heavy_check_mark:
 
-### SSL :heavy_multiplication_x:
 ### HEAD, PUT :heavy_multiplication_x:
 ### encodings :heavy_multiplication_x:
 ### Proxy :heavy_multiplication_x:
 ### P2P :heavy_multiplication_x:
 
-## Feature :future:
+## Feature 
 
   * Further over all maybe there are variant and for parallel port usage.
   * Obviously the quality of code is more strong than else.
@@ -99,9 +98,9 @@ See also the list of [contributors](https://github.com/your/project/contributors
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
 
 
-## Feedback :feedback:
+## Feedback 
 
-### "Ask me anything" [![Ask Me Anything !](https://img.shields.io/badge/Ask%20me-anything-1abc9c.svg)](https://github.com/X0xx-1110/wwwwServer)
+### "Ask Me all over"  :interrobang: [![Ask Me all over!](https://img.shields.io/badge/Ask%20me-anything-1abc9c.svg)](https://github.com/X0xx-1110/wwwwServer)
 
 if there are something missing, or something more, or something else.
 Ask me anything!
