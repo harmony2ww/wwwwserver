@@ -7,8 +7,6 @@
 [![GitHub stars](https://img.shields.io/github/stars/X0xx-1110/WWWW-Server.svg?style=social&label=Star&maxAge=2592000)](https://GitHub.com/X0xx-1110/WWWW-Server/stargazers/)
 [![GitHub watchers](https://img.shields.io/github/watchers/X0xx-1110/WWWW-Server.svg?style=social&label=Watch&maxAge=2592000)](https://GitHub.com/X0xx-1110/WWWW-Server/watchers/)
 [![GitHub followers](https://img.shields.io/github/followers/X0xx-1110.svg?style=social&label=Follow&maxAge=2592000)](https://github.com/X0xx-1110?tab=followers)
-[![Open Source Forever](https://badgen.net/badge/Open%20Source%20%3F/Yes%21/blue?icon=github)](https://GitHub.com/X0xx-1110/WWWW-Server/)
-[![ForTheBadge built-with-love](http://ForTheBadge.com/images/badges/built-with-love.svg)](https://GitHub.com/X0xx-1110/WWWW-Server/)
 
 WwwwServer is high speed, secure and stable web server. Includes inside html, htm, txt, xml, php5, php7.0, php7.4, php8.0 rending of all. 
 There are possible communication with GET, POST variable about more capabilities. Includes capabilities about fast optimization and testing of all aspects on web developing.
@@ -100,7 +98,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Feedback 
 
-### "Ask Me all over"  :interrobang: [![Ask Me all over!](https://img.shields.io/badge/Ask%20me-anything-1abc9c.svg)](https://github.com/X0xx-1110/wwwwServer)
+### "Ask Me all over"  :interrobang: [![Ask Me all over!](https://img.shields.io/badge/Ask%20me-all-over-1abc9c.svg)](https://github.com/X0xx-1110/wwwwServer)
 
 if there are something missing, or something more, or something else.
 Ask me anything!
