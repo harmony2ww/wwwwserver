@@ -32,6 +32,7 @@ class WwwwServer
 	private array $_responceHeaders = [ ];
 	private int $_contentLength = 2048;
 	private string $_responce = "";
+	private string $_headers_responce = "";
 	private mixed $_socket;
 	private mixed $_connection;
 	private mixed $_timestampStart = 0;
@@ -106,62 +107,39 @@ class WwwwServer
 		$this->_socket = stream_socket_server($this->protocol."://".$this -> _address.":".$port, $errno, $errstr);
 
 		if (!isset($this->_socket) || empty($this->_socket) || !is_resource($this->_socket) || !$this->_socket) {
-			echo "$errstr ($errno)<br />\n";
+			print "[ Socket Does not Exists! ]\n";
+			return false;
 		} else {
 				$this->_timestampStart = microtime();
 			for(;;) {
 				$this->_connection = stream_socket_accept($this->_socket, -1);
 				if (isset($this->_connection) && !empty($this->_connection)) {
 					$gatheredRequest = stream_socket_recvfrom($this->_connection, 1000000, STREAM_PEEK);
-
 					//parse Request
-					$gatheredRequestArray = explode("\n", $gatheredRequest);
-					$firstLineByRequestFirst = $gatheredRequestArray[array_key_first($gatheredRequestArray)];
-					$regExCheck = $this->createRegExCheck($gatheredRequest);
-
-					if ( $regExCheck === false ) {
-							continue;
-								//@TODO:later functionality
-						} else {
-							$temporaryUri = $this->parseRequest($gatheredRequestArray);
-							$this -> _responce = $this->fileType($temporaryUri);
-							
-						}
-					
+					$requestArray = $this -> preParseRequestToArray($gatheredRequest);
+					$request = $this -> preParseRequest($gatheredRequest);
+					$regExCheck = $this -> createRegExCheck($request);
+					$this -> checkRequestSecurity($requestArray, $regExCheck);
 					//Set Headers
 					$this -> setResponceToGzip();
 					$this -> setLengthOfResponce();
 					$this -> setFullResponceHeaders();
-					
-					
 					//Write _responce Headers
-					$temporaryHeaders="";
-					if (isset($this->_responceHeaders) && !empty($this->_responceHeaders) && is_array($this->_responceHeaders)) {
-						foreach($this->_responceHeaders as $firstPart => $secondPart) {
-							$temporaryHeaders = $temporaryHeaders . $firstPart." ".$secondPart;
-						}
-					}
-
+					$this -> setHeadersResponce();
 					//Write _responce Content
-					fwrite($this->_connection, $temporaryHeaders . $this -> _responce);
+					fwrite($this->_connection, $this -> _headers_responce . $this -> _responce);
 					$this->_timestampEnd = microtime();
-
 					//Write to console
 					if ( $regExCheck === false ) {
 							//@TODO:later functionality
 						} else {
 							if ($this->_isError === true) {
-								print "  " . $this->_responce . "\n";
+								print "  " . $this -> _responce . "\n";
 							} else {
 								if ($this->_responce === false) {
 									$this->_strSecureMsg = "[ FAULT SECURITY check! ]";
 								}
-								++$numRequests;
-								
-								$time = (string) abs(number_format(floatval(substr($this->_timestampEnd, 0, 9))-floatval(substr($this->_timestampStart, 0, 9)), 4, ".", ""));
-
-								$lineRequest = $gatheredRequestArray[0];
-								print "  |".$numRequests."|".$time."delta|====================>".$lineRequest."  ".$this->_strSecureMsg."\n";
+								print "  |".(++$numRequests)."|".$this->timeDelta()."delta|====================>".$requestArray[0]."  ".$this->_strSecureMsg."\n";
 							}
 							//History of a challenge!!!!!!!
 							WwwwServer::push($this);
@@ -196,6 +174,70 @@ class WwwwServer
 			return true;
 		}
 		return false;
+	}
+	/**
+	*	Middle level of security check.
+	*	@return void
+	**/
+	private function checkRequestSecurity($requestArray,$regExStatus)
+	{
+		if ( $regExStatus === false ) {
+			//@TODO:later functionality
+			} else {
+				$temporaryUri = $this->parseRequest($requestArray);
+				$this -> _responce = $this->fileType($temporaryUri);			
+			}
+	}
+	/**
+	*	Set headders about responce of a request.
+	*	@return void
+	**/
+	private function setHeadersResponce(){
+		$temporaryHeaders="";
+		if (isset($this->_responceHeaders) && !empty($this->_responceHeaders) && is_array($this->_responceHeaders)) {
+			foreach($this->_responceHeaders as $firstPart => $secondPart) {
+				$temporaryHeaders = $temporaryHeaders . $firstPart." ".$secondPart;
+			}
+		}
+		if(isset($temporaryHeaders) && !empty($temporaryHeaders) && is_string($temporaryHeaders) && strlen($temporaryHeaders) > 1) {
+			$this -> _headers_responce = $temporaryHeaders;
+		}
+	}
+	/**
+	*	Delta time for respond of a web server - time for rendering and answer.
+	*	@return mixed
+	**/
+	private function timeDelta(){
+		if(isset($this->_timestampEnd) && !empty($this->_timestampEnd) && isset($this->_timestampStart) && !empty($this->_timestampStart)) {
+			return (string) abs(number_format(floatval(substr($this->_timestampEnd, 0, 9))-floatval(substr($this->_timestampStart, 0, 9)), 4, ".", ""));
+		}
+	}
+	/**
+	*	Parse request to array.
+	*	@return void
+	**/
+	private function preParseRequestToArray($request)
+	{
+		if(isset($request) && !empty($request) && is_string($request) && strlen($request) > 1 ) {
+			$gatheredRequestArray = explode("\n", $request);
+		}
+		if(isset($gatheredRequestArray) && !empty($gatheredRequestArray) && is_array($gatheredRequestArray) && count($gatheredRequestArray) > 1) {
+			return $gatheredRequestArray;
+		}
+	}
+	/**
+	*	Parse request to string.
+	*	@return void
+	**/
+	private function preParseRequest($request)
+	{
+		if(isset($request) && !empty($request) && is_string($request) && strlen($request) > 1 ) {
+			$gatheredRequestArray = explode("\n", $request);
+			$firstLineByRequestFirst = $gatheredRequestArray[array_key_first($gatheredRequestArray)];
+		}
+		if(isset($firstLineByRequestFirst) && !empty($firstLineByRequestFirst) && is_string($firstLineByRequestFirst) && strlen($firstLineByRequestFirst) > 1) {
+			return $firstLineByRequestFirst;
+		}
 	}
 	/**
 	*	2 Gz about all content of _responce.
@@ -454,7 +496,7 @@ class WwwwServer
 	$server1 = new WwwwServer();
 	//Could set the port if it is free about.
 
-	$server1->httpServer(8283, "/home/XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX/Desktop/Documents/");
+	$server1->httpServer(8283, "/home/xXXXXXXXXXXXXXXXX/Desktop/Documents/");
 
 
 
