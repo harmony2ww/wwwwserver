@@ -14,15 +14,18 @@ More stable than ever and secure, of course.
 
 ## Ideas and Target :sunny:
 
-Main goal is to create something workfull about our developing needs.
-In second case I will try to give more about what could be.
-Open source ideas - there get chance to give more, create more and develop more.
+#### Main goal is to create something workfull about our developing needs.
+#### In second case I will try to give more about what could be.
+#### Open source ideas - there get chance to give more, create more and develop more.
+#### There will be more interesting and helpfull features about the web server.
+#### Developing ideas is more complicated proccess, that give me a challenge for future work.
+#### Creating ideas, create open source, creating, developing.
 
 ## Open Source 
 
-It's only open source. 
+It's only open source.  [![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/X0xx-1110/WWWW-Server/blob/main/LICENSE)
 
-### More than a web server 
+#### More than a web server 
 
 ## Getting Started [![Documentation Status](https://readthedocs.org/projects/ansicolortags/badge/?version=latest)](http://ansicolortags.readthedocs.io/?badge=latest)
 
@@ -69,12 +72,12 @@ Inside your browser (http://127.0.0.1:8282/index.php)
 ### [ POST ] ! :heavy_check_mark:
 ### [ GZIP ] ! :heavy_check_mark:
 
+### Cache :heavy_multiplication_x:
 ### HEAD, PUT :heavy_multiplication_x:
 ### encodings :heavy_multiplication_x:
-### Proxy :heavy_multiplication_x:
 ### P2P :heavy_multiplication_x:
 
-## Feature 
+## Features
 
   * Further over all maybe there are variant and for parallel port usage.
   * Obviously the quality of code is more strong than else.
