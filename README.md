@@ -12,15 +12,6 @@ WwwwServer is high speed, secure and stable web server. Includes inside html, ht
 There are possible communication with GET, POST variable about more capabilities. Includes capabilities about fast optimization and testing of all aspects on web developing.
 More stable than ever and secure, of course.
 
-## Ideas and Target :sunny:
-
-#### Main goal is to create something workfull about our developing needs.
-#### In second case I will try to give more about what could be.
-#### Open source ideas - there get chance to give more, create more and develop more.
-#### There will be more interesting and helpfull features about the web server.
-#### Developing ideas is more complicated proccess, that give me a challenge for future work.
-#### Creating ideas, create open source, creating, developing.
-
 ## Open Source 
 
 It's only open source.  [![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/X0xx-1110/WWWW-Server/blob/main/LICENSE)
@@ -87,6 +78,15 @@ Inside your browser (http://127.0.0.1:8282/index.php)
   * Get needs and variants about rendering, else with no case.
   * Least dynamically create and use encodings of a page may be are big, of course.
   * Possible about of course and SSL.
+
+## Ideas and Target :sunny:
+
+* Main goal is to create something workfull about our developing needs.
+* In second case I will try to give more about what could be.
+* Open source ideas - there get chance to give more, create more and develop more.
+* There will be more interesting and helpfull features about the web server.
+* Developing ideas is more complicated proccess, that give me a challenge for future work.
+* Creating ideas, create open source, creating, developing.
 
 ## Authors :copyright: [![Code of Conduct](https://img.shields.io/badge/code%20of-conduct-ff69b4.svg?style=flat)](https://github.com/X0xx-1110/WWWW-Server/blob/main/CODE_OF_CONDUCT.md)
 
