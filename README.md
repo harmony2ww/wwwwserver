@@ -98,14 +98,13 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Feedback 
 
-### "Ask Me all over"  :interrobang: [![Ask Me all over!](https://img.shields.io/badge/Ask%20me-all-over-1abc9c.svg)](https://github.com/X0xx-1110/wwwwServer)
+### "Ask Me all over"  :interrobang: [![Ask Me all over!](https://img.shields.io/badge/Ask%20me%20all%20over-1abc9c.svg)](https://github.com/X0xx-1110/wwwwServer)
 
 if there are something missing, or something more, or something else.
 Ask me anything!
 
 ## Acknowledgments
 
-[![forthebadge made-with-php](http://ForTheBadge.com/images/badges/made-with-php.svg)](https://www.php.net/)
 * About inspiration and motivation all happans with these skills.
 * Inspiration at all, but over that we will be better with good ideas.
 * About Inspiration, motivation, ideas of all creative dreams araound.
