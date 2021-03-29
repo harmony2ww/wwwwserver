@@ -272,7 +272,8 @@ class WwwwServer
 		$this->setResponceHeaders("Keep-Alive:", "1\r\n");
 		$this->setResponceHeaders("Date:", date( DATE_RFC2822 )."\r\n");
 		$this->setResponceHeaders("Server:", "WwwwServer 1\r\n");
-		$this->setResponceHeaders("Content-Type:", $this -> _content_type . "; charset=utf-8\r\n");
+		//$this->setResponceHeaders("Content-Type:", $this -> _content_type . "; charset=utf-8\r\n");
+		$this->setResponceHeaders("Content-Type:", "text/html; charset=utf-8\r\n");
 		$this->setResponceHeaders("Content-Encoding:", "gzip\r\n");
 		$this->setResponceHeaders("Content-Language:", "en\r\n");
 		$this->setResponceHeaders("Content-Length:", $this -> _contentLength . "\r\n");
@@ -288,7 +289,7 @@ class WwwwServer
 		$extension = substr($firstLineRquest[1], strpos($firstLineRquest[1],"."));
 		$object=json_decode($this->fileRead($this->_mime_file));
 		if(isset($object) && !empty($object) && is_object($object)) {
-			$this -> _content_type = $array -> $extension;
+			$this -> _content_type = $object -> $extension;
 		}
 	}
 	/**
@@ -498,7 +499,7 @@ class WwwwServer
 
 	$server1 = new WwwwServer();
 	//Could set the port if it is free about.
-	$server1->httpServer(8283, "/home/xxxxxxxxxxxx/Desktop/Documents/");
+	$server1->httpServer(8283, "/home/xxxxxxxxxxxxxxx/Desktop/Documents/");
 
 
 
