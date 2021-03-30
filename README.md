@@ -44,8 +44,10 @@ $server = new WwwwServer();
 $server->httpServer(8282, "/home/XXXX/Desktop/www1/" );
 ```
 
+
 ### *** And Of course if you made changes over web_server.php you need to restart it into terminal again.
-### *** It is a web server!
+
+
 
 
 ## Running the tests
@@ -75,8 +77,9 @@ private array $_securityFilesWeb = [ "", "index.php", "index.html", "index.htm" 
 ```
 
 
+
 ### *** And Of course if you made changes over web_server.php you need to restart it into terminal again.
-### *** It is a web server!
+
 
 
 ## Latest 
