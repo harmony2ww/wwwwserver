@@ -81,13 +81,16 @@ private array $_securityFilesWeb = [ "", "index.php", "index.html", "index.htm" 
 ### *** And Of course if you made changes over web_server.php you need to restart it into terminal again.
 
 
+## Example 4; How could add a content-type:
+Just need to add file extension and content-type to your mime.json file.
+
+
 
 ## Latest 
 
 ### [ GET ] ! :heavy_check_mark:
 ### [ POST ] ! :heavy_check_mark:
 ### [ GZIP ] ! :heavy_check_mark:
-
 ### Cache :heavy_multiplication_x:
 ### HEAD, PUT :heavy_multiplication_x:
 ### encodings :heavy_check_mark:
@@ -96,7 +99,6 @@ private array $_securityFilesWeb = [ "", "index.php", "index.html", "index.htm" 
 
   * Further over all maybe there are variant and for parallel port usage.
   * Obviously the quality of code is more strong than else.
-  * There could be the effectively common generated dynamically variables about HEAD.
   * The variables could be $POSTtextOfAll, $POSTtextCrapped, $GETpageNotFound, $HEADcheck, $HEADcheckAtNow.
   * There needs about dynamically port change and further work on it.
   * Get needs and variants about rendering, else with no case.
@@ -108,8 +110,6 @@ private array $_securityFilesWeb = [ "", "index.php", "index.html", "index.htm" 
 * Main goal is to create something workfull about our developing needs.
 * In second case I will try to give more about what could be.
 * Open source ideas - there get chance to give more, create more and develop more.
-* There will be more interesting and helpfull features about the web server.
-* Developing ideas is more complicated proccess, that give me a challenge for future work.
 * Creating ideas, create open source, creating, developing.
 
 ## Authors :copyright: [![Code of Conduct](https://img.shields.io/badge/code%20of-conduct-ff69b4.svg?style=flat)](https://github.com/X0xx-1110/WWWW-Server/blob/main/CODE_OF_CONDUCT.md)
@@ -125,7 +125,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Feedback 
 
-### "Ask Me all over"  :interrobang: [![Ask Me all over!](https://img.shields.io/badge/Ask%20me%20all%20over-1abc9c.svg)](https://github.com/X0xx-1110/wwwwServer)
+### "Ask Me all over"  :interrobang: [![Ask Me all over net!](https://img.shields.io/badge/Ask%20me%20all%20over-1abc9c.svg)](https://github.com/X0xx-1110/wwwwServer)
 
 if there are something missing, or something more, or something else.
 Ask me anything!
