@@ -24,13 +24,13 @@ error_reporting( 0 );
 **/
 class WwwwServer
 {
-	
 	protected string $phpVersion = "8.0";   //7.0//7.4 //5
 	protected string $protocol = 'tcp';     //Could only be!
 	private string $_webDirectory = "";
 	private string $_address = '127.0.0.1'; //Feel free!
-	private string $_mime_file = 'mime.json';
-	private string $_file_extension = '';
+	private string $_mimeFile = 'mime.json';
+	private string $_directoryLog = '__LOG__/';
+	private array $_filesLog=["basic.log", "security.log", "request.log", "response.log", "content_type.log", "remote_host.log", "queries.log", "response_len.log"];
 	private string $_content_type = '';
 	private array $_responceHeaders = [ ];
 	private int $_contentLength = 2048;
@@ -43,7 +43,7 @@ class WwwwServer
 	private bool $_isError = false;
 	private array $_excludedFilesTerminal = [".css", ".ico", ".js"];
 	private array $_excludedFilesWeb = [ ".ico" ];
-	private bool $_securityArrayStatuses = false;
+	private bool $_securityArrayStatuses = true;
 	private array $_securityArray = ["'", '"', ";", "\\", "\\\\", "\\\\\\", "\\\\\\\\", "^", ")", "(", "+", "*", "$", "//", "!"];
 	private bool $_securityFilesWebStataStuses = false;
 	private array $_securityFilesWeb = ["", "index.php", "index.html", "index.htm"];
@@ -117,7 +117,7 @@ class WwwwServer
 		} else {
 			$this -> _timestampStart = microtime();
 			for(;;) {
-				$this ->_ connection = stream_socket_accept($this -> _socket, -1);
+				$this -> _connection = stream_socket_accept($this -> _socket, -1);
 				if (isset($this -> _connection) && ! empty($this -> _connection)) {
 					$gatheredRequest = stream_socket_recvfrom($this->_connection, 1000000, STREAM_PEEK);
 					//parse Request
@@ -292,7 +292,7 @@ class WwwwServer
 	{
 		$firstLineRquest = explode(" ", $arrayOfRequest[0]);
 		$extension = substr($firstLineRquest[1], strpos($firstLineRquest[1], "."));
-		$object = json_decode($this -> fileRead($this -> _mime_file));
+		$object = json_decode($this -> fileRead($this -> _mimeFile));
 		if (isset($object) && ! empty($object) && is_object($object)) {
 			$this -> _content_type = $object -> $extension;
 		}
