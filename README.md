@@ -70,7 +70,7 @@ private bool $_securityFilesWebStataStuses = false;
 or 
 
 
-## Example 3: If you wnat to open files pdf, txt, jpeg or html you must to add exactly file to property:
+## Example 3: If you want to open files pdf, txt, jpeg or html you must to add exactly file to property:
 
 ```php
 private array $_securityFilesWeb = [ "", "index.php", "index.html", "index.htm" , "aaaaaaAAA.jpeg", "BaBash.txt"];
