@@ -60,7 +60,17 @@ Then we get the web server on (http://127.0.0.1:8282/)
 Inside your browser (http://127.0.0.1:8282/index.php)
 
 
-## Example 2: If you wnat to open files pdf, txt, jpeg or html you must to add exactly file to property:
+
+## Example 2: If you wnat close security checks then:
+```php
+private bool $_securityArrayStatuses = false;
+private bool $_securityFilesWebStataStuses = false;
+```
+
+or 
+
+
+## Example 3: If you wnat to open files pdf, txt, jpeg or html you must to add exactly file to property:
 
 ```php
 private array $_securityFilesWeb = [ "", "index.php", "index.html", "index.htm" , "aaaaaaAAA.jpeg", "BaBash.txt"];
