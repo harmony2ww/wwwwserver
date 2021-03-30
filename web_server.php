@@ -43,7 +43,9 @@ class WwwwServer
 	private bool $_isError = false;
 	private array $_excludedFilesTerminal = [ ".css", ".ico", ".js" ];
 	private array $_excludedFilesWeb = [ ".ico" ];
+	private bool $_securityArrayStatuses = false;
 	private array $_securityArray = [ "'", '"', ";", "\\", "\\\\", "\\\\\\", "\\\\\\\\", "^", ")", "(", "+", "*", "$", "//", "!" ];
+	private bool $_securityFilesWebStataStuses = false;
 	private array $_securityFilesWeb = [ "", "index.php", "index.html", "index.htm" ];
 	private string $_strSecureMsg = '';
 
@@ -164,20 +166,23 @@ class WwwwServer
 		$regEx = "";
 		$lines = explode("\n",$gathered);
 		$line = $lines[0];
-		if (isset($this->_securityFilesWeb) && !empty($this->_securityFilesWeb) && is_array($this->_securityFilesWeb) && count($this->_securityFilesWeb)) {
-			foreach($this->_securityFilesWeb as $acceptable) {
-				if (isset($acceptable) && !empty($acceptable)) {
-					$regEx .= str_replace(".", "\.", $acceptable) . "|"; 
-				} 
+		if($this -> _securityFilesWeb === true) {
+			if (isset($this->_securityFilesWeb) && !empty($this->_securityFilesWeb) && is_array($this->_securityFilesWeb) && count($this->_securityFilesWeb)) {
+				foreach($this->_securityFilesWeb as $acceptable) {
+					if (isset($acceptable) && !empty($acceptable)) {
+						$regEx .= str_replace(".", "\.", $acceptable) . "|"; 
+					} 
+				}
 			}
-		}
-		if (isset($line) && !empty($line)) {
-			preg_match("/".substr($regEx,0,-1)."/", $line, $matches);
-		}
-		if (isset($matches) && !empty($matches) && count($matches) > 0 ) {
+			if (isset($line) && !empty($line)) {
+				preg_match("/".substr($regEx,0,-1)."/", $line, $matches);
+			}
+			if (isset($matches) && !empty($matches) && count($matches) > 0 ) {
+				return true;
+			}
+		} else {
 			return true;
 		}
-		return false;
 	}
 	/**
 	*	Middle level of security check.
@@ -272,8 +277,8 @@ class WwwwServer
 		$this->setResponceHeaders("Keep-Alive:", "1\r\n");
 		$this->setResponceHeaders("Date:", date( DATE_RFC2822 )."\r\n");
 		$this->setResponceHeaders("Server:", "WwwwServer 1\r\n");
-		//$this->setResponceHeaders("Content-Type:", $this -> _content_type . "; charset=utf-8\r\n");
-		$this->setResponceHeaders("Content-Type:", "text/html; charset=utf-8\r\n");
+		$this->setResponceHeaders("Content-Type:", $this -> _content_type . "; charset=utf-8\r\n");
+		//$this->setResponceHeaders("Content-Type:", "text/html; charset=utf-8\r\n");
 		$this->setResponceHeaders("Content-Encoding:", "gzip\r\n");
 		$this->setResponceHeaders("Content-Language:", "en\r\n");
 		$this->setResponceHeaders("Content-Length:", $this -> _contentLength . "\r\n");
@@ -384,7 +389,10 @@ class WwwwServer
 	private function securityCheckWebFiles($request)
 	{
 		$filename = basename($request);
-		if (isset($filename) && !empty($filename) && is_string($filename) && strlen($filename) > 1 && in_array($filename, $this->_securityFilesWeb)) {
+		if (isset($filename) && !empty($filename) && is_string($filename) && strlen($filename) > 1 && $this->_securityFilesWebStatues === true && in_array($filename, $this->_securityFilesWeb)) {
+			return true;
+		}
+		if( $this->_securityFilesWebStatues === true ) {
 			return true;
 		}
 		return false;
@@ -397,7 +405,11 @@ class WwwwServer
 	**/
 	private function fileType($temporaryUri)
 	{
-		if ($this->securityCheck($temporaryUri["x_file"]) === false || $this->securityCheckWebFiles($temporaryUri["x_file"]) === false) {
+		
+		if ($this->securityCheck($temporaryUri["x_file"]) === false && $this -> _securityArrayStatuses === true ) {
+			return false;
+		}
+		if ($this->securityCheckWebFiles($temporaryUri["x_file"]) === false && $this -> _securityFilesWebStataStuses === true) {
 			return false;
 		}
 		if ( isset($temporaryUri["x_file"]) && !empty($temporaryUri["x_file"]) && !is_file($temporaryUri["x_file"])) {
@@ -426,7 +438,7 @@ class WwwwServer
 				return shell_exec("/usr/bin/php -r ' ".$this -> webVariables( $temporaryUri["x_file"], $temporaryUri["x_protocol"], $temporaryUri["x_data_REQUEST"] )." include_once(\"". $this -> webDir.$temporaryUri["x_file"]."\"); ' ");
 			} else {
 				if( isset($temporaryUri["x_file"]) && !empty($temporaryUri["x_file"]) && strpos($temporaryUri["x_file"],".")!==false && strlen($temporaryUri["x_file"]) > 3 && is_file($this -> webDir.$temporaryUri["x_file"]) && is_readable($this -> webDir.$temporaryUri["x_file"]) ) {
-					return $this->readFile($this -> webDir.$temporaryUri["x_file"]);
+					return $this->fileRead($this -> webDir.$temporaryUri["x_file"]);
 				}
 				return false;
 			}
@@ -499,7 +511,7 @@ class WwwwServer
 
 	$server1 = new WwwwServer();
 	//Could set the port if it is free about.
-	$server1->httpServer(8283, "/home/xxxxxxxxxxxxxxx/Desktop/Documents/");
+	$server1->httpServer(8283, "/home/xxxxxxxxxxxxxx/Desktop/Documents/");
 
 
 

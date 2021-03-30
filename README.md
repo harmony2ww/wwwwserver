@@ -51,10 +51,23 @@ sudo php8.0 web_server.php
 ```
 Then we get the web server on (http://127.0.0.1:8282/)
 
+### *** And Of course if you made changes over web_server.php you need to restart it into terminal again.
+### *** It is a web server!
+
 
 
 ## Example: [![Version](https://badge.fury.io/gh/tterb%2FHyde.svg)](https://badge.fury.io/gh/tterb%2FHyde)
 Inside your browser (http://127.0.0.1:8282/index.php)
+
+
+## Example 2: If you wnat to open files pdf, txt, jpeg or html you must to add exactly file to property:
+
+```php
+private array $_securityFilesWeb = [ "", "index.php", "index.html", "index.htm" , "aaaaaaAAA.jpeg", "BaBash.txt"];
+```
+
+### *** And Of course if you made changes over web_server.php you need to restart it into terminal again.
+### *** It is a web server!
 
 
 ## Latest 
@@ -65,8 +78,7 @@ Inside your browser (http://127.0.0.1:8282/index.php)
 
 ### Cache :heavy_multiplication_x:
 ### HEAD, PUT :heavy_multiplication_x:
-### encodings :heavy_multiplication_x:
-### P2P :heavy_multiplication_x:
+### encodings :heavy_check_mark:
 
 ## Features
 
