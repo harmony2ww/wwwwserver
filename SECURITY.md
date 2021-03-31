@@ -12,7 +12,16 @@ directions:
  * ISP
  * diferent levelvs of internet service providers.
  * Web hosting
- * Providers of services.
+ * Providers of a services.
+
+Obviously main target of all security points is a good reason, that implements an idea
+of be secure - may I close a back, that everybay wish to this option.
+"Close about is there are full secure?"
+Of a good secure I could speaking about a time period like it is secure about 10 years
+or 15 years. In this case of cource our point of view is upto source code and it's mainteance
+of it is. Good on.  
+
+
 
 ## Full life cyrcle about security is most common thing to success.
  Its a direction point to point with much of these obviously aspects of depends.
@@ -20,8 +29,11 @@ directions:
 ## What depend of developer of source code?
 
 ### Full life cyrcle of a security over source code is a right, common and base point of view about success.
-
-
+All aspects and variants of systems that are close in contact with a source code could be integrate inside 
+of an idea about full-life-cyrcle security of a source code. 
+It's not enough to made a full secure open  source code maybe not enough and it is very much complicated 
+in this situation can say secure code. And to create variants to be full secure.
+Otherwise could there be much lose of these. 
 
 
 ## Supported Versions
