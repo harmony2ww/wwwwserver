@@ -8,15 +8,14 @@
 [![GitHub watchers](https://img.shields.io/github/watchers/X0xx-1110/WWWW-Server.svg?style=social&label=Watch&maxAge=2592000)](https://GitHub.com/X0xx-1110/WWWW-Server/watchers/)
 [![GitHub followers](https://img.shields.io/github/followers/X0xx-1110.svg?style=social&label=Follow&maxAge=2592000)](https://github.com/X0xx-1110?tab=followers)
 
-WwwwServer is high speed, secure and stable web server. Includes inside html, htm, txt, xml, php5, php7.0, php7.4, php8.0 rending of all. 
-There are possible communication with GET, POST variable about more capabilities. Includes capabilities about fast optimization and testing of all aspects on web developing.
-More stable than ever and secure, of course.
+WwwwServer is high speed, secure and stable web server. Includes inside meny mime types of all. 
+There are possible examination of GET, POST variable about more capabilities. Includes about fast optimization and testing of all aspects on web developing.
+Stable than ever and secure, of course.
 
 ## Open Source 
 
 It's only open source.  [![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/X0xx-1110/WWWW-Server/blob/main/LICENSE)
 
-#### More than a web server 
 
 ## Getting Started [![Documentation Status](https://readthedocs.org/projects/ansicolortags/badge/?version=latest)](http://ansicolortags.readthedocs.io/?badge=latest)
 
@@ -49,13 +48,14 @@ $server->httpServer(8282, "/home/XXXX/Desktop/www1/" );
 
 
 
-
 ## Running the tests
 
 ```bash
 sudo php8.0 web_server.php
 ```
+
 Then we get the web server on (http://127.0.0.1:8282/)
+
 
 ## Example: [![Version](https://badge.fury.io/gh/tterb%2FHyde.svg)](https://badge.fury.io/gh/tterb%2FHyde)
 Inside your browser (http://127.0.0.1:8282/index.php)
@@ -67,18 +67,19 @@ private bool $_securityArrayStatuses = false;
 private bool $_securityFilesWebStataStuses = false;
 ```
 
-or 
+## or 
 
 
 ## Example 3: If you want to open files pdf, txt, jpeg or html you must to add exactly file to property:
+
 
 ```php
 private array $_securityFilesWeb = [ "", "index.php", "index.html", "index.htm" , "aaaaaaAAA.jpeg", "BaBash.txt"];
 ```
 
 
-
 ### *** And Of course if you made changes over web_server.php you need to restart it into terminal again.
+
 
 
 ## Example 4; How could add a content-type:
@@ -92,18 +93,23 @@ Just need to add file extension and content-type to your mime.json file.
 ### [ POST ] ! :heavy_check_mark:
 ### [ GZIP ] ! :heavy_check_mark:
 ### Cache :heavy_multiplication_x:
+### Cookie :heavy_multiplication_x:
 ### HEAD, PUT :heavy_multiplication_x:
-### encodings :heavy_check_mark:
+### MIME :heavy_check_mark:
+### LOG :heavy_check_mark:
 
 ## Features
 
   * Further over all maybe there are variant and for parallel port usage.
   * Obviously the quality of code is more strong than else.
-  * The variables could be $POSTtextOfAll, $POSTtextCrapped, $GETpageNotFound, $HEADcheck, $HEADcheckAtNow.
   * There needs about dynamically port change and further work on it.
   * Get needs and variants about rendering, else with no case.
   * Least dynamically create and use encodings of a page may be are big, of course.
   * Possible about of course and SSL.
+  * more usefull.
+  * most secure.
+  * more stable.
+
 
 ## Ideas and Target :sunny:
 
@@ -111,6 +117,7 @@ Just need to add file extension and content-type to your mime.json file.
 * In second case I will try to give more about what could be.
 * Open source ideas - there get chance to give more, create more and develop more.
 * Creating ideas, create open source, creating, developing.
+* There could meny functionality will increase.
 
 ## Authors :copyright: [![Code of Conduct](https://img.shields.io/badge/code%20of-conduct-ff69b4.svg?style=flat)](https://github.com/X0xx-1110/WWWW-Server/blob/main/CODE_OF_CONDUCT.md)
 
@@ -118,9 +125,12 @@ Just need to add file extension and content-type to your mime.json file.
 
 See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
+
+
 ## License [![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/X0xx-1110/WWWW-Server/blob/main/LICENSE)
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
+
 
 
 ## Feedback 
@@ -130,8 +140,11 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 if there are something missing, or something more, or something else.
 Ask me anything!
 
+
+
 ## Acknowledgments
 
 * About inspiration and motivation all happans with these skills.
 * Inspiration at all, but over that we will be better with good ideas.
 * About Inspiration, motivation, ideas of all creative dreams araound.
+* And so on.
