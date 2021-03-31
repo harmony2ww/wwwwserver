@@ -117,7 +117,7 @@ Just need to add file extension and content-type to your mime.json file.
 * In second case I will try to give more about what could be.
 * Open source ideas - there get chance to give more, create more and develop more.
 * Creating ideas, create open source, creating, developing.
-* There could meny functionality will increase.
+* There could many functionality will increase.
 
 ## Authors :copyright: [![Code of Conduct](https://img.shields.io/badge/code%20of-conduct-ff69b4.svg?style=flat)](https://github.com/X0xx-1110/WWWW-Server/blob/main/CODE_OF_CONDUCT.md)
 
