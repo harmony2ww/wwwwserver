@@ -30,11 +30,11 @@ class WwwwServer
 	private string $_address = '127.0.0.1'; //Feel free!
 	private string $_mimeFile = 'mime.json';
 	private string $_directoryLog = '__LOG__/';
-	private array $_filesLog=["basic.log", "security.log", "request.log", "response.log", "content_type.log", "remote_host.log", "queries.log", "response_len.log"];
 	private string $_content_type = '';
-	private array $_responceHeaders = [ ];
+	private array $_responceHeaders = [];
 	private int $_contentLength = 2048;
 	private string $_responce = "";
+	private string $_responceNoGzip = "";
 	private string $_headers_responce = "";
 	private mixed $_socket;
 	private mixed $_connection;
@@ -101,6 +101,7 @@ class WwwwServer
 	public function httpServer($port, $webDirectoryOfUse)
 	{
 		$numRequests = 0;
+		$countRequests = 0;
 		if (isset($webDirectoryOfUse) && ! empty($webDirectoryOfUse) && strlen($webDirectoryOfUse) > 1 && is_dir($webDirectoryOfUse)) {
 			$this->setDir( $webDirectoryOfUse );
 		} else {
@@ -122,16 +123,18 @@ class WwwwServer
 					$gatheredRequest = stream_socket_recvfrom($this->_connection, 1000000, STREAM_PEEK);
 					//parse Request
 					$requestArray = $this -> preParseRequestToArray($gatheredRequest);
+					
 					$request = $this -> preParseRequest($gatheredRequest);
 					$regExCheck = $this -> createRegExCheck($request);
 					$this -> checkRequestSecurity($requestArray, $regExCheck);
-					$this -> setContentTypeString( $requestArray );
+					$this -> setContentTypeString($requestArray);
 					//Set Headers
 					$this -> setResponceToGzip();
 					$this -> setLengthOfResponce();
 					$this -> setFullResponceHeaders();
 					//Write _responce Headers
 					$this -> setHeadersResponce();
+
 					//Write _responce Content
 					fwrite($this -> _connection, $this -> _headers_responce.$this -> _responce);
 					$this -> _timestampEnd = microtime();
@@ -140,17 +143,25 @@ class WwwwServer
 							//@TODO:later functionality
 						} else {
 							if ($this -> _isError === true) {
-								print "  ".$this -> _responce."\n";
+								//print "  ".$this -> _responce."\n";
 							} else {
 								if ($this -> _responce === false) {
 									$this -> _strSecureMsg = "[ FAULT SECURITY check! ]";
+									$this -> log("security.log", $numRequests, $this -> $requestArray[0]."[ FAULT SECURITY check! ]");
 								}
 								print "  |".(++$numRequests)."|".$this->timeDelta()."delta|====================>".$requestArray[0]."  ".$this->_strSecureMsg."\n";
 							}
 							//History of a challenge!!!!!!!
 							WwwwServer::push($this);
 						}
-
+					++$countRequests;
+					$this -> log("request.log", $countRequests, trim($requestArray[0])."----".trim($requestArray[0]));
+					$this -> log("user_agent.log", $countRequests, trim($requestArray[0])."----".trim($requestArray[5]));
+					$this -> log("reffer.log", $countRequests, trim($requestArray[0])."----".trim($requestArray[11]));
+					$this -> log("content_type.log", $countRequests, trim($requestArray[0])."----".trim($this -> _content_type));
+					$this -> log("length_responce.log", $countRequests, trim($requestArray[0])."----".trim($this -> _contentLength));
+					$this -> log("response.log", $countRequests, trim($requestArray[0])."----".trim($this -> _responceHeaders["HTTP/1.1"]));
+					$this -> log("request_data.log", $countRequests, trim($requestArray[0])."----".trim($this -> _responceNoGzip));
 					fclose($this -> _connection);
 				}
 			}
@@ -291,7 +302,12 @@ class WwwwServer
 	private function setContentTypeString($arrayOfRequest)
 	{
 		$firstLineRquest = explode(" ", $arrayOfRequest[0]);
-		$extension = substr($firstLineRquest[1], strpos($firstLineRquest[1], "."));
+		if( strpos($firstLineRquest[1], "?") !== false) {
+			$deltaLen = strpos($firstLineRquest[1], "?") - strpos($firstLineRquest[1], ".");
+			$extension = substr($firstLineRquest[1], strpos($firstLineRquest[1], "."), $deltaLen);
+		} else {
+					$extension = substr($firstLineRquest[1], strpos($firstLineRquest[1], "."));
+				}
 		$object = json_decode($this -> fileRead($this -> _mimeFile));
 		if (isset($object) && ! empty($object) && is_object($object)) {
 			$this -> _content_type = $object -> $extension;
@@ -327,6 +343,22 @@ class WwwwServer
 			if (isset($read) && ! empty($read) && strlen($read) > 1) {
 				return $read;
 			}
+		}
+		return false;
+	}
+	//Basic file write
+	/**
+	*	My opinion about write a file and much of possibles upgrades.
+	*	@return bool
+	**/
+	private function fileWrite($filename, $id, $message)
+	{
+		if(isset($filename) && ! empty($filename) && is_string($filename) && strlen($filename) > 4 && isset($message) && ! empty($message) && is_string($message) && strlen($message) > 1) {
+			touch($filename);
+			$handling = fopen($filename, "a+");
+			fwrite($handling,  "[".$id."]-[".date(DATE_RFC2822)."]-".$message."\n");
+			fclose($handling);
+			return true;
 		}
 		return false;
 	}
@@ -460,6 +492,7 @@ class WwwwServer
 						$temporaryVar = explode("=", $vars);
 						$new_arr[$temporaryVar[0]] = $temporaryVar[1];
 					}
+					$this -> _responceNoGzip = json_encode($new_arr);
 				}
 			}
 		}
@@ -503,6 +536,21 @@ class WwwwServer
 		}
 		return $strPhpCodeOne;
 	}
+	/**
+	*	Dynamically log oposite data into file and create directory about logs!
+	*	@return bool
+	**/
+	private function log($file, $id, $message)
+	{
+		if(! is_dir($this -> _directoryLog)){
+			mkdir($this -> _directoryLog, 0777);
+			chmod($this -> _directoryLog, 0777);
+		}
+		if($this->fileWrite(getcwd()."/".$this -> _directoryLog.$file, $id, $message)) {
+			return true;
+		}
+		return false;
+	}
 }
 
 
@@ -510,7 +558,7 @@ class WwwwServer
 
 	$server1 = new WwwwServer();
 	//Could set the port if it is free about.
-	$server1 -> httpServer(8283, "/home/XXXXXXXXXXXXXXXXXXXXXXXXXXXXX/Desktop/Documents/");
+	$server1 -> httpServer(8283, "/home/xxxxxxxxxxxxx/Desktop/Documents/");
 
 
 
