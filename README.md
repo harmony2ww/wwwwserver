@@ -39,8 +39,8 @@ else there are console error.
 ## Starting
 
 ```php
-$server = new WwwwServer();
-$server->httpServer(8282, "/home/XXXX/Desktop/www1/" );
+$server = new Server();
+$server -> handle(8282, "/home/XXXX/Desktop/www1/" );
 ```
 
 
@@ -51,7 +51,7 @@ $server->httpServer(8282, "/home/XXXX/Desktop/www1/" );
 ## Running the tests
 
 ```bash
-sudo php8.0 web_server.php
+sudo php8.0 Server.php
 ```
 
 Then we get the web server on (http://127.0.0.1:8282/)
