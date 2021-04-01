@@ -129,7 +129,7 @@ class WwwwServer
 					$this -> checkRequestSecurity($requestArray, $regExCheck);
 					$this -> setContentTypeString($requestArray);
 					//Set Headers
-					$this -> setResponceToGzip();
+					$this -> setResponceToGzipDeflate();
 					$this -> setLengthOfResponce();
 					$this -> setFullResponceHeaders();
 					//Write _responce Headers
@@ -265,9 +265,9 @@ class WwwwServer
 	*	2 Gz about all content of _responce.
 	*	@return void
 	**/
-	private function setResponceToGzip()
+	private function setResponceToGzipDeflate()
 	{
-		$this -> _responce = gzencode($this -> _responce, 9);
+		$this -> _responce = gzdeflate(gzencode($this -> _responce, 9), 9);
 	}
 	/**
 	*	Length of a _responce inside a property.
@@ -289,8 +289,7 @@ class WwwwServer
 		$this -> setResponceHeaders("Date:", date( DATE_RFC2822 )."\r\n");
 		$this -> setResponceHeaders("Server:", "WwwwServer 1\r\n");
 		$this -> setResponceHeaders("Content-Type:", $this -> _content_type."; charset=utf-8\r\n");
-		//$this->setResponceHeaders("Content-Type:", "text/html; charset=utf-8\r\n");
-		$this -> setResponceHeaders("Content-Encoding:", "gzip\r\n");
+		$this -> setResponceHeaders("Content-Encoding:", "gzip, deflate\r\n");
 		$this -> setResponceHeaders("Content-Language:", "en\r\n");
 		$this -> setResponceHeaders("Content-Length:", $this -> _contentLength."\r\n");
 		$this -> setResponceHeaders("Connection:", "close\r\n\r\n");
@@ -451,28 +450,37 @@ class WwwwServer
 			$this -> _isError = true;
 			return "400 Bad Request!===========>Could not read from file!";
 		}
-		if (isset($temporaryUri["x_file"]) && ! empty($temporaryUri["x_file"]) && strlen($temporaryUri["x_file"]) > 1) {
-			if (strpos($temporaryUri["x_file"], "php") !== false && $this -> phpVersion === "8.0") {
-				$this -> _isError = false;
-				return shell_exec("/usr/bin/php8.0  -r ' ".$this -> webVariables($temporaryUri["x_file"], $temporaryUri["x_protocol"], $temporaryUri["x_data_REQUEST"] )." include_once(\"".$this -> webDir.$temporaryUri["x_file"]."\"); ' ");
-			}
-			elseif (strpos($temporaryUri["x_file"], "php") !== false && $this -> phpVersion === "7.4") {
-				$this -> _isError = false;
-				return shell_exec("/usr/bin/php7.4 -r ' ".$this -> webVariables($temporaryUri["x_file"], $temporaryUri["x_protocol"], $temporaryUri["x_data_REQUEST"])." include_once(\"".$this -> webDir.$temporaryUri["x_file"]."\"); ' ");
-			}
-			elseif (strpos($temporaryUri["x_file"], "php") !== false && $this -> phpVersion==="7.0") {
-				$this -> _isError = false;
-				return shell_exec("/usr/bin/php7.0 -r ' ".$this -> webVariables($temporaryUri["x_file"], $temporaryUri["x_protocol"], $temporaryUri["x_data_REQUEST"])." include_once(\"".$this -> webDir.$temporaryUri["x_file"]."\"); ' ");
-			}
-			elseif (strpos($temporaryUri["x_file"], "php") !== false && $this -> phpVersion === "5") {
-				$this -> _isError = false;
-				return shell_exec("/usr/bin/php -r ' ".$this -> webVariables($temporaryUri["x_file"], $temporaryUri["x_protocol"], $temporaryUri["x_data_REQUEST"])." include_once(\"".$this -> webDir.$temporaryUri["x_file"]."\"); ' ");
-			} else {
-				if( isset($temporaryUri["x_file"]) && !empty($temporaryUri["x_file"]) && strpos($temporaryUri["x_file"], ".")!==false && strlen($temporaryUri["x_file"]) > 3 && is_file($this -> webDir.$temporaryUri["x_file"]) && is_readable($this -> webDir.$temporaryUri["x_file"]) ) {
-					return $this -> fileRead($this -> webDir.$temporaryUri["x_file"]);
+		if($temporaryUri["x_protocol"] != "HEAD" && $temporaryUri["x_protocol"] != "PING") {
+			if (isset($temporaryUri["x_file"]) && ! empty($temporaryUri["x_file"]) && strlen($temporaryUri["x_file"]) > 1) {
+				if (strpos($temporaryUri["x_file"], "php") !== false && $this -> phpVersion === "8.0") {
+					$this -> _isError = false;
+					return shell_exec("/usr/bin/php8.0  -r ' ".$this -> webVariables($temporaryUri["x_file"], $temporaryUri["x_protocol"], $temporaryUri["x_data_REQUEST"] )." include_once(\"".$this -> webDir.$temporaryUri["x_file"]."\"); ' ");
 				}
-				return false;
+				elseif (strpos($temporaryUri["x_file"], "php") !== false && $this -> phpVersion === "7.4") {
+					$this -> _isError = false;
+					return shell_exec("/usr/bin/php7.4 -r ' ".$this -> webVariables($temporaryUri["x_file"], $temporaryUri["x_protocol"], $temporaryUri["x_data_REQUEST"])." include_once(\"".$this -> webDir.$temporaryUri["x_file"]."\"); ' ");
+				}
+				elseif (strpos($temporaryUri["x_file"], "php") !== false && $this -> phpVersion==="7.0") {
+					$this -> _isError = false;
+					return shell_exec("/usr/bin/php7.0 -r ' ".$this -> webVariables($temporaryUri["x_file"], $temporaryUri["x_protocol"], $temporaryUri["x_data_REQUEST"])." include_once(\"".$this -> webDir.$temporaryUri["x_file"]."\"); ' ");
+				}
+				elseif (strpos($temporaryUri["x_file"], "php") !== false && $this -> phpVersion === "5") {
+					$this -> _isError = false;
+					return shell_exec("/usr/bin/php -r ' ".$this -> webVariables($temporaryUri["x_file"], $temporaryUri["x_protocol"], $temporaryUri["x_data_REQUEST"])." include_once(\"".$this -> webDir.$temporaryUri["x_file"]."\"); ' ");
+				} else {
+					if( isset($temporaryUri["x_file"]) && !empty($temporaryUri["x_file"]) && strpos($temporaryUri["x_file"], ".")!==false && strlen($temporaryUri["x_file"]) > 3 && is_file($this -> webDir.$temporaryUri["x_file"]) && is_readable($this -> webDir.$temporaryUri["x_file"]) ) {
+						return $this -> fileRead($this -> webDir.$temporaryUri["x_file"]);
+					}
+					return false;
+				}
 			}
+		}
+		if($temporaryUri["x_protocol"] == "HEAD") {
+			//@TODO: later functionality of starting a function that calculate the HEAD protocul starting functions.
+			return "";
+		}
+		if($temporaryUri["x_protocol"] == "PING") {
+			return "";
 		}
 		$this -> _isError = true;
 		return "400 Bad Request!===========>Could not execute anithing!";
@@ -483,21 +491,19 @@ class WwwwServer
 	**/
 	private function parseWebGetVars($protocol, $webVars)
 	{
-		$new_arr = array();
-		if (isset($protocol) && ! empty($protocol) && ($protocol=="GET" || $protocol=="POST")) {
+		$newArr = array();
+		$newArrNotReturned = array();
+		if (isset($protocol) && ! empty($protocol) && ($protocol == "GET" || $protocol == "POST" || $protocol == "HEAD")) {
 			if (isset($webVars) && ! empty($webVars) && is_string($webVars) && strlen($webVars) > 1) {
 				$parsedVars = explode("&", $webVars);
 				if (isset($parsedVars) && ! empty($parsedVars) && is_array($parsedVars) && count($parsedVars)) {
 					foreach ($parsedVars as $vars) {
 						$temporaryVar = explode("=", $vars);
-						$new_arr[$temporaryVar[0]] = $temporaryVar[1];
+						$newArr[$temporaryVar[0]] = $temporaryVar[1];
 					}
-					$this -> _responceNoGzip = json_encode($new_arr);
+					$this -> _responceNoGzip = json_encode($newArr);
 				}
 			}
-		}
-		if (isset($protocol) && ! empty($protocol) && $protocol == "HEAD") {
-			//@TODO
 		}
 		if (isset($protocol) && ! empty($protocol) && $protocol == "PUT") {
 			//@TODO
@@ -517,7 +523,19 @@ class WwwwServer
 		if (isset($protocol) && ! empty($protocol) && $protocol == "PATCH") {
 			//@TODO
 		}
-		return $new_arr;
+		if (isset($protocol) && ! empty($protocol) && $protocol == "PING") {
+			//ready!
+		}
+		if (isset($protocol) && ! empty($protocol) && $protocol == "PINGSERVICE") {
+			//@TODO
+		}
+		if (isset($protocol) && ! empty($protocol) && $protocol == "LOOKUPSERVICE") {
+
+		}
+		if (isset($protocol) && ! empty($protocol) && $protocol == "ROUTESERVICE") {
+
+		}
+		return $newArr;
 	}
 	/**
 	*	Dynamically web vars to script and return it for rending!
@@ -542,7 +560,7 @@ class WwwwServer
 	**/
 	private function log($file, $id, $message)
 	{
-		if(! is_dir($this -> _directoryLog)){
+		if(! is_dir($this -> _directoryLog)) {
 			mkdir($this -> _directoryLog, 0777);
 			chmod($this -> _directoryLog, 0777);
 		}
@@ -558,7 +576,7 @@ class WwwwServer
 
 	$server1 = new WwwwServer();
 	//Could set the port if it is free about.
-	$server1 -> httpServer(8283, "/home/xxxxxxxxxxxxx/Desktop/Documents/");
+	$server1 -> httpServer(8283, "/home/XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX/Desktop/Documents/");
 
 
 

@@ -91,12 +91,16 @@ Just need to add file extension and content-type to your mime.json file.
 
 ### [ GET ] ! :heavy_check_mark:
 ### [ POST ] ! :heavy_check_mark:
-### [ GZIP ] ! :heavy_check_mark:
+### [ GZIP and Deflate] ! :heavy_check_mark:
 ### Cache :heavy_multiplication_x:
 ### Cookie :heavy_multiplication_x:
-### HEAD, PUT :heavy_multiplication_x:
+### PUT :heavy_multiplication_x:
 ### MIME :heavy_check_mark:
 ### LOG :heavy_check_mark:
+### HEAD :heavy_check_mark:
+### PING :heavy_check_mark:
+
+
 
 ## Features
 
