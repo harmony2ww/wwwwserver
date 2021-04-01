@@ -1,4 +1,4 @@
-# wwwwServer - Web Server
+# wwwwServer - Web Server (https://github.com/X0xx-1110)
 
 [![GitHub status](https://github.com/X0xx-1110/WWWW-Server/actions/workflows/codacy-analysis.yml/badge.svg)](https://github.com/X0xx-1110/WWWW-Server)
 [![Documentation Status](https://readthedocs.org/projects/ansicolortags/badge/?version=latest)](http://ansicolortags.readthedocs.io/?badge=latest)
