@@ -89,16 +89,16 @@ Just need to add file extension and content-type to your mime.json file.
 
 ## Latest 
 
-### [ GET ] ! :heavy_check_mark:
-### [ POST ] ! :heavy_check_mark:
-### [ GZIP and Deflate] ! :heavy_check_mark:
-### Cache :heavy_multiplication_x:
-### Cookie :heavy_multiplication_x:
-### PUT :heavy_multiplication_x:
-### MIME :heavy_check_mark:
-### LOG :heavy_check_mark:
-### HEAD :heavy_check_mark:
-### PING :heavy_check_mark:
+### [ GET ] ! 
+### [ POST ] ! 
+### [ GZIP and Deflate] !
+### Cache 
+### Cookie 
+### PUT 
+### [ MIME ]
+### [ LOG ]
+### [ HEAD ]
+### [ PING ] 
 
 
 
@@ -139,7 +139,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Feedback 
 
-### "Ask Me all over"  :interrobang: [![Ask Me all over net!](https://img.shields.io/badge/Ask%20me%20all%20over-1abc9c.svg)](https://github.com/X0xx-1110/wwwwServer)
+### "Ask Me all over"  :interrobang: [![Ask Me all over net](https://img.shields.io/badge/Ask%20me%20all%20over-1abc9c.svg)](https://github.com/X0xx-1110/wwwwServer)
 
 if there are something missing, or something more, or something else.
 Ask me anything!
