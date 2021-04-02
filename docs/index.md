@@ -1,5 +1,5 @@
 # wwwwServer - Web Server 
-(https://github.com/X0xx-1110/wwwwServer)
+[ https://github.com/X0xx-1110/wwwwServer ]
 
 [![GitHub status](https://github.com/X0xx-1110/WWWW-Server/actions/workflows/codacy-analysis.yml/badge.svg)](https://github.com/X0xx-1110/WWWW-Server)
 [![Documentation Status](https://readthedocs.org/projects/ansicolortags/badge/?version=latest)](http://ansicolortags.readthedocs.io/?badge=latest)
@@ -90,16 +90,16 @@ Just need to add file extension and content-type to your mime.json file.
 
 ## Latest 
 
-### [ GET ] ! :heavy_check_mark:
-### [ POST ] ! :heavy_check_mark:
-### [ GZIP and Deflate] ! :heavy_check_mark:
-### Cache :heavy_multiplication_x:
-### Cookie :heavy_multiplication_x:
-### PUT :heavy_multiplication_x:
-### MIME :heavy_check_mark:
-### LOG :heavy_check_mark:
-### HEAD :heavy_check_mark:
-### PING :heavy_check_mark:
+### [ GET ] ! 
+### [ POST ] ! 
+### [ GZIP and Deflate] ! 
+### Cache 
+### Cookie 
+### PUT 
+### [ MIME ]
+### [ LOG ]
+### [ HEAD ]
+### [ PING ]
 
 
 
