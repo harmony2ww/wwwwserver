@@ -32,12 +32,14 @@ class WwwwServer
 	private string $_address = '127.0.0.1'; //Feel free!
 	private string $_mimeFile = 'mime.json';
 	private string $_directoryLog = '__LOG__/';
-	private string $_content_type = '';
+	private string $_contentType = '';
 	private array $_responceHeaders = [];
 	private int $_contentLength = 2048;
 	private string $_responce = "";
 	private string $_responceNoGzip = "";
-	private string $_headers_responce = "";
+	private string $_headersResponce = "";
+	private string $_statusResponce = "200";
+	private string $_status = "200";
 	private mixed $_socket;
 	private mixed $_connection;
 	private mixed $_timestampStart = 0;
@@ -64,6 +66,7 @@ class WwwwServer
 			$this->setDir($webDirectoryOfUse);
 		} else {
 			$this->_isError = true;
+			$this -> _status = "404 404";
 			print "[ Web Directory Does not Exists! ]\n";
 			return false;
 			}
@@ -71,6 +74,7 @@ class WwwwServer
 		$this->_socket = stream_socket_server($this->protocol."://".$this -> _address.":".$port, $errno, $errstr);
 
 		if (! isset($this->_socket) || empty($this->_socket) || ! is_resource($this->_socket) || ! $this->_socket) {
+			$this -> _status = "500 500";
 			print "[ Socket Does not Exists! ::".$errstr.", ".$errno."::]\n";
 			return false;
 		} else {
@@ -89,12 +93,15 @@ class WwwwServer
 					//Set Headers
 					$this -> setResponceToGzipDeflate();
 					$this -> setLengthOfResponce();
+					$this -> setStatusResponce();
+
 					$this -> setFullResponceHeaders();
 					//Write _responce Headers
 					$this -> setHeadersResponce();
 
+
 					//Write _responce Content
-					fwrite($this -> _connection, $this -> _headers_responce.$this -> _responce);
+					fwrite($this -> _connection, $this -> _headersResponce.$this -> _responce);
 					$this -> _timestampEnd = microtime();
 					//Write to console
 					if ($regExCheck === false) {
@@ -114,7 +121,7 @@ class WwwwServer
 					$this -> log("request.log", $countRequests, trim($requestArray[0])."----".trim($requestArray[0]));
 					$this -> log("user_agent.log", $countRequests, trim($requestArray[0])."----".trim($requestArray[5]));
 					$this -> log("reffer.log", $countRequests, trim($requestArray[0])."----".trim($requestArray[11]));
-					$this -> log("content_type.log", $countRequests, trim($requestArray[0])."----".trim($this -> _content_type));
+					$this -> log("content_type.log", $countRequests, trim($requestArray[0])."----".trim($this -> _contentType));
 					$this -> log("length_responce.log", $countRequests, trim($requestArray[0])."----".trim($this -> _contentLength));
 					$this -> log("response.log", $countRequests, trim($requestArray[0])."----".trim($this -> _responceHeaders["HTTP/1.1"]));
 					$this -> log("request_data.log", $countRequests, trim($requestArray[0])."----".trim($this -> _responceNoGzip));
@@ -161,7 +168,12 @@ class WwwwServer
 			//@TODO:later functionality
 			} else {
 				$temporaryUri = $this -> parseRequest($requestArray);
-				$this -> _responce = $this -> fileType($temporaryUri);			
+				$this -> _responce = $this -> fileType($temporaryUri);	
+				if($this -> _responce !== false){
+					$this -> _status = "200 OK";
+				} else {
+
+				}		
 			}
 	}
 	/**
@@ -177,7 +189,7 @@ class WwwwServer
 			}
 		}
 		if (isset($temporaryHeaders) && ! empty($temporaryHeaders) && is_string($temporaryHeaders) && strlen($temporaryHeaders) > 1) {
-			$this -> _headers_responce = $temporaryHeaders;
+			$this -> _headersResponce = $temporaryHeaders;
 		}
 	}
 	/**
@@ -239,16 +251,19 @@ class WwwwServer
 	**/
 	private function setFullResponceHeaders() : void
 	{
-		$this -> setResponceHeaders("HTTP/1.1", "200 OK\r\n");
+		$this -> setResponceHeaders("HTTP/1.1", $this -> _statusResponce."\r\n");
 		$this -> setResponceHeaders("Host:", $this -> _address."\r\n");
 		$this -> setResponceHeaders("Keep-Alive:", "1\r\n");
 		$this -> setResponceHeaders("Date:", date( DATE_RFC2822 )."\r\n");
 		$this -> setResponceHeaders("Server:", "WwwwServer 1\r\n");
-		$this -> setResponceHeaders("Content-Type:", $this -> _content_type."; charset=utf-8\r\n");
+		$this -> setResponceHeaders("Content-Type:", $this -> _contentType."; charset=utf-8\r\n");
 		$this -> setResponceHeaders("Content-Encoding:", "gzip, deflate\r\n");
 		$this -> setResponceHeaders("Content-Language:", "en\r\n");
 		$this -> setResponceHeaders("Content-Length:", $this -> _contentLength."\r\n");
 		$this -> setResponceHeaders("Connection:", "close\r\n\r\n");
+	}
+	private function setStatusResponce() : void {
+		$this -> _statusResponce = $this -> _status;
 	}
 	/**
 	*	Algorithm about setting a content type into headers of a response.
@@ -265,7 +280,7 @@ class WwwwServer
 				}
 		$object = json_decode($this -> fileRead($this -> _mimeFile));
 		if (isset($object) && ! empty($object) && is_object($object)) {
-			$this -> _content_type = $object -> $extension;
+			$this -> _contentType = $object -> $extension;
 		}
 	}
 	/**
@@ -397,21 +412,26 @@ class WwwwServer
 		}
 		else{
 			$this -> _isError = true;
+			$this -> _status = "404 NOT FOUND";
 			return "400 Bad Request!===========>Could not find file!";
 			return false;
 		}
 		if ($this -> _securityArrayStatuses === true && isset($xFile) && !empty($xFile) && $this->securityCheck($xFile) === false) {
+			$this -> _status = "406 406";
 			return false;
 		}
 		if ($this -> _securityFilesWebStataStuses === true && isset($xFile) && !empty($xFile) && $this->securityCheckWebFiles($xFile) === false) {
+			$this -> _status = "406 406";
 			return false;
 		}
 		if (isset($xFile) && !empty($xFile) && !is_file($xFile)) {
 			$this -> _isError = true;
+			$this -> _status = "400 400";
 			return "400 Bad Request!===========>Could not find file!";
 		}
 		if (isset($xFile) && ! empty($xFile) && ! is_readable($xFile)) {
 			$this -> _isError = true;
+			$this -> _status = "400 400";
 			return "400 Bad Request!===========>Could not read from file!";
 		}
 		if(isset($temporaryUri["x_protocol"]) && ! empty($temporaryUri["x_protocol"]) && $temporaryUri["x_protocol"] != "HEAD" && $temporaryUri["x_protocol"] != "PING") {
@@ -419,21 +439,26 @@ class WwwwServer
 			if (isset($xFile) && ! empty($xFile) && strlen($xFile) > 1) {
 				if (strpos($xFile, "php") !== false && $this -> phpVersion === "8.0") {
 					$this -> _isError = false;
+					$this -> _status = "200 OK";
 					return shell_exec("/usr/bin/php8.0  -r ' ".$this -> webVariables($xFile, $temporaryUri["x_protocol"], $temporaryUri["x_data_REQUEST"] )." include_once(\"".$xFile."\"); ' ");
 				}
 				elseif (strpos($xFile, "php") !== false && $this -> phpVersion === "7.4") {
 					$this -> _isError = false;
+					$this -> _status = "200 OK";
 					return shell_exec("/usr/bin/php7.4 -r ' ".$this -> webVariables($xFile, $temporaryUri["x_protocol"], $temporaryUri["x_data_REQUEST"])." include_once(\"".$xFile."\"); ' ");
 				}
 				elseif (strpos($xFile, "php") !== false && $this -> phpVersion==="7.0") {
 					$this -> _isError = false;
+					$this -> _status = "200 OK";
 					return shell_exec("/usr/bin/php7.0 -r ' ".$this -> webVariables($xFile, $temporaryUri["x_protocol"], $temporaryUri["x_data_REQUEST"])." include_once(\"".$xFile."\"); ' ");
 				}
 				elseif (strpos($xFile, "php") !== false && $this -> phpVersion === "5") {
 					$this -> _isError = false;
+					$this -> _status = "200 OK";
 					return shell_exec("/usr/bin/php -r ' ".$this -> webVariables($xFile, $temporaryUri["x_protocol"], $temporaryUri["x_data_REQUEST"])." include_once(\"".$xFile."\"); ' ");
 				} else {
 					if( isset($xFile) && !empty($xFile) && strpos($xFile, ".")!==false && strlen($xFile) > 3 && is_file($xFile) && is_readable($xFile) ) {
+						$this -> _status = "200 OK";
 						return $this -> fileRead($xFile);
 					}
 					return false;
@@ -442,12 +467,15 @@ class WwwwServer
 		}
 		if(isset($temporaryUri["x_protocol"]) && ! empty($temporaryUri["x_protocol"]) && $temporaryUri["x_protocol"] == "HEAD") {
 			//@TODO: later functionality of starting a function that calculate the HEAD protocul starting functions.
+			$this -> _status = "200 OK";
 			return "";
 		}
 		if(isset($temporaryUri["x_protocol"]) && ! empty($temporaryUri["x_protocol"]) && $temporaryUri["x_protocol"] == "PING") {
+			$this -> _status = "200 OK";
 			return "";
 		}
 		$this -> _isError = true;
+		$this -> _status = "400";
 		return "400 Bad Request!===========>Could not execute anithing!";
 	}
 	/**
