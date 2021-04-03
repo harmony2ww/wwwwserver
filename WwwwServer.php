@@ -78,11 +78,12 @@ class WwwwServer
 			print "[ Socket Does not Exists! ::".$errstr.", ".$errno."::]\n";
 			return false;
 		} else {
-			$this -> _timestampStart = microtime();
 			for(;;) {
 				$this -> _connection = stream_socket_accept($this -> _socket, -1);
 				if (isset($this -> _connection) && ! empty($this -> _connection)) {
 					$gatheredRequest = stream_socket_recvfrom($this->_connection, 1000000, STREAM_PEEK);
+					//set start time
+					$this -> _timestampStart = microtime();
 					//parse Request
 					$requestArray = $this -> preParseRequestToArray($gatheredRequest);
 					
@@ -99,10 +100,10 @@ class WwwwServer
 					//Write _responce Headers
 					$this -> setHeadersResponce();
 
-
+					//set end time!
+					$this -> _timestampEnd = microtime();
 					//Write _responce Content
 					fwrite($this -> _connection, $this -> _headersResponce.$this -> _responce);
-					$this -> _timestampEnd = microtime();
 					//Write to console
 					if ($regExCheck === false) {
 							//@TODO:later functionality
@@ -262,7 +263,8 @@ class WwwwServer
 		$this -> setResponceHeaders("Content-Length:", $this -> _contentLength."\r\n");
 		$this -> setResponceHeaders("Connection:", "close\r\n\r\n");
 	}
-	private function setStatusResponce() : void {
+	private function setStatusResponce() : void
+	{
 		$this -> _statusResponce = $this -> _status;
 	}
 	/**
