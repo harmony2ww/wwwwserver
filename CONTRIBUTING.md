@@ -11,9 +11,21 @@ it is not finally. The very big option about is talant, that creats us big than
 ever be. Every body could it be, but could it not. The power in our hands 
 to be talanted is a desicion that everybody need to get about yourself, 
 about developing, about source code.
+developing source code is a challange of different options where we got
+much of these programming language and technologies.
+There are good to give each other more about contributing of source code
+and we give more each day by day. About to growing it is a must of a day.
+
+
 
 ## Motivation
 
+About motivetion could give opportunity by proseed our good developing skills 
+and much more day's grow of ours. 
+Motivation is inspiration like thin idia how could create more.
+Creating dreams we could develop a good things for technologies and more.
+Incredible point of view is open source where would be done about inovation 
+when like a modern opportunity for developing a source code.
 Strong to ability about freedom of a source code. About principles of write a 
 code. About ability to not making a bads and trashes. Inspiration when I did,
 bacause there are so much possible directions of a creating a product.
@@ -29,6 +41,8 @@ needs of talanted person who creates reality for us is a must.
 High quality of ideas, decisions oposite of formal and common 
 understandings of technologies are not so good idea. "Never be out of the crawd!"
 Open source inovation is other - there may be is a good to be out of the crawd.
+Open source code of all inovation may be it is a good there we could be faster 
+to our targets where need more briliant into developing.
 So on and so on.
 
 
@@ -37,10 +51,13 @@ So on and so on.
 It's a must.
 
 ## Good source code!
+When we create source code there must it was be good ralated about our skill
+to develop. Creating good skill could be more hard of each other, but it is 
+a grow by.
 It's a must.
 
 ## Fast leraning
 It's a must.   
 
 ## Contributing
-Elagant kind of a source code, that give us ideas for future works.
+Elegant kind of a source code, that give us ideas for future works.
