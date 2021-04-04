@@ -62,7 +62,7 @@ class WwwwServer
 	{
 		$numRequests = 0;
 		$countRequests = 0;
-		if (isset($webDirectoryOfUse) && ! empty($webDirectoryOfUse) && strlen($webDirectoryOfUse) > 1 && is_dir($webDirectoryOfUse) ) {
+		if (! empty($webDirectoryOfUse) && strlen($webDirectoryOfUse) > 1 && is_dir($webDirectoryOfUse) ) {
 			$this->setDir($webDirectoryOfUse);
 		} else {
 			$this->_isError = true;
@@ -73,7 +73,7 @@ class WwwwServer
 
 		$this->_socket = stream_socket_server($this->protocol."://".$this -> _address.":".$port, $errno, $errstr);
 
-		if ( ! isset($this->_socket) || empty($this->_socket) || ! is_resource($this->_socket) || ! $this->_socket ) {
+		if (empty($this->_socket) || ! is_resource($this->_socket)) {
 			$this -> _status = "500 500";
 			print "[ Socket Does not Exists! ::".$errstr.", ".$errno."::]\n";
 			return false;
