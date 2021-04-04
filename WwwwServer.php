@@ -21,8 +21,8 @@
 
 
 /**
-*    Main goal of a class is to describe option about the web.
-*    All the methods are inside one class, that would create possible these functionality.
+* Main goal of a class is to describe option about the web.
+* All the methods are inside one class, that would create possible these functionality.
 **/
 class WwwwServer
 {
@@ -54,9 +54,9 @@ class WwwwServer
     private string $_strSecureMsg = "";
     
     /**
-    *    Ccmmon function about web server it all.
-    *    Basic and common calculation of a source are here. Connections and sockets. Many functions about parsing and functionality.
-    *    @return bool 
+    * Ccmmon function about web server it all.
+    * Basic and common calculation of a source are here. Connections and sockets. Many functions about parsing and functionality.
+    * @return bool 
     **/
     public function handle(int $port, string $webDirectoryOfUse) : bool
     {
@@ -133,8 +133,8 @@ class WwwwServer
         }
     }
     /**
-    *    create regular espression about request and security at all
-    *    @return string
+    * create regular espression about request and security at all
+    * @return string
     **/
     private function _createRegExCheck(string $gathered) : string
     { 
@@ -160,8 +160,8 @@ class WwwwServer
         }
     }
     /**
-    *    Middle level of security check.
-    *    @return void
+    * Middle level of security check.
+    * @return void
     **/
     private function _checkRequestSecurity(array $requestArray, bool $regExStatus) : void
     {
@@ -178,8 +178,8 @@ class WwwwServer
             }
     }
     /**
-    *    Set headders about responce of a request.
-    *    @return void
+    * Set headders about responce of a request.
+    * @return void
     **/
     private function _setHeadersResponce() : void
     {
@@ -194,8 +194,8 @@ class WwwwServer
         }
     }
     /**
-    *    Delta time for respond of a web server - time for rendering and answer.
-    *    @return mixed
+    * Delta time for respond of a web server - time for rendering and answer.
+    * @return mixed
     **/
     private function _timeDelta() : mixed
     {
@@ -204,8 +204,8 @@ class WwwwServer
         }
     }
     /**
-    *    Parse request to array.
-    *    @return array
+    * Parse request to array.
+    * @return array
     **/
     private function _preParseRequestToArray(string $request) : array
     {
@@ -217,8 +217,8 @@ class WwwwServer
         }
     }
     /**
-    *    Parse request to string.
-    *    @return string
+    * Parse request to string.
+    * @return string
     **/
     private function _preParseRequest(string $request) : string
     {
@@ -231,24 +231,24 @@ class WwwwServer
         }
     }
     /**
-    *    2 Gz about all content of _responce.
-    *    @return void
+    * 2 Gz about all content of _responce.
+    * @return void
     **/
     private function _setResponceToGzipDeflate() : void
     {
         $this -> _responce = gzdeflate(gzencode($this -> _responce, 9), 9);
     }
     /**
-    *    Length of a _responce inside a property.
-    *    @return void
+    * Length of a _responce inside a property.
+    * @return void
     **/
     private function _setLengthOfResponce() : void
     {
         $this -> _contentLength = strlen($this -> _responce);
     }
     /**
-    *     Set the headers what they are equal to request about connectin.
-    *    @return void
+    *  Set the headers what they are equal to request about connectin.
+    * @return void
     **/
     private function _setFullResponceHeaders() : void
     {
@@ -268,8 +268,8 @@ class WwwwServer
         $this -> _statusResponce = $this -> _status;
     }
     /**
-    *    Algorithm about setting a content type into headers of a response.
-    *    @return void
+    * Algorithm about setting a content type into headers of a response.
+    * @return void
     **/
     private function _setContentTypeString(array $arrayOfRequest) : void
     {    
@@ -288,16 +288,16 @@ class WwwwServer
         }
     }
     /**
-    *    Algorithm about setting a web dir.
-    *    @return void
+    * Algorithm about setting a web dir.
+    * @return void
     **/
     private function _setDir(string $webDirectory) : void
     {
         $this -> _webDirectory = $webDirectory;
     }
     /**
-    *    Algorithm about setting a value and a name of a property array.
-    *    @return void
+    * Algorithm about setting a value and a name of a property array.
+    * @return void
     **/
     private function _setResponceHeaders(string $nameRespondHeader, string $valueRespondHeader) : void
     {
@@ -305,8 +305,8 @@ class WwwwServer
     }
     //Basic file read
     /**
-    *    My opinion about Read a file and much of possibles upgrades.
-    *    @return string|bool
+    * My opinion about Read a file and much of possibles upgrades.
+    * @return string|bool
     **/
     private function _fileRead(string $file) : string|bool
     {
@@ -322,8 +322,8 @@ class WwwwServer
     }
     //Basic file write
     /**
-    *    My opinion about write a file and much of possibles upgrades.
-    *    @return bool
+    * My opinion about write a file and much of possibles upgrades.
+    * @return bool
     **/
     private function _fileWrite(string $filename, int $id, string $message) : bool
     {
@@ -338,8 +338,8 @@ class WwwwServer
     }
     //
     /**
-    *    Function, that parsing the request.
-    *    @return array
+    * Function, that parsing the request.
+    * @return array
     **/
     private function _parseRequest(array $req) : array
     {
@@ -371,8 +371,8 @@ class WwwwServer
             }
     }
     /**
-    *    Algorithm about security check of a URL.
-    *    @return bool
+    * Algorithm about security check of a URL.
+    * @return bool
     **/
     private function _securityCheck(string $urlAboutCheck) : bool
     {
@@ -393,8 +393,8 @@ class WwwwServer
         return true;
     }
     /**
-    *    Algorithm about security check of a URL.
-    *    @return bool
+    * Algorithm about security check of a URL.
+    * @return bool
     **/
     private function _securityCheckWebFiles(string $request) : bool
     {
@@ -409,9 +409,9 @@ class WwwwServer
     }
     //FIle type of rendered files over the web.
     /**
-    *    The render is here about xml, html, txt, PHPs and more
-    *    @TODO:Include more renders.
-    *    @return string|bool
+    * The render is here about xml, html, txt, PHPs and more
+    * @TODO:Include more renders.
+    * @return string|bool
     **/
     private function _fileType(array $temporaryUri) : string|bool
     {
@@ -487,8 +487,8 @@ class WwwwServer
         return "400 Bad Request!===========>Could not execute anithing!";
     }
     /**
-    *    Parsing web vars like Get and POST to script about.
-    *    @return array
+    * Parsing web vars like Get and POST to script about.
+    * @return array
     **/
     private function _parseWebGetVars(string $protocol, string $webVars) : array
     {
@@ -541,8 +541,8 @@ class WwwwServer
         return $newArr;
     }
     /**
-    *    Dynamically web vars to script and return it for rending!
-    *    @return string
+    * Dynamically web vars to script and return it for rending!
+    * @return string
     **/
     private function _webVariables(string $file, string $protocol, string $webVars) : string
     {
@@ -558,8 +558,8 @@ class WwwwServer
         return $strPhpCodeOne;
     }
     /**
-    *    Dynamically _log oposite data into file and create directory about _logs!
-    *    @return bool
+    * Dynamically _log oposite data into file and create directory about _logs!
+    * @return bool
     **/
     private function _log(string $file, int $id, string $message) : bool
     {
