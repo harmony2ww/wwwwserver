@@ -85,9 +85,9 @@ class WwwwServer
                     //set start time
                     $this -> _timestampStart = microtime();
                     //parse Request
-                    $requestArray = $this -> __pre_parseRequestToArray($gatheredRequest);
+                    $requestArray = $this -> _preParseRequestToArray($gatheredRequest);
                     
-                    $request = $this -> _pre_parseRequest($gatheredRequest);
+                    $request = $this -> _preParseRequest($gatheredRequest);
                     $regExCheck = $this -> _createRegExCheck($request);
                     $this -> _checkRequestSecurity($requestArray, $regExCheck);
                     $this -> _setContentTypeString($requestArray);
@@ -207,7 +207,7 @@ class WwwwServer
     *    Parse request to array.
     *    @return array
     **/
-    private function __pre_parseRequestToArray(string $request) : array
+    private function _preParseRequestToArray(string $request) : array
     {
         if (isset($request) && ! empty($request) && is_string($request) && strlen($request) > 1) {
             $gatheredRequestArray = explode("\n", $request);
@@ -220,7 +220,7 @@ class WwwwServer
     *    Parse request to string.
     *    @return string
     **/
-    private function _pre_parseRequest(string $request) : string
+    private function _preParseRequest(string $request) : string
     {
         if (isset($request) && ! empty($request) && is_string($request) && strlen($request) > 1) {
             $gatheredRequestArray = explode("\n", $request);
