@@ -46,7 +46,7 @@ class WwwwServer
 	private mixed $_timestampEnd = 0;
 	private bool $_isError = false;
 	private array $_excludedFilesTerminal = [".css", ".ico", ".js"];
-	private array $_excludedFilesWeb = [ ".ico" ];
+	private array $_excludedFilesWeb = [".ico"];
 	private bool $_securityArrayStatuses = true;
 	private array $_securityArray = ["'", '"', ";", "\\", "\\\\", "\\\\\\", "\\\\\\\\", "^", ")", "(", "+", "*", "$", "//", "!"];
 	private bool $_securityFilesWebStataStuses = false;
@@ -58,11 +58,11 @@ class WwwwServer
 	*	Basic and common calculation of a source are here. Connections and sockets. Many functions about parsing and functionality.
 	*	@return bool 
 	**/
-	public function handle($port, $webDirectoryOfUse) : bool
+	public function handle(int $port, string $webDirectoryOfUse) : bool
 	{
 		$numRequests = 0;
 		$countRequests = 0;
-		if (isset($webDirectoryOfUse) && ! empty($webDirectoryOfUse) && strlen($webDirectoryOfUse) > 1 && is_dir($webDirectoryOfUse)) {
+		if (isset($webDirectoryOfUse) && ! empty($webDirectoryOfUse) && strlen($webDirectoryOfUse) > 1 && is_dir($webDirectoryOfUse) ) {
 			$this->setDir($webDirectoryOfUse);
 		} else {
 			$this->_isError = true;
@@ -73,7 +73,7 @@ class WwwwServer
 
 		$this->_socket = stream_socket_server($this->protocol."://".$this -> _address.":".$port, $errno, $errstr);
 
-		if (! isset($this->_socket) || empty($this->_socket) || ! is_resource($this->_socket) || ! $this->_socket) {
+		if ( ! isset($this->_socket) || empty($this->_socket) || ! is_resource($this->_socket) || ! $this->_socket ) {
 			$this -> _status = "500 500";
 			print "[ Socket Does not Exists! ::".$errstr.", ".$errno."::]\n";
 			return false;
@@ -133,11 +133,11 @@ class WwwwServer
 		}
 	}
 	/**
-	*	create regular espression about request and security 
+	*	create regular espression about request and security at all
 	*	@return string
 	**/
-	private function createRegExCheck($gathered) : string
-	{
+	private function createRegExCheck(string $gathered) : string
+	{ 
 		$regEx = "";
 		$lines = explode("\n", $gathered);
 		$line = $lines[0];
@@ -163,7 +163,7 @@ class WwwwServer
 	*	Middle level of security check.
 	*	@return void
 	**/
-	private function checkRequestSecurity($requestArray, $regExStatus) : void
+	private function checkRequestSecurity(array $requestArray, bool $regExStatus) : void
 	{
 		if ( $regExStatus === false ) {
 			//@TODO:later functionality
@@ -207,7 +207,7 @@ class WwwwServer
 	*	Parse request to array.
 	*	@return array
 	**/
-	private function preParseRequestToArray($request) : array
+	private function preParseRequestToArray(string $request) : array
 	{
 		if (isset($request) && ! empty($request) && is_string($request) && strlen($request) > 1) {
 			$gatheredRequestArray = explode("\n", $request);
@@ -220,7 +220,7 @@ class WwwwServer
 	*	Parse request to string.
 	*	@return string
 	**/
-	private function preParseRequest($request) : string
+	private function preParseRequest(string $request) : string
 	{
 		if (isset($request) && ! empty($request) && is_string($request) && strlen($request) > 1) {
 			$gatheredRequestArray = explode("\n", $request);
@@ -255,7 +255,7 @@ class WwwwServer
 		$this -> setResponceHeaders("HTTP/1.1", $this -> _statusResponce."\r\n");
 		$this -> setResponceHeaders("Host:", $this -> _address."\r\n");
 		$this -> setResponceHeaders("Keep-Alive:", "1\r\n");
-		$this -> setResponceHeaders("Date:", date( DATE_RFC2822 )."\r\n");
+		$this -> setResponceHeaders("Date:", date(DATE_RFC2822)."\r\n");
 		$this -> setResponceHeaders("Server:", "WwwwServer 1\r\n");
 		$this -> setResponceHeaders("Content-Type:", $this -> _contentType."; charset=utf-8\r\n");
 		$this -> setResponceHeaders("Content-Encoding:", "gzip, deflate\r\n");
@@ -271,14 +271,16 @@ class WwwwServer
 	*	Algorithm about setting a content type into headers of a response.
 	*	@return void
 	**/
-	private function setContentTypeString($arrayOfRequest) : void
-	{
-		$firstLineRquest = explode(" ", $arrayOfRequest[0]);
-		if( strpos($firstLineRquest[1], "?") !== false) {
-			$deltaLen = strpos($firstLineRquest[1], "?") - strpos($firstLineRquest[1], ".");
-			$extension = substr($firstLineRquest[1], strpos($firstLineRquest[1], "."), $deltaLen);
+	private function setContentTypeString(array $arrayOfRequest) : void
+	{	
+		$arrayOfRequestFirstLine = $arrayOfRequest[0];
+		$firstLineRquest = explode(" ", $arrayOfRequestFirstLine);
+		$firstLineRquestSecondParam = $firstLineRquest[1];
+		if( strpos($firstLineRquestSecondParam, "?") !== false) {
+			$deltaLen = strpos($firstLineRquestSecondParam, "?") - strpos($firstLineRquestSecondParam, ".");
+			$extension = substr($firstLineRquestSecondParam, strpos($firstLineRquestSecondParam, "."), $deltaLen);
 		} else {
-					$extension = substr($firstLineRquest[1], strpos($firstLineRquest[1], "."));
+					$extension = substr($firstLineRquestSecondParam, strpos($firstLineRquestSecondParam, "."));
 				}
 		$object = json_decode($this -> fileRead($this -> _mimeFile));
 		if (isset($object) && ! empty($object) && is_object($object)) {
@@ -289,7 +291,7 @@ class WwwwServer
 	*	Algorithm about setting a web dir.
 	*	@return void
 	**/
-	private function setDir($webDirectory) : void
+	private function setDir(string $webDirectory) : void
 	{
 		$this -> _webDirectory = $webDirectory;
 	}
@@ -297,7 +299,7 @@ class WwwwServer
 	*	Algorithm about setting a value and a name of a property array.
 	*	@return void
 	**/
-	private function setResponceHeaders($nameRespondHeader, $valueRespondHeader) : void
+	private function setResponceHeaders(string $nameRespondHeader, string $valueRespondHeader) : void
 	{
 		$this -> _responceHeaders[$nameRespondHeader] = $valueRespondHeader;
 	}
@@ -306,7 +308,7 @@ class WwwwServer
 	*	My opinion about Read a file and much of possibles upgrades.
 	*	@return string|bool
 	**/
-	private function fileRead($file) : string|bool
+	private function fileRead(string $file) : string|bool
 	{
 		if (isset($file) && ! empty($file) && is_file($file) && filesize($file) > 0) {
 			$action = fopen($file, 'r');
@@ -323,7 +325,7 @@ class WwwwServer
 	*	My opinion about write a file and much of possibles upgrades.
 	*	@return bool
 	**/
-	private function fileWrite($filename, $id, $message) : bool
+	private function fileWrite(string $filename, int $id, string $message) : bool
 	{
 		if(isset($filename) && ! empty($filename) && is_string($filename) && strlen($filename) > 4 && isset($message) && ! empty($message) && is_string($message) && strlen($message) > 1) {
 			touch($filename);
@@ -339,28 +341,32 @@ class WwwwServer
 	*	Function, that parsing the request.
 	*	@return array
 	**/
-	private function parseRequest($req) : array
+	private function parseRequest(array $req) : array
 	{
-			$dataRequest = explode(" ", $req[0]);
-
-			if (isset($dataRequest[0]) && ! empty($dataRequest[0]) && $dataRequest[0] == "GET") {
-				if (strpos($dataRequest[1], "?") !== false) {
-					$data = explode("?", $dataRequest[1]);
-					$requestedUrl = substr($data[0], 1);
-					$temporaryGet = $data[1];
+			$firstLineRquest = $req[0];
+			$dataRequest = explode(" ", $firstLineRquest);
+			$dataRequestFirstRecord = $dataRequest[0];
+			$dataRequestSecondRecord = $dataRequest[1];
+			if (isset($dataRequestFirstRecord ) && ! empty($dataRequestFirstRecord) && $dataRequestFirstRecord  == "GET") {
+				if (strpos($dataRequestSecondRecord, "?") !== false) {
+					$data = explode("?", $dataRequestSecondRecord);
+					$dataUriFirst = $data[0];
+					$dataUriSecond = $data[1];
+					$requestedUrl = substr($dataUriFirst, 1);
+					$temporaryGet = $dataUriSecond;
 				} else {
-					$requestedUrl = substr($dataRequest[1], 1);
+					$requestedUrl = substr($dataRequestSecondRecord, 1);
 				}
 			}
-			if (isset($dataRequest[0]) && ! empty($dataRequest[0]) && $dataRequest[0] == "POST") {
-				$requestedUrl = substr($dataRequest[1], 1);
+			if (isset($dataRequestFirstRecord) && ! empty($dataRequestFirstRecord) && $dataRequestFirstRecord == "POST") {
+				$requestedUrl = substr($dataRequestSecondRecord, 1);
 				$temporaryGet = $req[array_key_last($req)];
 			}
 			if (strpos($requestedUrl, "./") === false && strpos($requestedUrl, "../") === false) {
 				if (isset($temporaryGet) && ! empty($temporaryGet)) {
-					return array("x_file"=>$requestedUrl, "x_data_REQUEST"=>$temporaryGet, "x_protocol"=>$dataRequest[0]);
+					return array("x_file"=>$requestedUrl, "x_data_REQUEST"=>$temporaryGet, "x_protocol"=>$dataRequestFirstRecord);
 				} else {
-					return array("x_file"=>$requestedUrl, "x_data_REQUEST"=>"", "x_protocol"=>$dataRequest[0]);
+					return array("x_file"=>$requestedUrl, "x_data_REQUEST"=>"", "x_protocol"=>$dataRequestFirstRecord);
 				}
 			}
 	}
@@ -368,7 +374,7 @@ class WwwwServer
 	*	Algorithm about security check of a URL.
 	*	@return bool
 	**/
-	private function securityCheck($urlAboutCheck) : bool
+	private function securityCheck(string $urlAboutCheck) : bool
 	{
 		$len = strlen($urlAboutCheck);
 		$arrayCheck = array();
@@ -390,7 +396,7 @@ class WwwwServer
 	*	Algorithm about security check of a URL.
 	*	@return bool
 	**/
-	private function securityCheckWebFiles($request) : bool
+	private function securityCheckWebFiles(string $request) : bool
 	{
 		$filename = basename($request);
 		if (isset($filename) && ! empty($filename) && is_string($filename) && strlen($filename) > 1 && $this -> _securityFilesWebStatues === true && in_array($filename, $this -> _securityFilesWeb)) {
@@ -407,7 +413,7 @@ class WwwwServer
 	*	@TODO:Include more renders.
 	*	@return string|bool
 	**/
-	private function fileType($temporaryUri) : string|bool
+	private function fileType(array $temporaryUri) : string|bool
 	{
 		if(isset($temporaryUri["x_file"]) && ! empty($temporaryUri["x_file"]) && ! is_null($temporaryUri["x_file"])) {
 			$xFile = $this -> _webDirectory.$temporaryUri["x_file"];
@@ -484,7 +490,7 @@ class WwwwServer
 	*	Parsing web vars like Get and POST to script about.
 	*	@return array
 	**/
-	private function parseWebGetVars($protocol, $webVars) : array
+	private function parseWebGetVars(string $protocol, string $webVars) : array
 	{
 		$newArr = array();
 		$newArrNotReturned = array();
@@ -494,7 +500,9 @@ class WwwwServer
 				if (isset($parsedVars) && ! empty($parsedVars) && is_array($parsedVars) && count($parsedVars)) {
 					foreach ($parsedVars as $vars) {
 						$temporaryVar = explode("=", $vars);
-						$newArr[$temporaryVar[0]] = $temporaryVar[1];
+						$temporaryVarFirst = $temporaryVar[0];
+						$temporaryVarSecond = $temporaryVar[1];
+						$newArr[$temporaryVarFirst] = $temporaryVarSecond;
 					}
 					$this -> _responceNoGzip = json_encode($newArr);
 				}
@@ -536,7 +544,7 @@ class WwwwServer
 	*	Dynamically web vars to script and return it for rending!
 	*	@return string
 	**/
-	private function webVariables($file, $protocol, $webVars) : string
+	private function webVariables(string $file, string $protocol, string $webVars) : string
 	{
 		$arrayWebVars = array();
 		$arrayWebVars = $this -> parseWebGetVars($protocol, $webVars);
@@ -553,7 +561,7 @@ class WwwwServer
 	*	Dynamically log oposite data into file and create directory about logs!
 	*	@return bool
 	**/
-	private function log($file, $id, $message) : bool
+	private function log(string $file, int $id, string $message) : bool
 	{
 		if(! is_dir($this -> _directoryLog)) {
 			mkdir($this -> _directoryLog, 0777);
