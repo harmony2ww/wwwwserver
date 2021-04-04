@@ -26,8 +26,8 @@
 **/
 class WwwwServer
 {
-    private string $phpVersion = "8.0";   //7.0//7.4 //5
-    private string $protocol = "tcp";     //Could only be!
+	    private string $_phpVersion = "8.0";   //7.0//7.4 //5
+    private string $_protocol = "tcp";     //Could only be!
     private string $_webDirectory = "";
     private string $_address = "127.0.0.1"; //Feel free!
     private string $_mimeFile = "mime.json";
@@ -71,7 +71,7 @@ class WwwwServer
             return false;
             }
 
-        $this->_socket = stream_socket_server($this->protocol."://".$this -> _address.":".$port, $errno, $errstr);
+        $this->_socket = stream_socket_server($this->_protocol."://".$this -> _address.":".$port, $errno, $errstr);
 
         if ( ! isset($this -> _socket) || empty($this -> _socket) || ! is_resource($this -> _socket)) {
             $this -> _status = "500 500";
@@ -364,9 +364,9 @@ class WwwwServer
             }
             if (strpos($requestedUrl, "./") === false && strpos($requestedUrl, "../") === false) {
                 if (isset($temporaryGet) && ! empty($temporaryGet)) {
-                    return array("x_file"=>$requestedUrl, "x_data_REQUEST"=>$temporaryGet, "x_protocol"=>$dataRequestFirstRecord);
+                    return array("x_file"=>$requestedUrl, "x_data_REQUEST"=>$temporaryGet, "x__protocol"=>$dataRequestFirstRecord);
                 } else {
-                    return array("x_file"=>$requestedUrl, "x_data_REQUEST"=>"", "x_protocol"=>$dataRequestFirstRecord);
+                    return array("x_file"=>$requestedUrl, "x_data_REQUEST"=>"", "x__protocol"=>$dataRequestFirstRecord);
                 }
             }
     }
@@ -442,28 +442,28 @@ class WwwwServer
             $this -> _status = "400 400";
             return "400 Bad Request!===========>Could not read from file!";
         }
-        if(isset($temporaryUri["x_protocol"]) && ! empty($temporaryUri["x_protocol"]) && $temporaryUri["x_protocol"] != "HEAD" && $temporaryUri["x_protocol"] != "PING") {
+        if(isset($temporaryUri["x__protocol"]) && ! empty($temporaryUri["x__protocol"]) && $temporaryUri["x__protocol"] != "HEAD" && $temporaryUri["x__protocol"] != "PING") {
             
             if (isset($xFile) && ! empty($xFile) && strlen($xFile) > 1) {
-                if (strpos($xFile, "php") !== false && $this -> phpVersion === "8.0") {
+                if (strpos($xFile, "php") !== false && $this -> _phpVersion === "8.0") {
                     $this -> _isError = false;
                     $this -> _status = "200 OK";
-                    return shell_exec("/usr/bin/php8.0  -r ' ".$this -> _webVariables($xFile, $temporaryUri["x_protocol"], $temporaryUri["x_data_REQUEST"] )." include_once(\"".$xFile."\"); ' ");
+                    return shell_exec("/usr/bin/php8.0  -r ' ".$this -> _webVariables($xFile, $temporaryUri["x__protocol"], $temporaryUri["x_data_REQUEST"] )." include_once(\"".$xFile."\"); ' ");
                 }
-                elseif (strpos($xFile, "php") !== false && $this -> phpVersion === "7.4") {
+                elseif (strpos($xFile, "php") !== false && $this -> _phpVersion === "7.4") {
                     $this -> _isError = false;
                     $this -> _status = "200 OK";
-                    return shell_exec("/usr/bin/php7.4 -r ' ".$this -> _webVariables($xFile, $temporaryUri["x_protocol"], $temporaryUri["x_data_REQUEST"])." include_once(\"".$xFile."\"); ' ");
+                    return shell_exec("/usr/bin/php7.4 -r ' ".$this -> _webVariables($xFile, $temporaryUri["x__protocol"], $temporaryUri["x_data_REQUEST"])." include_once(\"".$xFile."\"); ' ");
                 }
-                elseif (strpos($xFile, "php") !== false && $this -> phpVersion==="7.0") {
+                elseif (strpos($xFile, "php") !== false && $this -> _phpVersion==="7.0") {
                     $this -> _isError = false;
                     $this -> _status = "200 OK";
-                    return shell_exec("/usr/bin/php7.0 -r ' ".$this -> _webVariables($xFile, $temporaryUri["x_protocol"], $temporaryUri["x_data_REQUEST"])." include_once(\"".$xFile."\"); ' ");
+                    return shell_exec("/usr/bin/php7.0 -r ' ".$this -> _webVariables($xFile, $temporaryUri["x__protocol"], $temporaryUri["x_data_REQUEST"])." include_once(\"".$xFile."\"); ' ");
                 }
-                elseif (strpos($xFile, "php") !== false && $this -> phpVersion === "5") {
+                elseif (strpos($xFile, "php") !== false && $this -> _phpVersion === "5") {
                     $this -> _isError = false;
                     $this -> _status = "200 OK";
-                    return shell_exec("/usr/bin/php -r ' ".$this -> _webVariables($xFile, $temporaryUri["x_protocol"], $temporaryUri["x_data_REQUEST"])." include_once(\"".$xFile."\"); ' ");
+                    return shell_exec("/usr/bin/php -r ' ".$this -> _webVariables($xFile, $temporaryUri["x__protocol"], $temporaryUri["x_data_REQUEST"])." include_once(\"".$xFile."\"); ' ");
                 } else {
                     if( isset($xFile) && !empty($xFile) && strpos($xFile, ".")!==false && strlen($xFile) > 3 && is_file($xFile) && is_readable($xFile) ) {
                         $this -> _status = "200 OK";
@@ -473,12 +473,12 @@ class WwwwServer
                 }
             }
         }
-        if(isset($temporaryUri["x_protocol"]) && ! empty($temporaryUri["x_protocol"]) && $temporaryUri["x_protocol"] == "HEAD") {
+        if(isset($temporaryUri["x__protocol"]) && ! empty($temporaryUri["x__protocol"]) && $temporaryUri["x__protocol"] == "HEAD") {
             //@TODO: later functionality of starting a function that calculate the HEAD protocul starting functions.
             $this -> _status = "200 OK";
             return "";
         }
-        if(isset($temporaryUri["x_protocol"]) && ! empty($temporaryUri["x_protocol"]) && $temporaryUri["x_protocol"] == "PING") {
+        if(isset($temporaryUri["x__protocol"]) && ! empty($temporaryUri["x__protocol"]) && $temporaryUri["x__protocol"] == "PING") {
             $this -> _status = "200 OK";
             return "";
         }
@@ -490,11 +490,11 @@ class WwwwServer
     * Parsing web vars like Get and POST to script about.
     * @return array
     **/
-    private function _parseWebGetVars(string $protocol, string $webVars) : array
+    private function _parseWebGetVars(string $_protocol, string $webVars) : array
     {
         $newArr = array();
         $newArrNotReturned = array();
-        if (isset($protocol) && ! empty($protocol) && ($protocol == "GET" || $protocol == "POST" || $protocol == "HEAD")) {
+        if (isset($_protocol) && ! empty($_protocol) && ($_protocol == "GET" || $_protocol == "POST" || $_protocol == "HEAD")) {
             if (isset($webVars) && ! empty($webVars) && is_string($webVars) && strlen($webVars) > 1) {
                 $parsedVars = explode("&", $webVars);
                 if (isset($parsedVars) && ! empty($parsedVars) && is_array($parsedVars) && count($parsedVars)) {
@@ -508,34 +508,34 @@ class WwwwServer
                 }
             }
         }
-        if (isset($protocol) && ! empty($protocol) && $protocol == "PUT") {
+        if (isset($_protocol) && ! empty($_protocol) && $_protocol == "PUT") {
             //@TODO
         }
-        if (isset($protocol) && ! empty($protocol) && $protocol == "DELETE") {
+        if (isset($_protocol) && ! empty($_protocol) && $_protocol == "DELETE") {
             //@TODO
         }
-        if (isset($protocol) && ! empty($protocol) && $protocol == "CONNECT") {
+        if (isset($_protocol) && ! empty($_protocol) && $_protocol == "CONNECT") {
             //@TODO
         }
-        if (isset($protocol) && ! empty($protocol) && $protocol == "OPTIONS") {
+        if (isset($_protocol) && ! empty($_protocol) && $_protocol == "OPTIONS") {
             //@TODO
         }
-        if (isset($protocol) && ! empty($protocol) && $protocol == "TRACE") {
+        if (isset($_protocol) && ! empty($_protocol) && $_protocol == "TRACE") {
             //@TODO
         }
-        if (isset($protocol) && ! empty($protocol) && $protocol == "PATCH") {
+        if (isset($_protocol) && ! empty($_protocol) && $_protocol == "PATCH") {
             //@TODO
         }
-        if (isset($protocol) && ! empty($protocol) && $protocol == "PING") {
+        if (isset($_protocol) && ! empty($_protocol) && $_protocol == "PING") {
             //ready!
         }
-        if (isset($protocol) && ! empty($protocol) && $protocol == "PINGSERVICE") {
+        if (isset($_protocol) && ! empty($_protocol) && $_protocol == "PINGSERVICE") {
             //@TODO
         }
-        if (isset($protocol) && ! empty($protocol) && $protocol == "LOOKUPSERVICE") {
+        if (isset($_protocol) && ! empty($_protocol) && $_protocol == "LOOKUPSERVICE") {
 
         }
-        if (isset($protocol) && ! empty($protocol) && $protocol == "ROUTESERVICE") {
+        if (isset($_protocol) && ! empty($_protocol) && $_protocol == "ROUTESERVICE") {
 
         }
         return $newArr;
@@ -544,14 +544,14 @@ class WwwwServer
     * Dynamically web vars to script and return it for rending!
     * @return string
     **/
-    private function _webVariables(string $file, string $protocol, string $webVars) : string
+    private function _webVariables(string $file, string $_protocol, string $webVars) : string
     {
         $arrayWebVars = array();
-        $arrayWebVars = $this -> _parseWebGetVars($protocol, $webVars);
+        $arrayWebVars = $this -> _parseWebGetVars($_protocol, $webVars);
         $strPhpCodeOne = " ";
         if (isset($arrayWebVars) && ! empty($arrayWebVars) && is_array($arrayWebVars) && count($arrayWebVars)) {
             foreach ($arrayWebVars as $keyVar => $webVar) {
-                $strPhpCodeOne .= "\$_".strtoupper($protocol)."[\"".$keyVar."\"]=\"".$webVar."\"; \n";
+                $strPhpCodeOne .= "\$_".strtoupper($_protocol)."[\"".$keyVar."\"]=\"".$webVar."\"; \n";
                 $strPhpCodeOne .= "\$_REQUEST[\"".$keyVar."\"]=\"".$webVar."\"; \n";
             }
         }
