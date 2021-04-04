@@ -29,6 +29,10 @@ when like a modern opportunity for developing a source code.
 Strong to ability about freedom of a source code. About principles of write a 
 code. About ability to not making a bads and trashes. Inspiration when I did,
 bacause there are so much possible directions of a creating a product.
+If we describe our dreams with source code we could develop a such thing of 
+a technology that depend of ideas by ourself. When we growing within software 
+regards moments of troubleshoting of developing we creates flexability of ideas.
+
 
 ## Inovations
 
@@ -45,7 +49,23 @@ Open source code of all inovation may be it is a good there we could be faster
 to our targets where need more briliant into developing.
 So on and so on.
 
+## Troubleshoting of an idea.
 
+When we creates ideas about our target dreams we could if there are much 
+we feel different searching about. We would be different if there are so impposible
+things describing our target to develop. In these case when I full of out of feelings
+with translate of an idea would be interesting of all kind of a target sources.
+Become an developer of a open source code I be creator and author of ideas and codes,
+that give something more of all maybe too small for trasnalate, but there are no needs to
+make it big, make it famous or interesting, it must be good enought. For reasons about 
+all it be could develop an idea satisfaing and joying be there are in position, that 
+you will know what you want about all knowleage and targets. And if you could imagemne
+ther are targets , but there are and results , what kind of a result you expect 
+of concrete targets of all. You must imagine and a full base of a things,
+that you need about a try. In meny cases we would speak about a try when all concrete 
+describe a target of all and we are variant for try and there are much of these.
+If you could be integrate and option, that with open source we must write good
+and all be nice if all working good, then we are into right results ofan our target.
 
 ### New Implamentations
 It's a must.
