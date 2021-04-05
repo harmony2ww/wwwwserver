@@ -2,7 +2,7 @@
   "name": "x0xx-1110/wwwwserver",
   "description": "Web server stable and secure around the web.",
   "type": "web-server",
-  "license": "MIT License",
+  "license": "MIT",
   "repositories": [
     {
       "type": "vcs",
