@@ -1,13 +1,13 @@
 {
-  "name": "X0xx-1110/wwwwServer",
+  "name": "x0xx-1110/wwwwServer",
   "description": "Web server stable and secure around the web.",
-  "type": "web server",
+  "type": "web-server",
   "license": "MIT License",
   "repositories": [
     {
       "type": "package",
       "package": {
-        "name": "X0xx-1110/wwwwServer",
+        "name": "x0xx-1110/wwwwserver",
         "version": "1.8.2",
         "type": "web-server",
         "source": {
