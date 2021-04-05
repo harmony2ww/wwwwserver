@@ -1,0 +1,15 @@
+{
+  "name": "X0xx-1110/wwwwServer",
+  "description": "Web server stable and secure around the web.",
+  "type": "web server",
+  "license": "MIT License",
+  "authors": [
+     {
+         "name": "JKaloyan Hristov",
+         "email": "creativepoetryabout@gmail.com"
+     }
+  ],
+  "require": {
+  	"php": "8.0"
+  }
+}
