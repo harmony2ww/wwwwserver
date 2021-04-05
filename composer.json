@@ -3,6 +3,27 @@
   "description": "Web server stable and secure around the web.",
   "type": "web server",
   "license": "MIT License",
+  "repositories": [
+    {
+      "type": "package",
+      "package": {
+        "name": "X0xx-1110/wwwwServer",
+        "version": "1.8.2",
+        "type": "web-server",
+        "source": {
+          "url": "https://github.com/X0xx-1110/wwwwServer.git",
+          "type": "git",
+          "reference": "master"
+        }
+      }
+    }
+  ],
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/X0xx-1110/wwwwServer.git"
+    }
+  ],
   "authors": [
      {
          "name": "JKaloyan Hristov",
