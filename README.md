@@ -1,6 +1,5 @@
 # wwwwServer - Web Server
 
-[![GitHub status](https://github.com/X0xx-1110/WWWW-Server/actions/workflows/codacy-analysis.yml/badge.svg)](https://github.com/X0xx-1110/WWWW-Server)
 [![Documentation Status](https://readthedocs.org/projects/ansicolortags/badge/?version=latest)](http://ansicolortags.readthedocs.io/?badge=latest)
 [![GitHub license](https://img.shields.io/github/license/X0xx-1110/WWWW-Server.svg)](https://github.com/X0xx-1110/WWWW-Server/blob/master/LICENSE)
 [![GitHub forks](https://img.shields.io/github/forks/X0xx-1110/WWWW-Server.svg?style=social&label=Fork&maxAge=2592000)](https://GitHub.com/X0xx-1110/WWWW-Server/network/)
