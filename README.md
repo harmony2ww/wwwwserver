@@ -3,7 +3,7 @@
 <img alt="PHP" src="https://img.shields.io/badge/php-%23777BB4.svg?&style=for-the-badge&logo=php&logoColor=white"/>
 
 [![Documentation Status](https://readthedocs.org/projects/ansicolortags/badge/?version=latest)](http://ansicolortags.readthedocs.io/?badge=latest)
-[![GitHub license](https://img.shields.io/github/license/X0xx-1110/WWWW-Server.svg)](https://github.com/X0xx-1110/WWWW-Server/blob/master/LICENSE)
+[AGPL License](https://github.com/X0xx-1110/WWWW-Server/blob/main/LICENSE)
 [![GitHub forks](https://img.shields.io/github/forks/X0xx-1110/WWWW-Server.svg?style=social&label=Fork&maxAge=2592000)](https://GitHub.com/X0xx-1110/WWWW-Server/network/)
 [![GitHub stars](https://img.shields.io/github/stars/X0xx-1110/WWWW-Server.svg?style=social&label=Star&maxAge=2592000)](https://GitHub.com/X0xx-1110/WWWW-Server/stargazers/)
 [![GitHub watchers](https://img.shields.io/github/watchers/X0xx-1110/WWWW-Server.svg?style=social&label=Watch&maxAge=2592000)](https://GitHub.com/X0xx-1110/WWWW-Server/watchers/)
@@ -15,7 +15,7 @@ Stable than ever and secure, of course.
 
 ## Open Source 
 
-It's only open source.  [![AGPL License]](https://github.com/X0xx-1110/WWWW-Server/blob/main/LICENSE)
+It's only open source.  [AGPL License](https://github.com/X0xx-1110/WWWW-Server/blob/main/LICENSE)
 
 
 ## Getting Started [![Documentation Status](https://readthedocs.org/projects/ansicolortags/badge/?version=latest)](http://ansicolortags.readthedocs.io/?badge=latest)
@@ -132,7 +132,7 @@ See also the list of [contributors](https://github.com/your/project/contributors
 
 
 
-## License [![AGPL License]](https://github.com/X0xx-1110/WWWW-Server/blob/main/LICENSE)
+## License [AGPL License](https://github.com/X0xx-1110/WWWW-Server/blob/main/LICENSE)
 
 This project is licensed under the AGPL License - see the [LICENSE](LICENSE) file for details
 
