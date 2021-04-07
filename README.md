@@ -1,5 +1,8 @@
 # wwwwServer - Web Server
 
+<img alt="PHP" src="https://img.shields.io/badge/php-%23777BB4.svg?&style=for-the-badge&logo=php&logoColor=white"/>
+[![trophy](https://github-profile-trophy.vercel.app/?username=X0xx-1110)](https://github.com/X0xx-1110/github-profile-trophy)
+
 [![Documentation Status](https://readthedocs.org/projects/ansicolortags/badge/?version=latest)](http://ansicolortags.readthedocs.io/?badge=latest)
 [![GitHub license](https://img.shields.io/github/license/X0xx-1110/WWWW-Server.svg)](https://github.com/X0xx-1110/WWWW-Server/blob/master/LICENSE)
 [![GitHub forks](https://img.shields.io/github/forks/X0xx-1110/WWWW-Server.svg?style=social&label=Fork&maxAge=2592000)](https://GitHub.com/X0xx-1110/WWWW-Server/network/)
@@ -13,7 +16,7 @@ Stable than ever and secure, of course.
 
 ## Open Source 
 
-It's only open source.  [![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/X0xx-1110/WWWW-Server/blob/main/LICENSE)
+It's only open source.  [![GNU Affero License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/X0xx-1110/WWWW-Server/blob/main/LICENSE)
 
 
 ## Getting Started [![Documentation Status](https://readthedocs.org/projects/ansicolortags/badge/?version=latest)](http://ansicolortags.readthedocs.io/?badge=latest)
@@ -130,9 +133,9 @@ See also the list of [contributors](https://github.com/your/project/contributors
 
 
 
-## License [![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/X0xx-1110/WWWW-Server/blob/main/LICENSE)
+## License [![GNU Affero License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/X0xx-1110/WWWW-Server/blob/main/LICENSE)
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
+This project is licensed under the GNU Affero License - see the [LICENSE](LICENSE) file for details
 
 
 
