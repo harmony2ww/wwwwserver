@@ -10,8 +10,8 @@
  * @package    WwwwServer
  * @author     Kaloyan Hristov
  * @copyright  2021 Kaloyan Hristov
- * @license    https://github.com/X0xx-1110/WWWW-Server/blob/main/LICENSE  MIT License
- * @version    [1.8.1]
+ * @license    https://github.com/X0xx-1110/WWWW-Server/blob/main/LICENSE  AGPL License
+ * @version    [1.10.1]
  * @link       https://github.com/X0xx-1110/WWWW-Server
  * @see        https://github.com/X0xx-1110
  * @since      File available since Release 1.1.1

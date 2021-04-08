@@ -130,7 +130,8 @@ See also the list of [contributors](https://github.com/your/project/contributors
 
 
 
-## License AGPL License (https://github.com/X0xx-1110/WWWW-Server/blob/main/LICENSE)
+## License AGPL License 
+(https://github.com/X0xx-1110/WWWW-Server/blob/main/LICENSE)
 
 This project is licensed under the AGPL License - see the [LICENSE](LICENSE) file for details
 
